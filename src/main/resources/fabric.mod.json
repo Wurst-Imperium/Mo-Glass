@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "mo-glass",
+  "version": "${version}",
+
+  "name": "Mo Glass",
+  "description": "Adds all the variants of glass that Mojang forgot about.",
+  "authors": [
+    "Alexander01998"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "GPL-3.0-or-later",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "net.wurstclient.zoom.MoGlassInitializer"
+    ]
+  },
+  "mixins": [
+    "mo-glass.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
