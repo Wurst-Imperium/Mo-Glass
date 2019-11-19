@@ -19,7 +19,7 @@
   "environment": "client",
   "entrypoints": {
     "main": [
-      "net.wurstclient.zoom.MoGlassInitializer"
+      "net.wurstclient.glass.MoGlassInitializer"
     ]
   },
   "mixins": [
