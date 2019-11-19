@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "mo-glass",
+  "id": "mo_glass",
   "version": "${version}",
 
   "name": "Mo Glass",
