@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "minecraft:block/glass",
     "top": "minecraft:block/glass",
-    "side": "minecraft:block/glass"
+    "side": "mo_glass:block/glass_slab"
   }
 }
