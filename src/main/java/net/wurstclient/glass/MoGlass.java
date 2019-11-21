@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
@@ -27,13 +28,25 @@ public enum MoGlass
 		new GlassSlabBlock(FabricBlockSettings.of(Material.GLASS).hardness(0.3F)
 			.resistance(0.3F).sounds(BlockSoundGroup.GLASS).build());
 	
+	public static final Block GLASS_STAIRS = new GlassStairsBlock(
+		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
+			.sounds(BlockSoundGroup.GLASS).build());
+	
 	public void initialize()
 	{
 		System.out.println("Starting Mo Glass...");
 		
-		Identifier glassSlabId = new Identifier("mo_glass", "glass_slab");
-		Registry.register(Registry.BLOCK, glassSlabId, GLASS_SLAB);
-		Registry.register(Registry.ITEM, glassSlabId, new BlockItem(GLASS_SLAB,
-			new Item.Settings().group(ItemGroup.BUILDING_BLOCKS)));
+		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS);
+		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS);
+	}
+	
+	private void registerBlock(Block block, String idPath, ItemGroup itemGroup)
+	{
+		Identifier identifier = new Identifier("mo_glass", idPath);
+		Registry.register(Registry.BLOCK, identifier, block);
+		
+		Settings itemSettings = new Item.Settings().group(itemGroup);
+		BlockItem blockItem = new BlockItem(block, itemSettings);
+		Registry.register(Registry.ITEM, identifier, blockItem);
 	}
 }
