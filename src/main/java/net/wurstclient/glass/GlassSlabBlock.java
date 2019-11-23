@@ -35,10 +35,11 @@ public final class GlassSlabBlock extends SlabBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		return blockState_2.getBlock() == this && blockState_1
-			.get(SlabBlock.TYPE) == blockState_2.get(SlabBlock.TYPE) ? true
-				: super.isSideInvisible(blockState_1, blockState_2,
-					direction_1);
+		if(blockState_2.getBlock() == this && blockState_1
+			.get(SlabBlock.TYPE) == blockState_2.get(SlabBlock.TYPE))
+			return true;
+		
+		return super.isSideInvisible(blockState_1, blockState_2, direction_1);
 	}
 	
 	@Override
