@@ -18,28 +18,28 @@
         }
     },
     "textures": {
-        "particle": "#side"
+        "particle": "#full"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],
             "to": [ 16, 8, 16 ],
             "faces": {
-                "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#bottom", "cullface": "down" },
+                "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#full", "cullface": "down" },
                 "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#half_left" },
-                "north": { "uv": [ 0, 8, 16, 16 ], "texture": "#side", "cullface": "north" },
-                "south": { "uv": [ 0, 8, 16, 16 ], "texture": "#side", "cullface": "south" },
-                "west":  { "uv": [ 0, 8, 16, 16 ], "texture": "#side", "cullface": "west" },
-                "east":  { "uv": [ 0, 8, 16, 16 ], "texture": "#side", "cullface": "east" }
+                "north": { "uv": [ 0, 8, 16, 16 ], "texture": "#full", "cullface": "north" },
+                "south": { "uv": [ 0, 8, 16, 16 ], "texture": "#full", "cullface": "south" },
+                "west":  { "uv": [ 0, 8, 16, 16 ], "texture": "#half_bottom", "cullface": "west" },
+                "east":  { "uv": [ 0, 8, 16, 16 ], "texture": "#full", "cullface": "east" }
             }
         },
         {   "from": [ 8, 8, 0 ],
             "to": [ 16, 16, 16 ],
             "faces": {
                 "up":    { "uv": [ 8, 0, 16, 16 ], "texture": "#half_right", "cullface": "up" },
-                "north": { "uv": [ 0, 0,  8,  8 ], "texture": "#side", "cullface": "north" },
-                "south": { "uv": [ 8, 0, 16,  8 ], "texture": "#side", "cullface": "south" },
-                "west":  { "uv": [ 0, 0, 16,  8 ], "texture": "#side" },
-                "east":  { "uv": [ 0, 0, 16,  8 ], "texture": "#side", "cullface": "east" }
+                "north": { "uv": [ 0, 0,  8,  8 ], "texture": "#full", "cullface": "north" },
+                "south": { "uv": [ 8, 0, 16,  8 ], "texture": "#full", "cullface": "south" },
+                "west":  { "uv": [ 0, 0, 16,  8 ], "texture": "#half_top" },
+                "east":  { "uv": [ 0, 0, 16,  8 ], "texture": "#full", "cullface": "east" }
             }
         }
     ]

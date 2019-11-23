@@ -1,9 +1,9 @@
 {
     "parent": "mo_glass:block/template_glass_stairs",
     "textures": {
-        "bottom": "block/glass",
-        "top": "block/glass",
-        "side": "block/glass",
+        "full": "block/glass",
+        "half_bottom": "mo_glass:block/glass_slab",
+        "half_top": "mo_glass:block/glass_slab_top",
         "half_left": "mo_glass:block/glass_half_left",
         "half_right": "mo_glass:block/glass_half_right"
     }
