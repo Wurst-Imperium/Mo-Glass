@@ -12,7 +12,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -36,10 +38,57 @@ public final class GlassStairsBlock extends StairsBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		return blockState_2.getBlock() == this && blockState_1
-			.get(StairsBlock.HALF) == blockState_2.get(StairsBlock.HALF) ? true
-				: super.isSideInvisible(blockState_1, blockState_2,
-					direction_1);
+		if(blockState_2.getBlock() == Blocks.GLASS)
+			return true;
+		
+		if(blockState_2.getBlock() == MoGlass.GLASS_SLAB)
+			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
+				return true;
+			
+		if(blockState_2.getBlock() == this)
+			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
+				direction_1))
+				return true;
+			
+		return super.isSideInvisible(blockState_1, blockState_2, direction_1);
+	}
+	
+	private boolean isInvisibleToGlassSlab(BlockState blockState_1,
+		BlockState blockState_2, Direction direction_1)
+	{
+		BlockHalf half = blockState_1.get(StairsBlock.HALF);
+		Direction facing = blockState_1.get(StairsBlock.FACING);
+		
+		switch(blockState_2.get(SlabBlock.TYPE))
+		{
+			case BOTTOM:
+			return half == BlockHalf.BOTTOM
+				&& facing == direction_1.getOpposite();
+			
+			case TOP:
+			return half == BlockHalf.TOP && facing == direction_1.getOpposite();
+			
+			case DOUBLE:
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean isInvisibleToGlassStairs(BlockState blockState_1,
+		BlockState blockState_2, Direction direction_1)
+	{
+		BlockHalf half1 = blockState_1.get(StairsBlock.HALF);
+		BlockHalf half2 = blockState_2.get(StairsBlock.HALF);
+		Direction facing = blockState_1.get(StairsBlock.FACING);
+		
+		if(half1 == half2)
+			if(facing == direction_1.getOpposite())
+				return true;
+			
+		// TODO: other cases
+		
+		return false;
 	}
 	
 	@Override
