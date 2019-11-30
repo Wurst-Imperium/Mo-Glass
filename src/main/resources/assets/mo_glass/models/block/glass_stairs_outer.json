@@ -2,6 +2,10 @@
     "parent": "mo_glass:block/template_glass_stairs_outer",
     "textures": {
         "full": "block/glass",
-        "stairs_top_left": "mo_glass:block/glass_stairs_top_left"
+        "stairs_top_left": "mo_glass:block/glass_stairs_top_left",
+        "corner_bottom_left": "mo_glass:block/glass_corner_bottom_left",
+        "corner_bottom_right": "mo_glass:block/glass_corner_bottom_right",
+        "corner_top_left": "mo_glass:block/glass_corner_top_left",
+        "corner_top_right": "mo_glass:block/glass_corner_top_right"
     }
 }
