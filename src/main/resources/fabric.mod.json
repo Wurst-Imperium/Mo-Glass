@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Mo Glass",
-  "description": "Adds all the variants of glass that Mojang forgot about.",
+  "description": "Adds glass stairs and glass slabs to Minecraft.",
   "authors": [
     "Alexander01998"
   ],

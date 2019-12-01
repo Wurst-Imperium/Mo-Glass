@@ -1,6 +1,6 @@
 # Mo Glass
 
-Adds all the variants of glass that Mojang forgot about.
+Adds glass stairs and glass slabs to Minecraft.
 
 ## Setup For Developers (using Windows 10 and Eclipse)
 
