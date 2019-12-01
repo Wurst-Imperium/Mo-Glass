@@ -83,24 +83,42 @@ public final class GlassStairsBlock extends StairsBlock
 		Direction facing1 = blockState_1.get(StairsBlock.FACING);
 		Direction facing2 = blockState_2.get(StairsBlock.FACING);
 		
+		// up
 		if(direction_1 == Direction.UP)
 			if(half2 == BlockHalf.BOTTOM)
 				return true;
 			else if(facing1 == facing2 && half1 != half2)
 				return true;
 			
+		// down
 		if(direction_1 == Direction.DOWN)
 			if(half2 == BlockHalf.TOP)
 				return true;
 			else if(facing1 == facing2 && half1 != half2)
 				return true;
 			
-		if(half1 == half2)
-			if(facing1 == direction_1.getOpposite())
+		// other stairs rear
+		if(facing2 == direction_1.getOpposite())
+			return true;
+		
+		// rear
+		if(direction_1 == facing1)
+			if(half1 == half2)
+				if(facing1 != facing2)
+					return true;
+				
+		// front
+		if(direction_1 == facing1.getOpposite())
+			if(half1 == half2)
 				return true;
 			
-		// TODO: other cases
-		
+		// left & right
+		if(direction_1 == facing1.rotateYClockwise()
+			|| direction_1 == facing1.rotateYCounterclockwise())
+			if(half1 == half2)
+				if(facing2 != facing1.getOpposite())
+					return true;
+				
 		return false;
 	}
 	
