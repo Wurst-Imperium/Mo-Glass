@@ -3,6 +3,7 @@
   "package": "net.wurstclient.glass.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "GlassBlockMixin"
   ],
   "client": [
   ],
