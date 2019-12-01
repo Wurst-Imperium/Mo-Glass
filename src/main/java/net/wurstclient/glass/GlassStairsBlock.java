@@ -15,6 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -56,17 +57,27 @@ public final class GlassStairsBlock extends StairsBlock
 	private boolean isInvisibleToGlassSlab(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		BlockHalf half = blockState_1.get(StairsBlock.HALF);
-		Direction facing = blockState_1.get(StairsBlock.FACING);
+		BlockHalf half1 = blockState_1.get(StairsBlock.HALF);
+		Direction facing1 = blockState_1.get(StairsBlock.FACING);
+		SlabType type2 = blockState_2.get(SlabBlock.TYPE);
 		
-		switch(blockState_2.get(SlabBlock.TYPE))
+		if(direction_1 == Direction.UP)
+			if(type2 != SlabType.TOP)
+				return true;
+			
+		if(direction_1 == Direction.DOWN)
+			if(type2 != SlabType.BOTTOM)
+				return true;
+			
+		switch(type2)
 		{
 			case BOTTOM:
-			return half == BlockHalf.BOTTOM
-				&& facing == direction_1.getOpposite();
+			return half1 == BlockHalf.BOTTOM
+				&& facing1 == direction_1.getOpposite();
 			
 			case TOP:
-			return half == BlockHalf.TOP && facing == direction_1.getOpposite();
+			return half1 == BlockHalf.TOP
+				&& facing1 == direction_1.getOpposite();
 			
 			case DOUBLE:
 			return true;
