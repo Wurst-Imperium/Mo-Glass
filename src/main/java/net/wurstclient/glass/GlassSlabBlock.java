@@ -9,7 +9,6 @@ package net.wurstclient.glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
@@ -26,12 +25,6 @@ public final class GlassSlabBlock extends SlabBlock
 	public GlassSlabBlock(Settings block$Settings_1)
 	{
 		super(block$Settings_1);
-	}
-	
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.TRANSLUCENT;
 	}
 	
 	@Override

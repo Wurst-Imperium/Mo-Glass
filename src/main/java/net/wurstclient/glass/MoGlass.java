@@ -8,8 +8,10 @@
 package net.wurstclient.glass;
 
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
@@ -24,23 +26,26 @@ public enum MoGlass
 	
 	public static final String VERSION = "1.1";
 	
-	public static final Block GLASS_SLAB =
-		new GlassSlabBlock(FabricBlockSettings.of(Material.GLASS).hardness(0.3F)
-			.resistance(0.3F).sounds(BlockSoundGroup.GLASS).build());
+	public static final Block GLASS_SLAB = new GlassSlabBlock(
+		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
+			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
 		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).build());
+			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
 	
 	public void initialize()
 	{
 		System.out.println("Starting Mo Glass...");
 		
-		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS);
-		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS);
+		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS,
+			RenderLayer.getTranslucent());
+		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS,
+			RenderLayer.getTranslucent());
 	}
 	
-	private void registerBlock(Block block, String idPath, ItemGroup itemGroup)
+	private void registerBlock(Block block, String idPath, ItemGroup itemGroup,
+		RenderLayer renderLayer)
 	{
 		Identifier identifier = new Identifier("mo_glass", idPath);
 		Registry.register(Registry.BLOCK, identifier, block);
@@ -48,5 +53,6 @@ public enum MoGlass
 		Settings itemSettings = new Item.Settings().group(itemGroup);
 		BlockItem blockItem = new BlockItem(block, itemSettings);
 		Registry.register(Registry.ITEM, identifier, blockItem);
+		BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
 	}
 }
