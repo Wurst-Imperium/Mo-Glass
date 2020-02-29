@@ -32,7 +32,7 @@ public enum MoGlass
 		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
 			.sounds(BlockSoundGroup.GLASS).build());
 	
-	public void initialize()
+	public void initialize(boolean client)
 	{
 		System.out.println("Starting Mo Glass...");
 		
