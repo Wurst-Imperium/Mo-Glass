@@ -16,9 +16,12 @@
   "license": "GPL-3.0-or-later",
   "icon": "assets/modid/icon.png",
 
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
-    "main": [
+    "client": [
+      "net.wurstclient.glass.MoGlassInitializer"
+    ],
+    "server": [
       "net.wurstclient.glass.MoGlassInitializer"
     ]
   },

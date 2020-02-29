@@ -7,24 +7,33 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 
-public final class MoGlassInitializer implements ModInitializer
+public final class MoGlassInitializer
+	implements ClientModInitializer, DedicatedServerModInitializer
 {
 	private static boolean initialized;
 	
 	@Override
-	public void onInitialize()
+	public void onInitializeClient()
 	{
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-		
 		if(initialized)
 			throw new RuntimeException(
 				"MoGlassInitializer.onInitialize() ran twice!");
 		
-		MoGlass.INSTANCE.initialize();
+		MoGlass.INSTANCE.initialize(true);
+		initialized = true;
+	}
+	
+	@Override
+	public void onInitializeServer()
+	{
+		if(initialized)
+			throw new RuntimeException(
+				"MoGlassInitializer.onInitialize() ran twice!");
+		
+		MoGlass.INSTANCE.initialize(false);
 		initialized = true;
 	}
 }

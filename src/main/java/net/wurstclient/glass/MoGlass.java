@@ -26,6 +26,8 @@ public enum MoGlass
 	
 	public static final String VERSION = "1.1";
 	
+	private boolean client;
+	
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
 		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
@@ -34,18 +36,16 @@ public enum MoGlass
 		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
 	
-	public void initialize()
+	public void initialize(boolean client)
 	{
+		this.client = client;
 		System.out.println("Starting Mo Glass...");
 		
-		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS,
-			RenderLayer.getTranslucent());
-		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS,
-			RenderLayer.getTranslucent());
+		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS);
+		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS);
 	}
 	
-	private void registerBlock(Block block, String idPath, ItemGroup itemGroup,
-		RenderLayer renderLayer)
+	private void registerBlock(Block block, String idPath, ItemGroup itemGroup)
 	{
 		Identifier identifier = new Identifier("mo_glass", idPath);
 		Registry.register(Registry.BLOCK, identifier, block);
@@ -53,6 +53,9 @@ public enum MoGlass
 		Settings itemSettings = new Item.Settings().group(itemGroup);
 		BlockItem blockItem = new BlockItem(block, itemSettings);
 		Registry.register(Registry.ITEM, identifier, blockItem);
-		BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
+		
+		if(client)
+			BlockRenderLayerMap.INSTANCE.putBlock(block,
+				RenderLayer.getTranslucent());
 	}
 }
