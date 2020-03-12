@@ -6,15 +6,25 @@
   "name": "Mo Glass",
   "description": "Adds glass stairs and glass slabs to Minecraft.",
   "authors": [
-    "Alexander01998"
+  	{
+      "name": "Alexander01998",
+      "contact": {
+        "homepage": "https://www.wurstclient.net/",
+        "email": "contact.wurstimperium@gmail.com",
+        "twitter": "https://twitter.com/Wurst_Imperium"
+      }
+    }
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mo-glass",
+    "sources": "https://github.com/Wurst-Imperium/Mo-Glass",
+    "email": "contact.wurstimperium@gmail.com",
+    "issues": "https://github.com/Wurst-Imperium/Mo-Glass/issues",
+    "twitter": "https://twitter.com/Wurst_Imperium"
   },
 
   "license": "GPL-3.0-or-later",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/mo_glass/icon.png",
 
   "environment": "*",
   "entrypoints": {
