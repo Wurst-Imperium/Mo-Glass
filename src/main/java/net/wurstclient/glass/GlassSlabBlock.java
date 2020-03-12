@@ -9,13 +9,13 @@ package net.wurstclient.glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,9 +29,9 @@ public final class GlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public BlockRenderLayer getRenderLayer()
+	public RenderLayer getRenderLayer()
 	{
-		return BlockRenderLayer.TRANSLUCENT;
+		return RenderLayer.TRANSLUCENT;
 	}
 	
 	@Override
