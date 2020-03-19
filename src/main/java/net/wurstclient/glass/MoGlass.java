@@ -36,14 +36,14 @@ public enum MoGlass
 	public static final Block GLASS_SLAB =
 		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.method_26235(MoGlass::method_26114)
+			.method_26235(MoGlass::method_26114_)
 			.method_26236(MoGlass::method_26122)
 			.method_26243(MoGlass::method_26122));
 	
 	public static final Block GLASS_STAIRS =
 		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.method_26235(MoGlass::method_26114)
+			.method_26235(MoGlass::method_26114_)
 			.method_26236(MoGlass::method_26122)
 			.method_26243(MoGlass::method_26122));
 	
@@ -64,7 +64,7 @@ public enum MoGlass
 	/**
 	 * Copy of {@link Blocks#method_26114}
 	 */
-	private static Boolean method_26114(BlockState blockState,
+	private static Boolean method_26114_(BlockState blockState,
 		BlockView blockView, BlockPos blockPos, EntityType<?> entityType)
 	{
 		return false;
