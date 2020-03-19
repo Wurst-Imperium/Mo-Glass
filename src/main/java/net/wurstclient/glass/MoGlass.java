@@ -7,18 +7,23 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.BlockView;
 
 public enum MoGlass
 {
@@ -28,13 +33,51 @@ public enum MoGlass
 	
 	private boolean client;
 	
-	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+	public static final Block GLASS_SLAB =
+		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+			.method_26235(MoGlass::method_26114)
+			.method_26236(MoGlass::method_26122)
+			.method_26243(MoGlass::method_26122));
 	
-	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+	public static final Block GLASS_STAIRS =
+		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+			.method_26235(MoGlass::method_26114)
+			.method_26236(MoGlass::method_26122)
+			.method_26243(MoGlass::method_26122));
+	
+	// These methods replace:
+	//
+	// public boolean canSuffocate(BlockState blockState_1, BlockView
+	// blockView_1, BlockPos blockPos_1)
+	//
+	// public boolean isSimpleFullBlock(BlockState blockState_1, BlockView
+	// blockView_1, BlockPos blockPos_1)
+	//
+	// public boolean allowsSpawning(BlockState blockState_1, BlockView
+	// blockView_1, BlockPos blockPos_1, EntityType<?> entityType_1)
+	//
+	// I'm not sure which is which and why two of them point to the same method.
+	// Hopefully the mappings will clear this up in the future.
+	
+	/**
+	 * Copy of {@link Blocks#method_26114}
+	 */
+	private static Boolean method_26114(BlockState blockState,
+		BlockView blockView, BlockPos blockPos, EntityType<?> entityType)
+	{
+		return false;
+	}
+	
+	/**
+	 * Copy of {@link Blocks#method_26122}
+	 */
+	private static boolean method_26122(BlockState blockState,
+		BlockView blockView, BlockPos blockPos)
+	{
+		return false;
+	}
 	
 	public void initialize(boolean client)
 	{

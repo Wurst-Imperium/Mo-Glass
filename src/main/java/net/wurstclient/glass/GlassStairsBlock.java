@@ -16,7 +16,6 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -181,26 +180,5 @@ public final class GlassStairsBlock extends StairsBlock
 		BlockPos blockPos_1)
 	{
 		return true;
-	}
-	
-	@Override
-	public boolean canSuffocate(BlockState blockState_1, BlockView blockView_1,
-		BlockPos blockPos_1)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isSimpleFullBlock(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean allowsSpawning(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1, EntityType<?> entityType_1)
-	{
-		return false;
 	}
 }
