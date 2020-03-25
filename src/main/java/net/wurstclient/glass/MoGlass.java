@@ -36,16 +36,16 @@ public enum MoGlass
 	public static final Block GLASS_SLAB =
 		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.method_26235(MoGlass::method_26114_)
-			.method_26236(MoGlass::method_26122)
-			.method_26243(MoGlass::method_26122));
+			.allowsSpawning(MoGlass::method_26114_)
+			.solidBlock(MoGlass::method_26122)
+			.suffocates(MoGlass::method_26122));
 	
 	public static final Block GLASS_STAIRS =
 		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.method_26235(MoGlass::method_26114_)
-			.method_26236(MoGlass::method_26122)
-			.method_26243(MoGlass::method_26122));
+			.allowsSpawning(MoGlass::method_26114_)
+			.solidBlock(MoGlass::method_26122)
+			.suffocates(MoGlass::method_26122));
 	
 	// These methods replace:
 	//
