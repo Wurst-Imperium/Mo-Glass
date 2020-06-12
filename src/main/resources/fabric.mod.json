@@ -40,7 +40,7 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.4.0",
+    "fabricloader": ">=0.8.7",
     "fabric": "*",
     "minecraft": ">=1.16-alpha.20.22.a"
   },
