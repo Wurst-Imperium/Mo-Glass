@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
@@ -36,48 +35,14 @@ public enum MoGlass
 	public static final Block GLASS_SLAB =
 		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlass::method_26114_)
-			.solidBlock(MoGlass::method_26122)
-			.suffocates(MoGlass::method_26122));
+			.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
+			.suffocates(MoGlass::never));
 	
 	public static final Block GLASS_STAIRS =
 		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlass::method_26114_)
-			.solidBlock(MoGlass::method_26122)
-			.suffocates(MoGlass::method_26122));
-	
-	// These methods replace:
-	//
-	// public boolean canSuffocate(BlockState blockState_1, BlockView
-	// blockView_1, BlockPos blockPos_1)
-	//
-	// public boolean isSimpleFullBlock(BlockState blockState_1, BlockView
-	// blockView_1, BlockPos blockPos_1)
-	//
-	// public boolean allowsSpawning(BlockState blockState_1, BlockView
-	// blockView_1, BlockPos blockPos_1, EntityType<?> entityType_1)
-	//
-	// I'm not sure which is which and why two of them point to the same method.
-	// Hopefully the mappings will clear this up in the future.
-	
-	/**
-	 * Copy of {@link Blocks#method_26114}
-	 */
-	private static Boolean method_26114_(BlockState blockState,
-		BlockView blockView, BlockPos blockPos, EntityType<?> entityType)
-	{
-		return false;
-	}
-	
-	/**
-	 * Copy of {@link Blocks#method_26122}
-	 */
-	private static boolean method_26122(BlockState blockState,
-		BlockView blockView, BlockPos blockPos)
-	{
-		return false;
-	}
+			.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
+			.suffocates(MoGlass::never));
 	
 	public void initialize(boolean client)
 	{
@@ -100,5 +65,20 @@ public enum MoGlass
 		if(client)
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
 				RenderLayer.getTranslucent());
+	}
+	
+	// Copies of the Blocks.never() methods because the originals are not
+	// accessible from here.
+	
+	private static Boolean never(BlockState blockState, BlockView blockView,
+		BlockPos blockPos, EntityType<?> entityType)
+	{
+		return false;
+	}
+	
+	private static boolean never(BlockState blockState, BlockView blockView,
+		BlockPos blockPos)
+	{
+		return false;
 	}
 }
