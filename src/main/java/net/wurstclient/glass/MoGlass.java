@@ -12,6 +12,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
+import net.minecraft.block.Stainable;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
@@ -164,7 +165,8 @@ public enum MoGlass
 		
 		if(client)
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getTranslucent());
+				block instanceof Stainable ? RenderLayer.getTranslucent()
+					: RenderLayer.getCutoutMipped());
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
