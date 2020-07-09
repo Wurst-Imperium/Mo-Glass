@@ -7,7 +7,7 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
@@ -26,11 +26,11 @@ public enum MoGlass
 	
 	public static final Block GLASS_SLAB =
 		new GlassSlabBlock(FabricBlockSettings.of(Material.GLASS).hardness(0.3F)
-			.resistance(0.3F).sounds(BlockSoundGroup.GLASS).build());
+			.resistance(0.3F).sounds(BlockSoundGroup.GLASS));
 	
-	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).build());
+	public static final Block GLASS_STAIRS =
+		new GlassStairsBlock(FabricBlockSettings.of(Material.GLASS)
+			.hardness(0.3F).resistance(0.3F).sounds(BlockSoundGroup.GLASS));
 	
 	public void initialize(boolean client)
 	{
