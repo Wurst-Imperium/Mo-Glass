@@ -7,8 +7,8 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.Stainable;
@@ -28,9 +28,9 @@ public enum MoGlass
 	
 	private boolean client;
 	
-	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+	public static final Block GLASS_SLAB =
+		new GlassSlabBlock(FabricBlockSettings.of(Material.GLASS).hardness(0.3F)
+			.resistance(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque());
 	
 	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.WHITE);
@@ -77,7 +77,7 @@ public enum MoGlass
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
 		FabricBlockSettings.of(Material.GLASS).hardness(0.3F).resistance(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+			.sounds(BlockSoundGroup.GLASS).nonOpaque());
 	
 	public static final StainedGlassStairsBlock WHITE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.WHITE);
@@ -162,15 +162,15 @@ public enum MoGlass
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
 		return new StainedGlassSlabBlock(color,
-			FabricBlockSettings.of(Material.GLASS, color).hardness(0.3F).resistance(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+			FabricBlockSettings.of(Material.GLASS, color).hardness(0.3F)
+				.resistance(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque());
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
 		return new StainedGlassStairsBlock(color,
-			FabricBlockSettings.of(Material.GLASS, color).hardness(0.3F).resistance(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque().build());
+			FabricBlockSettings.of(Material.GLASS, color).hardness(0.3F)
+				.resistance(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque());
 	}
 }
