@@ -37,7 +37,7 @@ public enum MoGlass
 		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
-			.suffocates(MoGlass::never));
+			.suffocates(MoGlass::never).blockVision(MoGlass::never));
 	
 	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.WHITE);
@@ -86,7 +86,50 @@ public enum MoGlass
 		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
-			.suffocates(MoGlass::never));
+			.suffocates(MoGlass::never).blockVision(MoGlass::never));
+	
+	public static final StainedGlassStairsBlock WHITE_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.WHITE);
+	public static final StainedGlassStairsBlock ORANGE_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.ORANGE);
+	public static final StainedGlassStairsBlock MAGENTA_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.MAGENTA);
+	public static final StainedGlassStairsBlock LIGHT_BLUE_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.LIGHT_BLUE);
+	public static final StainedGlassStairsBlock YELLOW_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.YELLOW);
+	public static final StainedGlassStairsBlock LIME_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.LIME);
+	public static final StainedGlassStairsBlock PINK_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.PINK);
+	public static final StainedGlassStairsBlock GRAY_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.GRAY);
+	public static final StainedGlassStairsBlock LIGHT_GRAY_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.LIGHT_GRAY);
+	public static final StainedGlassStairsBlock CYAN_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.CYAN);
+	public static final StainedGlassStairsBlock PURPLE_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.PURPLE);
+	public static final StainedGlassStairsBlock BLUE_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.BLUE);
+	public static final StainedGlassStairsBlock BROWN_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.BROWN);
+	public static final StainedGlassStairsBlock GREEN_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.GREEN);
+	public static final StainedGlassStairsBlock RED_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.RED);
+	public static final StainedGlassStairsBlock BLACK_STAINED_GLASS_STAIRS =
+		createStainedGlassStairs(DyeColor.BLACK);
+	
+	public static final StainedGlassStairsBlock[] STAINED_GLASS_STAIRS =
+		{WHITE_STAINED_GLASS_STAIRS, ORANGE_STAINED_GLASS_STAIRS,
+			MAGENTA_STAINED_GLASS_STAIRS, LIGHT_BLUE_STAINED_GLASS_STAIRS,
+			YELLOW_STAINED_GLASS_STAIRS, LIME_STAINED_GLASS_STAIRS,
+			PINK_STAINED_GLASS_STAIRS, GRAY_STAINED_GLASS_STAIRS,
+			LIGHT_GRAY_STAINED_GLASS_STAIRS, CYAN_STAINED_GLASS_STAIRS,
+			PURPLE_STAINED_GLASS_STAIRS, BLUE_STAINED_GLASS_STAIRS,
+			BROWN_STAINED_GLASS_STAIRS, GREEN_STAINED_GLASS_STAIRS,
+			RED_STAINED_GLASS_STAIRS, BLACK_STAINED_GLASS_STAIRS};
 	
 	public void initialize(boolean client)
 	{
@@ -104,6 +147,10 @@ public enum MoGlass
 				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
 		
 		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS);
+		
+		for(int i = 0; i < 16; i++)
+			registerBlock(STAINED_GLASS_STAIRS[i],
+				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
 	}
 	
 	private void registerBlock(Block block, String idPath, ItemGroup itemGroup)
@@ -123,6 +170,16 @@ public enum MoGlass
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
 		return new StainedGlassSlabBlock(color,
+			AbstractBlock.Settings.of(Material.GLASS, color).strength(0.3F)
+				.sounds(BlockSoundGroup.GLASS).nonOpaque()
+				.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
+				.suffocates(MoGlass::never).blockVision(MoGlass::never));
+	}
+	
+	private static StainedGlassStairsBlock createStainedGlassStairs(
+		DyeColor color)
+	{
+		return new StainedGlassStairsBlock(color,
 			AbstractBlock.Settings.of(Material.GLASS, color).strength(0.3F)
 				.sounds(BlockSoundGroup.GLASS).nonOpaque()
 				.allowsSpawning(MoGlass::never).solidBlock(MoGlass::never)
