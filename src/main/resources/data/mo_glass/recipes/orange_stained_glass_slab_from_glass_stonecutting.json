@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:orange_stained_glass"
+  },
+  "result": "mo_glass:orange_stained_glass_slab",
+  "count": 2
+}

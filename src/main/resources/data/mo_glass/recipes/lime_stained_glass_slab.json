@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:lime_stained_glass"
+    }
+  },
+  "result": {
+    "item": "mo_glass:lime_stained_glass_slab",
+    "count": 6
+  }
+}
