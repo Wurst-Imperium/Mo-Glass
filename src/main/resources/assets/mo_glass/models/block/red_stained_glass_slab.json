@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "minecraft:block/red_stained_glass",
+    "top": "minecraft:block/red_stained_glass",
+    "side": "mo_glass:block/red_stained_glass_slab"
+  }
+}
