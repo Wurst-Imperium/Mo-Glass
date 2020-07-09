@@ -9,10 +9,12 @@ package net.wurstclient.glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.Stainable;
+import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
@@ -38,14 +40,18 @@ public final class StainedGlassStairsBlock extends StairsBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		if(blockState_2.getBlock() == Blocks.GLASS)
+		Block block_2 = blockState_2.getBlock();
+		
+		if(block_2 instanceof StainedGlassBlock
+			&& ((StainedGlassBlock)block_2).getColor() == color)
 			return true;
 		
-		if(blockState_2.getBlock() == MoGlass.GLASS_SLAB)
+		if(block_2 instanceof StainedGlassSlabBlock
+			&& ((StainedGlassSlabBlock)block_2).getColor() == color)
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
-		if(blockState_2.getBlock() == this)
+		if(block_2 == this)
 			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
 				direction_1))
 				return true;
