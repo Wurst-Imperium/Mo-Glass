@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gray_stained_glass"
+    }
+  },
+  "result": {
+    "item": "mo_glass:gray_stained_glass_stairs",
+    "count": 4
+  }
+}

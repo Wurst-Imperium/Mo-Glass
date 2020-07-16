@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "minecraft:black_stained_glass"
+  },
+  "result": "mo_glass:black_stained_glass_stairs",
+  "count": 1
+}
