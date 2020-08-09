@@ -109,67 +109,101 @@ public final class GlassStairsBlock extends StairsBlock
 			else if(half1 != half2)
 				if(facing1 == facing2 && shape1 == shape2)
 					return true;
-				else if(shape1 == StairShape.OUTER_RIGHT)
-				{
-					if(shape2 == StairShape.OUTER_LEFT
-						&& facing2 == facing1.rotateYClockwise())
-						return true;
-					else if(shape2 == StairShape.STRAIGHT && (facing2 == facing1
-						|| facing2 == facing1.rotateYClockwise()))
-						return true;
-					
-				}else if(shape1 == StairShape.OUTER_LEFT)
-				{
-					if(shape2 == StairShape.OUTER_RIGHT
-						&& facing2 == facing1.rotateYCounterclockwise())
-						return true;
-					else if(shape2 == StairShape.STRAIGHT && (facing2 == facing1
-						|| facing2 == facing1.rotateYCounterclockwise()))
-						return true;
-					
-				}else if(shape1 == StairShape.INNER_RIGHT
-					&& shape2 == StairShape.INNER_LEFT
-					&& facing2 == facing1.rotateYClockwise())
-					return true;
-				else if(shape1 == StairShape.INNER_LEFT
-					&& shape2 == StairShape.INNER_RIGHT
-					&& facing2 == facing1.rotateYCounterclockwise())
-					return true;
+				else
+					switch(shape1)
+					{
+						case STRAIGHT:
+						if(shape2 == StairShape.INNER_LEFT
+							&& (facing2 == facing1
+								|| facing2 == facing1.rotateYClockwise()))
+							return true;
+						else if(shape2 == StairShape.INNER_RIGHT
+							&& (facing2 == facing1 || facing2 == facing1
+								.rotateYCounterclockwise()))
+							return true;
+						break;
+						
+						case INNER_LEFT:
+						if(shape2 == StairShape.INNER_RIGHT
+							&& facing2 == facing1.rotateYCounterclockwise())
+							return true;
+						break;
+						
+						case INNER_RIGHT:
+						if(shape2 == StairShape.INNER_LEFT
+							&& facing2 == facing1.rotateYClockwise())
+							return true;
+						break;
+						
+						case OUTER_LEFT:
+						if(shape2 == StairShape.OUTER_RIGHT
+							&& facing2 == facing1.rotateYCounterclockwise())
+							return true;
+						else if(shape2 == StairShape.STRAIGHT
+							&& (facing2 == facing1 || facing2 == facing1
+								.rotateYCounterclockwise()))
+							return true;
+						break;
+						
+						case OUTER_RIGHT:
+						if(shape2 == StairShape.OUTER_LEFT
+							&& facing2 == facing1.rotateYClockwise())
+							return true;
+						else if(shape2 == StairShape.STRAIGHT
+							&& (facing2 == facing1
+								|| facing2 == facing1.rotateYClockwise()))
+							return true;
+						break;
+					}
 				
 		// down
 		if(direction_1 == Direction.DOWN)
 			if(half2 == BlockHalf.TOP)
 				return true;
-			else if(half1 != half2)
-				if(facing1 == facing2 && shape1 == shape2)
-					return true;
-				else if(shape1 == StairShape.OUTER_RIGHT)
+			else
+				switch(shape1)
 				{
-					if(shape2 == StairShape.OUTER_LEFT
-						&& facing2 == facing1.rotateYClockwise())
-						return true;
-					else if(shape2 == StairShape.STRAIGHT && (facing2 == facing1
+					case STRAIGHT:
+					if(shape2 == StairShape.INNER_LEFT && (facing2 == facing1
 						|| facing2 == facing1.rotateYClockwise()))
 						return true;
+					else if(shape2 == StairShape.INNER_RIGHT
+						&& (facing2 == facing1
+							|| facing2 == facing1.rotateYCounterclockwise()))
+						return true;
+					break;
 					
-				}else if(shape1 == StairShape.OUTER_LEFT)
-				{
+					case INNER_LEFT:
+					if(shape2 == StairShape.INNER_RIGHT
+						&& facing2 == facing1.rotateYCounterclockwise())
+						return true;
+					break;
+					
+					case INNER_RIGHT:
+					if(shape2 == StairShape.INNER_LEFT
+						&& facing2 == facing1.rotateYClockwise())
+						return true;
+					break;
+					
+					case OUTER_LEFT:
 					if(shape2 == StairShape.OUTER_RIGHT
 						&& facing2 == facing1.rotateYCounterclockwise())
 						return true;
 					else if(shape2 == StairShape.STRAIGHT && (facing2 == facing1
 						|| facing2 == facing1.rotateYCounterclockwise()))
 						return true;
+					break;
 					
-				}else if(shape1 == StairShape.INNER_RIGHT
-					&& shape2 == StairShape.INNER_LEFT
-					&& facing2 == facing1.rotateYClockwise())
-					return true;
-				else if(shape1 == StairShape.INNER_LEFT
-					&& shape2 == StairShape.INNER_RIGHT
-					&& facing2 == facing1.rotateYCounterclockwise())
-					return true;
-				
+					case OUTER_RIGHT:
+					if(shape2 == StairShape.OUTER_LEFT
+						&& facing2 == facing1.rotateYClockwise())
+						return true;
+					else if(shape2 == StairShape.STRAIGHT && (facing2 == facing1
+						|| facing2 == facing1.rotateYClockwise()))
+						return true;
+					break;
+				}
+			
 		// other stairs rear
 		if(facing2 == direction_1.getOpposite())
 			return true;
