@@ -1,0 +1,18 @@
+{
+  "pack": {
+    "pack_format": 6,
+    "description": "Mo Glass"
+  },
+  "language": {
+    "osd_na": {
+      "name": "Oshindonga",
+      "region": "Namibia",
+      "bidirectional": false
+    },
+    "osk_na": {
+      "name": "Oshikwanyama",
+      "region": "Namibia",
+      "bidirectional": false
+    }
+  }
+}
