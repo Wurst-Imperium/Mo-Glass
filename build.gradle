@@ -59,6 +59,8 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+	
+	exclude("/assets/mo_glass/textures/block/*.psd")
 }
 
 // configure the maven publication
@@ -93,7 +95,7 @@ curseforge {
 		changelogType = "html"
 		changelog = file("changelog.txt")
 		releaseType = "release"
-		addGameVersion "1.17"
+		addGameVersion "1.17.1"
 		addGameVersion "Fabric"
 
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
