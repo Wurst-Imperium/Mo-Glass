@@ -108,11 +108,14 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 		
 		// sides
 		if(direction_1.getHorizontal() != -1)
+		{
 			if(type1 == SlabType.BOTTOM && half2 == BlockHalf.BOTTOM)
 				return true;
-			else if(type1 == SlabType.TOP && half2 == BlockHalf.TOP)
-				return true;
 			
+			if(type1 == SlabType.TOP && half2 == BlockHalf.TOP)
+				return true;
+		}
+		
 		return false;
 	}
 	
