@@ -35,6 +35,13 @@ public final class StainedGlassStairsBlock extends StairsBlock
 		this.color = color;
 	}
 	
+	/**
+	 * isSideInvisible() seems to be deprecated for no good reason. It is still
+	 * used in
+	 * {@link Block#shouldDrawSide(BlockState, BlockView, BlockPos, Direction, BlockPos)}
+	 * and there is no replacement.
+	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	@Environment(EnvType.CLIENT)
 	public boolean isSideInvisible(BlockState blockState_1,
