@@ -12,12 +12,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public final class TintedGlassSlabBlock extends SlabBlock
@@ -115,6 +118,13 @@ public final class TintedGlassSlabBlock extends SlabBlock
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
+		BlockPos pos, ShapeContext context)
+	{
+		return VoxelShapes.empty();
 	}
 	
 	@Override
