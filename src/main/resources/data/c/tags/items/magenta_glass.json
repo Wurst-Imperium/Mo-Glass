@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:magenta_glass_blocks",
+    "#c:magenta_glass_panes",
+    "#c:magenta_glass_slabs",
+    "#c:magenta_glass_stairs"
+  ]
+}
