@@ -10,6 +10,7 @@ package net.wurstclient.glass;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.block.Block;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.Tag.Identified;
 import net.minecraft.util.Identifier;
 import net.wurstclient.glass.mixin.ChunkLightProviderMixin;
 
@@ -41,6 +42,11 @@ public enum MoGlassTags
 	 * lighting engine (hi jellysquid), you will likely need to make a similar
 	 * change to make it compatible with Mo Glass's tinted glass blocks.
 	 */
-	public static final Tag<Block> OPAQUE_FOR_LIGHTING = TagFactory.BLOCK
-		.create(new Identifier("mo_glass", "opaque_for_lighting"));
+	public static final Tag<Block> OPAQUE_FOR_LIGHTING =
+		createTag("opaque_for_lighting");
+	
+	private static Identified<Block> createTag(String idPath)
+	{
+		return TagFactory.BLOCK.create(new Identifier("mo_glass", idPath));
+	}
 }
