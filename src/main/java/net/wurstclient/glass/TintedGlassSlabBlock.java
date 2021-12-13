@@ -20,9 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
-public final class GlassSlabBlock extends SlabBlock
+public final class TintedGlassSlabBlock extends SlabBlock
 {
-	public GlassSlabBlock(Settings block$Settings_1)
+	public TintedGlassSlabBlock(Settings block$Settings_1)
 	{
 		super(block$Settings_1);
 	}
@@ -39,14 +39,14 @@ public final class GlassSlabBlock extends SlabBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		if(blockState_2.getBlock() == Blocks.GLASS)
+		if(blockState_2.getBlock() == Blocks.TINTED_GLASS)
 			return true;
 		
 		if(blockState_2.getBlock() == this)
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
-		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_STAIRS)
+		if(blockState_2.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
 				direction_1))
 				return true;
@@ -125,16 +125,23 @@ public final class GlassSlabBlock extends SlabBlock
 		return 1.0F;
 	}
 	
-	@Override
-	public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1,
-		BlockPos blockPos_1)
-	{
-		return true;
-	}
-	
 	public boolean isSimpleFullBlock(BlockState blockState_1,
 		BlockView blockView_1, BlockPos blockPos_1)
 	{
 		return false;
+	}
+	
+	@Override
+	public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1,
+		BlockPos blockPos_1)
+	{
+		return false;
+	}
+	
+	@Override
+	public int getOpacity(BlockState state, BlockView world, BlockPos pos)
+	{
+		return state.get(TYPE) == SlabType.DOUBLE ? world.getMaxLightLevel()
+			: 0;
 	}
 }

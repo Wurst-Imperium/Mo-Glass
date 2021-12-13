@@ -21,11 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
-public final class GlassStairsBlock extends StairsBlock
+public final class TintedGlassStairsBlock extends StairsBlock
 {
-	protected GlassStairsBlock(Settings block$Settings_1)
+	protected TintedGlassStairsBlock(Settings block$Settings_1)
 	{
-		super(Blocks.GLASS.getDefaultState(), block$Settings_1);
+		super(Blocks.TINTED_GLASS.getDefaultState(), block$Settings_1);
 	}
 	
 	/**
@@ -40,10 +40,10 @@ public final class GlassStairsBlock extends StairsBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		if(blockState_2.getBlock() == Blocks.GLASS)
+		if(blockState_2.getBlock() == Blocks.TINTED_GLASS)
 			return true;
 		
-		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_SLAB)
+		if(blockState_2.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB)
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
@@ -300,6 +300,6 @@ public final class GlassStairsBlock extends StairsBlock
 	public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1,
 		BlockPos blockPos_1)
 	{
-		return true;
+		return false;
 	}
 }
