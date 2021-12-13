@@ -11,8 +11,9 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.Stainable;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
@@ -120,6 +121,12 @@ public enum MoGlass
 	public static final StainedGlassStairsBlock BLACK_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.BLACK);
 	
+	public static final Block TINTED_GLASS_SLAB =
+		new TintedGlassSlabBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
+			.mapColor(MapColor.GRAY).nonOpaque().allowsSpawning(MoGlass::never)
+			.solidBlock(MoGlass::never).suffocates(MoGlass::never)
+			.blockVision(MoGlass::never));
+	
 	public static final StainedGlassStairsBlock[] STAINED_GLASS_STAIRS =
 		{WHITE_STAINED_GLASS_STAIRS, ORANGE_STAINED_GLASS_STAIRS,
 			MAGENTA_STAINED_GLASS_STAIRS, LIGHT_BLUE_STAINED_GLASS_STAIRS,
@@ -139,20 +146,28 @@ public enum MoGlass
 			"lime", "pink", "gray", "light_gray", "cyan", "purple", "blue",
 			"brown", "green", "red", "black"};
 		
-		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS);
+		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS,
+			RenderLayer.getCutoutMipped());
 		
 		for(int i = 0; i < 16; i++)
 			registerBlock(STAINED_GLASS_SLABS[i],
-				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
+				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS,
+				RenderLayer.getTranslucent());
 		
-		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS);
+		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS,
+			RenderLayer.getCutoutMipped());
 		
 		for(int i = 0; i < 16; i++)
 			registerBlock(STAINED_GLASS_STAIRS[i],
-				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
+				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS,
+				RenderLayer.getTranslucent());
+		
+		registerBlock(TINTED_GLASS_SLAB, "tinted_glass_slab",
+			ItemGroup.BUILDING_BLOCKS, RenderLayer.getTranslucent());
 	}
 	
-	private void registerBlock(Block block, String idPath, ItemGroup itemGroup)
+	private void registerBlock(Block block, String idPath, ItemGroup itemGroup,
+		RenderLayer renderLayer)
 	{
 		Identifier identifier = new Identifier("mo_glass", idPath);
 		Registry.register(Registry.BLOCK, identifier, block);
@@ -162,9 +177,7 @@ public enum MoGlass
 		Registry.register(Registry.ITEM, identifier, blockItem);
 		
 		if(client)
-			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				block instanceof Stainable ? RenderLayer.getTranslucent()
-					: RenderLayer.getCutoutMipped());
+			BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
