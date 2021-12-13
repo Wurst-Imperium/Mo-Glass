@@ -250,6 +250,9 @@ public final class GlassStairsBlock extends StairsBlock
 			if(facing2 == facing1.rotateYClockwise()
 				&& shape2 != StairShape.OUTER_RIGHT)
 				return true;
+			
+			if(facing2 == facing1.getOpposite())
+				return true;
 		}
 		
 		// left
