@@ -46,8 +46,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
-		// TODO: tinted stairs
-		if(blockState_2.getBlock() == MoGlass.GLASS_STAIRS)
+		if(blockState_2.getBlock() == MoGlass.TINTED_GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
 				direction_1))
 				return true;
@@ -142,6 +141,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	@Override
 	public int getOpacity(BlockState state, BlockView world, BlockPos pos)
 	{
-		return world.getMaxLightLevel();
+		return state.get(TYPE) == SlabType.DOUBLE ? world.getMaxLightLevel()
+			: 0;
 	}
 }

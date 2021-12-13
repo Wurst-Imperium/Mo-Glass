@@ -3,6 +3,7 @@
   "package": "net.wurstclient.glass.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "ChunkLightProviderMixin",
     "GlassBlockMixin",
     "StainedGlassBlockMixin"
   ],

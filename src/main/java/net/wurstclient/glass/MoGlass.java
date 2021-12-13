@@ -82,6 +82,12 @@ public enum MoGlass
 			BROWN_STAINED_GLASS_SLAB, GREEN_STAINED_GLASS_SLAB,
 			RED_STAINED_GLASS_SLAB, BLACK_STAINED_GLASS_SLAB};
 	
+	public static final Block TINTED_GLASS_SLAB =
+		new TintedGlassSlabBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
+			.mapColor(MapColor.GRAY).nonOpaque().allowsSpawning(MoGlass::never)
+			.solidBlock(MoGlass::never).suffocates(MoGlass::never)
+			.blockVision(MoGlass::never));
+	
 	public static final Block GLASS_STAIRS =
 		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
@@ -121,12 +127,6 @@ public enum MoGlass
 	public static final StainedGlassStairsBlock BLACK_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.BLACK);
 	
-	public static final Block TINTED_GLASS_SLAB =
-		new TintedGlassSlabBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
-			.mapColor(MapColor.GRAY).nonOpaque().allowsSpawning(MoGlass::never)
-			.solidBlock(MoGlass::never).suffocates(MoGlass::never)
-			.blockVision(MoGlass::never));
-	
 	public static final StainedGlassStairsBlock[] STAINED_GLASS_STAIRS =
 		{WHITE_STAINED_GLASS_STAIRS, ORANGE_STAINED_GLASS_STAIRS,
 			MAGENTA_STAINED_GLASS_STAIRS, LIGHT_BLUE_STAINED_GLASS_STAIRS,
@@ -136,6 +136,12 @@ public enum MoGlass
 			PURPLE_STAINED_GLASS_STAIRS, BLUE_STAINED_GLASS_STAIRS,
 			BROWN_STAINED_GLASS_STAIRS, GREEN_STAINED_GLASS_STAIRS,
 			RED_STAINED_GLASS_STAIRS, BLACK_STAINED_GLASS_STAIRS};
+	
+	public static final Block TINTED_GLASS_STAIRS =
+		new TintedGlassStairsBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
+			.mapColor(MapColor.GRAY).nonOpaque().allowsSpawning(MoGlass::never)
+			.solidBlock(MoGlass::never).suffocates(MoGlass::never)
+			.blockVision(MoGlass::never));
 	
 	public void initialize(boolean client)
 	{
@@ -154,6 +160,9 @@ public enum MoGlass
 				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS,
 				RenderLayer.getTranslucent());
 		
+		registerBlock(TINTED_GLASS_SLAB, "tinted_glass_slab",
+			ItemGroup.BUILDING_BLOCKS, RenderLayer.getTranslucent());
+		
 		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS,
 			RenderLayer.getCutoutMipped());
 		
@@ -162,7 +171,7 @@ public enum MoGlass
 				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS,
 				RenderLayer.getTranslucent());
 		
-		registerBlock(TINTED_GLASS_SLAB, "tinted_glass_slab",
+		registerBlock(TINTED_GLASS_STAIRS, "tinted_glass_stairs",
 			ItemGroup.BUILDING_BLOCKS, RenderLayer.getTranslucent());
 	}
 	
