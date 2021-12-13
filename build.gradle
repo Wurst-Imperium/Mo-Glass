@@ -55,6 +55,8 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+	
+	exclude("/assets/mo_glass/textures/block/*.psd")
 }
 
 // configure the maven publication
