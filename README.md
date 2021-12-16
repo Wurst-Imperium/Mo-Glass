@@ -1,4 +1,4 @@
-![](https://user-images.githubusercontent.com/10100202/69939492-ab78a480-14e8-11ea-8aa7-c351657b334b.jpg)
+![Mo Glass 1.6](https://user-images.githubusercontent.com/10100202/146299553-864f59fb-74a1-4a8a-9214-92febeecf236.jpg)
 
 # Mo Glass
 
