@@ -1,5 +1,5 @@
 <p><strong>Note:</strong> Requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/3546679" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.18</a>.</p>
-<p>- Added tinted glass stairs.</p>
+<p>- Added tinted glass slabs and stairs.</p>
 <p>- Slightly modified the lighting engine to make tinted glass slabs and stairs possible.</p>
 <p>- Added Italian (Italy) translations. (Thanks to <a href="https://github.com/XfedeX" target="_blank" rel="noopener noreferrer">XfedeX</a>!)</p>
 <p>- Added French (France) translations. (Thanks to <a href="https://github.com/HanatakeYurii" target="_blank" rel="noopener noreferrer">HanatakeYurii</a>!)</p>
