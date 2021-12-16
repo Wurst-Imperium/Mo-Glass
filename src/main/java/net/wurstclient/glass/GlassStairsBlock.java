@@ -9,7 +9,6 @@ package net.wurstclient.glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
@@ -28,13 +27,6 @@ public final class GlassStairsBlock extends StairsBlock
 		super(Blocks.GLASS.getDefaultState(), block$Settings_1);
 	}
 	
-	/**
-	 * isSideInvisible() seems to be deprecated for no good reason. It is still
-	 * used in
-	 * {@link Block#shouldDrawSide(BlockState, BlockView, BlockPos, Direction, BlockPos)}
-	 * and there is no replacement.
-	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	@Environment(EnvType.CLIENT)
 	public boolean isSideInvisible(BlockState blockState_1,
