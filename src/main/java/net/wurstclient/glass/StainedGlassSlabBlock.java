@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 - 2020 | Alexander01998 | All rights reserved.
+ * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,6 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.Stainable;
 import net.minecraft.block.StainedGlassBlock;
@@ -20,6 +21,8 @@ import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
@@ -117,6 +120,13 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
+		BlockPos pos, ShapeContext context)
+	{
+		return VoxelShapes.empty();
 	}
 	
 	@Override

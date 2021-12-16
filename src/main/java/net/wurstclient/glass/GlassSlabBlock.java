@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 - 2020 | Alexander01998 | All rights reserved.
+ * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,12 +11,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public final class GlassSlabBlock extends SlabBlock
@@ -38,7 +41,7 @@ public final class GlassSlabBlock extends SlabBlock
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
-		if(blockState_2.getBlock() == MoGlass.GLASS_STAIRS)
+		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
 				direction_1))
 				return true;
@@ -107,6 +110,13 @@ public final class GlassSlabBlock extends SlabBlock
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
+		BlockPos pos, ShapeContext context)
+	{
+		return VoxelShapes.empty();
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 - 2020 | Alexander01998 | All rights reserved.
+ * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,6 +18,7 @@ import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.Direction;
 import net.wurstclient.glass.MoGlass;
+import net.wurstclient.glass.MoGlassBlocks;
 
 @Mixin(GlassBlock.class)
 public class GlassBlockMixin extends AbstractGlassBlock
@@ -31,11 +32,11 @@ public class GlassBlockMixin extends AbstractGlassBlock
 	public boolean isSideInvisible(BlockState blockState_1,
 		BlockState blockState_2, Direction direction_1)
 	{
-		if(blockState_2.getBlock() == MoGlass.GLASS_SLAB)
+		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_SLAB)
 			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
 				return true;
 			
-		if(blockState_2.getBlock() == MoGlass.GLASS_STAIRS)
+		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
 				direction_1))
 				return true;
