@@ -110,10 +110,15 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
 
 ## Supported Languages
 
-- English
-- German (since v1.2)
-- Chinese (Traditional) (since v1.2)
 - Chinese (Simplified) (since v1.2)
+- Chinese (Traditional) (since v1.2)
+- English (US) (since v1.0)
+- French (France) (since v1.6)
+- German (Germany) (since v1.2)
+- Italian (Italy) (since v1.6)
+- Oshiwambo (Oshindonga) (since v1.5)
+- Oshiwambo (Oshikwanyama) (since v1.5)
+- Russian (Russia) (since v1.5)
 - Spanish (Argentina) (since v1.4)
 - Spanish (Chile) (since v1.4)
 - Spanish (Ecuador) (since v1.4)
@@ -121,10 +126,6 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
 - Spanish (Mexico) (since v1.4)
 - Spanish (Uruguay) (since v1.4)
 - Spanish (Venezuela) (since v1.4)
-- Russian (since v1.5)
-- Oshiwambo (Oshindonga) (since v1.5)
-- Oshiwambo (Oshikwanyama) (since v1.5)
-- Italian (since v1.6)
 
 ## Will you add Forge support?
 
