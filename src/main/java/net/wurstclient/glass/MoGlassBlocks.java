@@ -145,35 +145,53 @@ public enum MoGlassBlocks
 	
 	public static void initialize()
 	{
-		registerBlock(GLASS_SLAB, "glass_slab", ItemGroup.BUILDING_BLOCKS,
-			RenderLayer.getCutoutMipped());
+		registerBlockCutoutMipped(GLASS_SLAB, "glass_slab",
+			ItemGroup.BUILDING_BLOCKS);
 		
-		registerBlock(GLASS_STAIRS, "glass_stairs", ItemGroup.BUILDING_BLOCKS,
-			RenderLayer.getCutoutMipped());
+		registerBlockCutoutMipped(GLASS_STAIRS, "glass_stairs",
+			ItemGroup.BUILDING_BLOCKS);
 		
-		registerBlock(TINTED_GLASS_SLAB, "tinted_glass_slab",
-			ItemGroup.BUILDING_BLOCKS, RenderLayer.getTranslucent());
+		registerBlockTranslucent(TINTED_GLASS_SLAB, "tinted_glass_slab",
+			ItemGroup.BUILDING_BLOCKS);
 		
-		registerBlock(TINTED_GLASS_STAIRS, "tinted_glass_stairs",
-			ItemGroup.BUILDING_BLOCKS, RenderLayer.getTranslucent());
+		registerBlockTranslucent(TINTED_GLASS_STAIRS, "tinted_glass_stairs",
+			ItemGroup.BUILDING_BLOCKS);
 		
 		String[] colors = {"white", "orange", "magenta", "light_blue", "yellow",
 			"lime", "pink", "gray", "light_gray", "cyan", "purple", "blue",
 			"brown", "green", "red", "black"};
 		
 		for(int i = 0; i < 16; i++)
-			registerBlock(STAINED_GLASS_SLABS[i],
-				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS,
-				RenderLayer.getTranslucent());
+			registerBlockTranslucent(STAINED_GLASS_SLABS[i],
+				colors[i] + "_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
 		
 		for(int i = 0; i < 16; i++)
-			registerBlock(STAINED_GLASS_STAIRS[i],
-				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS,
+			registerBlockTranslucent(STAINED_GLASS_STAIRS[i],
+				colors[i] + "_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
+	}
+	
+	private static void registerBlockTranslucent(Block block, String idPath,
+		ItemGroup itemGroup)
+	{
+		registerBlock(block, idPath, itemGroup);
+		
+		if(MoGlass.INSTANCE.isClient())
+			BlockRenderLayerMap.INSTANCE.putBlock(block,
 				RenderLayer.getTranslucent());
 	}
 	
+	private static void registerBlockCutoutMipped(Block block, String idPath,
+		ItemGroup itemGroup)
+	{
+		registerBlock(block, idPath, itemGroup);
+		
+		if(MoGlass.INSTANCE.isClient())
+			BlockRenderLayerMap.INSTANCE.putBlock(block,
+				RenderLayer.getCutoutMipped());
+	}
+	
 	private static void registerBlock(Block block, String idPath,
-		ItemGroup itemGroup, RenderLayer renderLayer)
+		ItemGroup itemGroup)
 	{
 		Identifier identifier = new Identifier("mo_glass", idPath);
 		Registry.register(Registry.BLOCK, identifier, block);
@@ -181,9 +199,6 @@ public enum MoGlassBlocks
 		Settings itemSettings = new Item.Settings().group(itemGroup);
 		BlockItem blockItem = new BlockItem(block, itemSettings);
 		Registry.register(Registry.ITEM, identifier, blockItem);
-		
-		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
