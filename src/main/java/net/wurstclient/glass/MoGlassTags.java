@@ -46,7 +46,7 @@ public enum MoGlassTags
 	
 	private static TagKey<Block> createTag(String idPath)
 	{
-		return TagKey.intern(Registry.BLOCK_KEY,
+		return TagKey.of(Registry.BLOCK_KEY,
 			new Identifier("mo_glass", idPath));
 	}
 }
