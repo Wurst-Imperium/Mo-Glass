@@ -1,4 +1,4 @@
-<p><strong>Note:</strong> Requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/3652036" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.18.2-pre1</a>.</p>
+<p><strong>Note:</strong> Requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/3656168" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.18.2-pre2</a>.</p>
 <p>&nbsp;</p>
 <p><strong>Changes:</strong></p>
 <p>- Fixed a crash when running Mo Glass on a server.</p>
