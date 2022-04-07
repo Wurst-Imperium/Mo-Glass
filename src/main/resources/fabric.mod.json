@@ -42,7 +42,7 @@
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": ">=0.42.4",
-    "minecraft": "~1.19-alpha.22.11.a",
+    "minecraft": "~1.19-alpha.22.14.a",
     "java": ">=17"
   },
   "suggests": {
