@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
@@ -86,7 +86,7 @@ curseforge {
 		changelogType = "html"
 		changelog = file("changelog.txt")
 		releaseType = "release"
-		addGameVersion "1.18.2"
+		addGameVersion "1.19"
 		addGameVersion "Fabric"
 
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
@@ -106,4 +106,11 @@ curseforge {
 
 afterEvaluate {
 	tasks.curseforge353426.dependsOn remapJar
+
+  tasks.named("curseforge353426") {
+    doFirst {
+      ant.move(file:"${project.buildDir}/devlibs/${archivesBaseName}-${version}-dev.jar", tofile:"${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
+      ant.move(file:"${project.buildDir}/devlibs/${archivesBaseName}-${version}-sources.jar", tofile:"${project.buildDir}/libs/${archivesBaseName}-${version}-sources-dev.jar")
+    }
+  }
 }
