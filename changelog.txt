@@ -1,7 +1,5 @@
 <p><strong>Note:</strong> Requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/3854287" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.19.1-pre3</a>.</p>
 <p>&nbsp;</p>
-<p><strong>Important:</strong> Please <a href="https://feedback.minecraft.net/hc/en-us/search?query=chat+report" target="_blank" rel="noopener noreferrer">vote on the Minecraft Feedback site</a> to stop the planned chat reporting system. The future of Minecraft depends on it!</p>
-<p>&nbsp;</p>
 <p><strong>Changes:</strong></p>
 <p>- Fixed a crash when running Mo Glass on a server.</p>
 <p>&nbsp;</p>
