@@ -25,6 +25,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 
@@ -164,7 +165,7 @@ public enum MoGlassBlocks
 			registerBlockTranslucent(STAINED_GLASS_STAIRS[i],
 				colors[i] + "_stained_glass_stairs");
 		
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
 			.register(content -> {
 				
 				// stairs
@@ -200,11 +201,11 @@ public enum MoGlassBlocks
 	private static void registerBlock(Block block, String idPath)
 	{
 		Identifier identifier = new Identifier("mo_glass", idPath);
-		Registry.register(Registry.BLOCK, identifier, block);
+		Registry.register(Registries.BLOCK, identifier, block);
 		
 		Settings itemSettings = new Item.Settings();
 		BlockItem blockItem = new BlockItem(block, itemSettings);
-		Registry.register(Registry.ITEM, identifier, blockItem);
+		Registry.register(Registries.ITEM, identifier, blockItem);
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
