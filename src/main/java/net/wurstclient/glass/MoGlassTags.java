@@ -8,9 +8,9 @@
 package net.wurstclient.glass;
 
 import net.minecraft.block.Block;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryKeys;
 import net.wurstclient.glass.mixin.ChunkLightProviderMixin;
 
 public enum MoGlassTags
