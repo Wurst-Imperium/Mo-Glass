@@ -71,7 +71,7 @@ public final class GlassSlabBlock extends SlabBlock
 			case UP:
 			case DOWN:
 			if(type1 != type2)
-				return true;
+				return true && !blockState_2.hasSidedTransparency() ;
 			break;
 			
 			case NORTH:
@@ -79,7 +79,7 @@ public final class GlassSlabBlock extends SlabBlock
 			case SOUTH:
 			case WEST:
 			if(type1 == type2)
-				return true;
+				return true && !blockState_2.hasSidedTransparency();
 			break;
 		}
 		
