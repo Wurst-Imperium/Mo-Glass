@@ -4,15 +4,15 @@
 
 Adds glass stairs and glass slabs to Minecraft.
 
-![https://www.curseforge.com/minecraft/mc-mods/fabric-api](https://user-images.githubusercontent.com/10100202/93722968-0aec9180-fb9b-11ea-9983-bc0fc51b47ab.png)
+![Requires Fabric API](https://user-images.githubusercontent.com/10100202/93722968-0aec9180-fb9b-11ea-9983-bc0fc51b47ab.png)
 
-## Downloads
+## Downloads (for users)
 
-https://www.curseforge.com/minecraft/mc-mods/mo-glass
+[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214879212-3487722e-1ccc-4b2b-aef4-c8d1a27c27a4.png)](https://www.wurstimperium.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo-Glass&utm_campaign=README.md&utm_content=Download+Mo+Glass)
 
-## Setup For Developers (using Windows 10 and Eclipse)
+## Setup (for developers)
 
-Requirements: [JDK 17](https://adoptium.net/?variant=openjdk17&jvmVariant=hotspot)
+(This assumes that you are using Windows with [Eclipse](https://www.eclipse.org/downloads/) and [Java Development Kit 17](https://adoptium.net/?variant=openjdk17&jvmVariant=hotspot) already installed.)
 
 1. Clone / download the repository.
 
