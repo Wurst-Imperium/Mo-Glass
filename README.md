@@ -8,7 +8,7 @@ Adds glass stairs and glass slabs to Minecraft.
 
 ## Downloads (for users)
 
-[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wurstimperium.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo-Glass&utm_campaign=README.md&utm_content=Download+Mo+Glass)
+[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wurstimperium.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_campaign=README.md&utm_content=Download+Mo+Glass)
 
 ## Setup (for developers)
 
