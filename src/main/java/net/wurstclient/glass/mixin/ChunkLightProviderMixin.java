@@ -25,20 +25,6 @@ public class ChunkLightProviderMixin
 		at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/block/BlockState;isOpaque()Z",
 			ordinal = 0),
-		method = "getStateForLighting(JLorg/apache/commons/lang3/mutable/MutableInt;)Lnet/minecraft/block/BlockState;")
-	private boolean isOpaqueForLighting(BlockState blockState)
-	{
-		return blockState.isOpaque()
-			|| blockState.isIn(MoGlassTags.OPAQUE_FOR_LIGHTING);
-	}
-	
-	/**
-	 * See {@link MoGlassTags#OPAQUE_FOR_LIGHTING} for why this exists.
-	 */
-	@Redirect(
-		at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/block/BlockState;isOpaque()Z",
-			ordinal = 0),
 		method = "getOpaqueShape(Lnet/minecraft/block/BlockState;JLnet/minecraft/util/math/Direction;)Lnet/minecraft/util/shape/VoxelShape;")
 	private boolean isOpaqueForLightingShape(BlockState blockState)
 	{
