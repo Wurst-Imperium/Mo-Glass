@@ -34,14 +34,16 @@ public enum MoGlassBlocks
 	;
 	
 	public static final Block GLASS_SLAB =
-		new GlassSlabBlock(AbstractBlock.Settings.of(Material.GLASS)
+		new GlassSlabBlock(AbstractBlock.Settings
+			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
 	
 	public static final Block GLASS_STAIRS =
-		new GlassStairsBlock(AbstractBlock.Settings.of(Material.GLASS)
+		new GlassStairsBlock(AbstractBlock.Settings
+			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
@@ -210,25 +212,23 @@ public enum MoGlassBlocks
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
-		return new StainedGlassSlabBlock(color,
-			AbstractBlock.Settings.of(Material.GLASS, color).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(MoGlassBlocks::never)
-				.solidBlock(MoGlassBlocks::never)
-				.suffocates(MoGlassBlocks::never)
-				.blockVision(MoGlassBlocks::never));
+		return new StainedGlassSlabBlock(color, AbstractBlock.Settings
+			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID, color)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+			.allowsSpawning(MoGlassBlocks::never)
+			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
+			.blockVision(MoGlassBlocks::never));
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
-		return new StainedGlassStairsBlock(color,
-			AbstractBlock.Settings.of(Material.GLASS, color).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(MoGlassBlocks::never)
-				.solidBlock(MoGlassBlocks::never)
-				.suffocates(MoGlassBlocks::never)
-				.blockVision(MoGlassBlocks::never));
+		return new StainedGlassStairsBlock(color, AbstractBlock.Settings
+			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID, color)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+			.allowsSpawning(MoGlassBlocks::never)
+			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
+			.blockVision(MoGlassBlocks::never));
 	}
 	
 	// Copies of the Blocks.never() methods because the originals are not
