@@ -14,7 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
@@ -33,18 +33,16 @@ public enum MoGlassBlocks
 {
 	;
 	
-	public static final Block GLASS_SLAB =
-		new GlassSlabBlock(AbstractBlock.Settings
-			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+	public static final Block GLASS_SLAB = new GlassSlabBlock(
+		AbstractBlock.Settings.of().instrument(Instrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
 	
-	public static final Block GLASS_STAIRS =
-		new GlassStairsBlock(AbstractBlock.Settings
-			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+	public static final Block GLASS_STAIRS = new GlassStairsBlock(
+		AbstractBlock.Settings.of().instrument(Instrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
@@ -212,9 +210,9 @@ public enum MoGlassBlocks
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
-		return new StainedGlassSlabBlock(color, AbstractBlock.Settings
-			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID, color)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+		return new StainedGlassSlabBlock(color, AbstractBlock.Settings.of()
+			.mapColor(color).instrument(Instrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
@@ -223,9 +221,9 @@ public enum MoGlassBlocks
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
-		return new StainedGlassStairsBlock(color, AbstractBlock.Settings
-			.of(Material.ALLOWS_MOVEMENT_LIGHT_PASSES_THROUGH_NOT_SOLID, color)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
+		return new StainedGlassStairsBlock(color, AbstractBlock.Settings.of()
+			.mapColor(color).instrument(Instrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
