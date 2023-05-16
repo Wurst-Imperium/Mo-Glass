@@ -34,14 +34,14 @@ public enum MoGlassBlocks
 	;
 	
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		AbstractBlock.Settings.of().instrument(Instrument.HAT).strength(0.3F)
+		AbstractBlock.Settings.create().instrument(Instrument.HAT).strength(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
 			.blockVision(MoGlassBlocks::never));
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		AbstractBlock.Settings.of().instrument(Instrument.HAT).strength(0.3F)
+		AbstractBlock.Settings.create().instrument(Instrument.HAT).strength(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
 			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
@@ -210,7 +210,7 @@ public enum MoGlassBlocks
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
-		return new StainedGlassSlabBlock(color, AbstractBlock.Settings.of()
+		return new StainedGlassSlabBlock(color, AbstractBlock.Settings.create()
 			.mapColor(color).instrument(Instrument.HAT).strength(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
@@ -221,7 +221,7 @@ public enum MoGlassBlocks
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
-		return new StainedGlassStairsBlock(color, AbstractBlock.Settings.of()
+		return new StainedGlassStairsBlock(color, AbstractBlock.Settings.create()
 			.mapColor(color).instrument(Instrument.HAT).strength(0.3F)
 			.sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(MoGlassBlocks::never)
