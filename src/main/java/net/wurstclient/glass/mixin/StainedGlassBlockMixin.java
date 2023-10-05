@@ -26,7 +26,7 @@ import net.wurstclient.glass.StainedGlassSlabBlock;
 import net.wurstclient.glass.StainedGlassStairsBlock;
 
 @Mixin(StainedGlassBlock.class)
-public class StainedGlassBlockMixin extends AbstractGlassBlock
+public abstract class StainedGlassBlockMixin extends AbstractGlassBlock
 {
 	@Shadow
 	@Final

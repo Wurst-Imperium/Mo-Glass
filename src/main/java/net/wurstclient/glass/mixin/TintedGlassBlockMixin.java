@@ -21,7 +21,7 @@ import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
 
 @Mixin(TintedGlassBlock.class)
-public class TintedGlassBlockMixin extends AbstractGlassBlock
+public abstract class TintedGlassBlockMixin extends AbstractGlassBlock
 {
 	private TintedGlassBlockMixin(MoGlass moGlass, Settings block$Settings_1)
 	{
