@@ -9,78 +9,81 @@ package net.wurstclient.glass.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.block.AbstractGlassBlock;
+import net.minecraft.class_8923;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.GlassBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.Direction;
 import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
 
-@Mixin(GlassBlock.class)
-public abstract class GlassBlockMixin extends AbstractGlassBlock
+@Mixin(class_8923.class)
+public abstract class GlassBlockMixin extends TransparentBlock
 {
-	private GlassBlockMixin(MoGlass moGlass, Settings block$Settings_1)
+	private GlassBlockMixin(MoGlass moGlass, Settings settings)
 	{
-		super(block$Settings_1);
+		super(settings);
 	}
 	
 	@Override
-	public boolean isSideInvisible(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_SLAB)
-			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
-				return true;
-			
-		if(blockState_2.getBlock() == MoGlassBlocks.GLASS_STAIRS)
-			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
-				direction_1))
-				return true;
-			
-		return super.isSideInvisible(blockState_1, blockState_2, direction_1);
+		if(state.getBlock() == Blocks.GLASS)
+		{
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB)
+				if(isInvisibleToGlassSlab(state, stateFrom, direction))
+					return true;
+				
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
+				if(isInvisibleToGlassStairs(state, stateFrom, direction))
+					return true;
+		}
+		
+		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	
-	private boolean isInvisibleToGlassSlab(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassSlab(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		SlabType type2 = blockState_2.get(SlabBlock.TYPE);
+		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
 		
-		if(type2 == SlabType.DOUBLE)
+		if(typeFrom == SlabType.DOUBLE)
 			return true;
 		
-		if(direction_1 == Direction.UP)
-			if(type2 != SlabType.TOP)
+		if(direction == Direction.UP)
+			if(typeFrom != SlabType.TOP)
 				return true;
 			
-		if(direction_1 == Direction.DOWN)
-			if(type2 != SlabType.BOTTOM)
+		if(direction == Direction.DOWN)
+			if(typeFrom != SlabType.BOTTOM)
 				return true;
 			
 		return false;
 	}
 	
-	private boolean isInvisibleToGlassStairs(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassStairs(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		BlockHalf half2 = blockState_2.get(StairsBlock.HALF);
-		Direction facing2 = blockState_2.get(StairsBlock.FACING);
+		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
+		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
 		
 		// up
-		if(direction_1 == Direction.UP)
-			if(half2 == BlockHalf.BOTTOM)
+		if(direction == Direction.UP)
+			if(halfFrom == BlockHalf.BOTTOM)
 				return true;
 			
 		// down
-		if(direction_1 == Direction.DOWN)
-			if(half2 == BlockHalf.TOP)
+		if(direction == Direction.DOWN)
+			if(halfFrom == BlockHalf.TOP)
 				return true;
 			
 		// other stairs rear
-		if(facing2 == direction_1.getOpposite())
+		if(facingFrom == direction.getOpposite())
 			return true;
 		
 		return false;
