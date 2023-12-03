@@ -25,9 +25,9 @@ import net.minecraft.world.BlockView;
 
 public final class TintedGlassSlabBlock extends SlabBlock
 {
-	public TintedGlassSlabBlock(Settings block$Settings_1)
+	public TintedGlassSlabBlock(Settings settings)
 	{
-		super(block$Settings_1);
+		super(settings);
 	}
 	
 	/**
@@ -39,38 +39,37 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	@SuppressWarnings("deprecation")
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		if(blockState_2.getBlock() == Blocks.TINTED_GLASS)
+		if(stateFrom.getBlock() == Blocks.TINTED_GLASS)
 			return true;
 		
-		if(blockState_2.getBlock() == this)
-			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
+		if(stateFrom.getBlock() == this)
+			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(blockState_2.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
-			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
-				direction_1))
+		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
+			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
-		return super.isSideInvisible(blockState_1, blockState_2, direction_1);
+		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	
-	private boolean isInvisibleToGlassSlab(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassSlab(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		SlabType type1 = blockState_1.get(SlabBlock.TYPE);
-		SlabType type2 = blockState_2.get(SlabBlock.TYPE);
+		SlabType type = state.get(SlabBlock.TYPE);
+		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
 		
-		if(type2 == SlabType.DOUBLE)
+		if(typeFrom == SlabType.DOUBLE)
 			return true;
 		
-		switch(direction_1)
+		switch(direction)
 		{
 			case UP:
 			case DOWN:
-			if(type1 != type2)
+			if(type != typeFrom)
 				return true;
 			break;
 			
@@ -78,7 +77,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			case EAST:
 			case SOUTH:
 			case WEST:
-			if(type1 == type2)
+			if(type == typeFrom)
 				return true;
 			break;
 		}
@@ -86,34 +85,34 @@ public final class TintedGlassSlabBlock extends SlabBlock
 		return false;
 	}
 	
-	private boolean isInvisibleToGlassStairs(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassStairs(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		SlabType type1 = blockState_1.get(SlabBlock.TYPE);
-		BlockHalf half2 = blockState_2.get(StairsBlock.HALF);
-		Direction facing2 = blockState_2.get(StairsBlock.FACING);
+		SlabType type = state.get(SlabBlock.TYPE);
+		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
+		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
 		
 		// up
-		if(direction_1 == Direction.UP)
-			if(half2 == BlockHalf.BOTTOM)
+		if(direction == Direction.UP)
+			if(halfFrom == BlockHalf.BOTTOM)
 				return true;
 			
 		// down
-		if(direction_1 == Direction.DOWN)
-			if(half2 == BlockHalf.TOP)
+		if(direction == Direction.DOWN)
+			if(halfFrom == BlockHalf.TOP)
 				return true;
 			
 		// other stairs rear
-		if(facing2 == direction_1.getOpposite())
+		if(facingFrom == direction.getOpposite())
 			return true;
 		
 		// sides
-		if(direction_1.getHorizontal() != -1)
+		if(direction.getHorizontal() != -1)
 		{
-			if(type1 == SlabType.BOTTOM && half2 == BlockHalf.BOTTOM)
+			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
 				return true;
 			
-			if(type1 == SlabType.TOP && half2 == BlockHalf.TOP)
+			if(type == SlabType.TOP && halfFrom == BlockHalf.TOP)
 				return true;
 		}
 		
@@ -129,21 +128,15 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1)
+	public float getAmbientOcclusionLightLevel(BlockState state,
+		BlockView world, BlockPos pos)
 	{
 		return 1.0F;
 	}
 	
-	public boolean isSimpleFullBlock(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1)
-	{
-		return false;
-	}
-	
 	@Override
-	public boolean isTransparent(BlockState blockState_1, BlockView blockView_1,
-		BlockPos blockPos_1)
+	public boolean isTransparent(BlockState state, BlockView world,
+		BlockPos pos)
 	{
 		return false;
 	}
