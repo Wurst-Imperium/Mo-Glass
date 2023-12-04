@@ -1,20 +1,2 @@
-<p><strong>Note:</strong> Requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/4126340" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.19.3</a>.</p>
-<p>&nbsp;</p>
-<p><strong>Changes:</strong></p>
-<p>- Fixed a crash when running Mo Glass on a server.</p>
-<p>&nbsp;</p>
-<p><strong>v1.6 changes:</strong></p>
-<p>- Added tinted glass slabs and stairs.</p>
-<p>- Slightly modified the lighting engine to make tinted glass slabs and stairs possible.</p>
-<p>- Added Italian (Italy) translations. (Thanks to <a href="https://github.com/XfedeX" target="_blank" rel="noopener noreferrer">XfedeX</a>!)</p>
-<p>- Added French (France) translations. (Thanks to <a href="https://github.com/HanatakeYurii" target="_blank" rel="noopener noreferrer">HanatakeYurii</a>!)</p>
-<p>- Added various common item tags that other mods can use in their crafting recipes to specify what kind of glass they want.</p>
-<p>- Added a "mo_glass:glass_slabs" block tag containing all glass slabs and a "mo_glass:glass_stairs" block tag containing all glass stairs. This should be useful for vertical slabs mods.</p>
-<p>- Added a "mo_glass:opaque_for_lighting" block tag for blocks that need my lighting engine modification to render properly. This should be useful for mods that change how lighting works.</p>
-<p>- Reduced the file size of Mo Glass. (Thanks to <a href="https://github.com/RDKRACZ" target="_blank" rel="noopener noreferrer">RDKRACZ</a>!)</p>
-<p>- Fixed glass stairs facing each other's front sides not being seamless. (<a href="https://user-images.githubusercontent.com/10100202/146294359-378351a4-9b1f-488d-9b4a-bba1309ac3fe.png" target="_blank" rel="noopener noreferrer">before</a>/<a href="https://user-images.githubusercontent.com/10100202/146294361-02af55ef-6998-46a3-a3c3-f5096caef95d.png" target="_blank" rel="noopener noreferrer">after</a>)</p>
-<p>- Fixed glass stairs and glass slabs dripping when placed under a liquid (unlike vanilla glass blocks).</p>
-<p>- Fixed glass stairs and glass slabs blocking the camera in 3rd person view (unlike vanilla glass blocks).</p>
-<p>- Fixed glass slabs not being included in the "minecraft:slabs" tags.</p>
-<p>- Fixed glass stairs not being included in the "minecraft:stairs" tags.</p>
-<p>- Removed support for old Fabric Loader versions without the <a href="https://wiki.wurstclient.net/log4shell" target="_blank" rel="noopener noreferrer">Log4Shell</a> patch (older than v0.12.10).</p>
+<p>A changelog can be found at:&nbsp;<a href="https://www.wimods.net/mo-glass/mo-glass-1-6-1/?mc=1.20.2&utm_source=CurseForge&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Mo+Glass+MC1.20.2">https://www.wimods.net/mo-glass/mo-glass-1-6-1/</a></p>
+<p><strong>Note:</strong> This mod requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/4757945" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.20.2</a>.</p>
