@@ -136,7 +136,7 @@ public final class GlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1,
+	public boolean isTransparent(BlockState blockState_1, BlockView blockView_1,
 		BlockPos blockPos_1)
 	{
 		return true;
