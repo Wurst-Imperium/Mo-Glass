@@ -19,8 +19,8 @@ Adds glass stairs and glass slabs to Minecraft.
 2. Run these two commands in PowerShell:
 
    ```powershell
-   ./gradlew.bat genSources
-   ./gradlew.bat eclipse
+   ./gradlew.bat --stop
+   ./gradlew.bat genSources eclipse
    ```
 
 3. In Eclipse, go to `Import...` > `Existing Projects into Workspace` and select this project.
