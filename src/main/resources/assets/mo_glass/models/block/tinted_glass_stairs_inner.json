@@ -1,0 +1,12 @@
+{
+    "parent": "mo_glass:block/template_glass_stairs_inner",
+    "textures": {
+        "full": "block/tinted_glass",
+        "stairs_bottom_left": "mo_glass:block/tinted_glass_stairs_bottom_left",
+        "stairs_bottom_right": "mo_glass:block/tinted_glass_stairs_bottom_right",
+        "corner_bottom_left": "mo_glass:block/tinted_glass_corner_bottom_left",
+        "corner_bottom_right": "mo_glass:block/tinted_glass_corner_bottom_right",
+        "corner_top_left": "mo_glass:block/tinted_glass_corner_top_left",
+        "corner_top_right": "mo_glass:block/tinted_glass_corner_top_right"
+    }
+}

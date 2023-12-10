@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "mo_glass:glass_stairs",
+    "#mo_glass:colored_glass_stairs",
+    "mo_glass:tinted_glass_stairs"
+  ]
+}

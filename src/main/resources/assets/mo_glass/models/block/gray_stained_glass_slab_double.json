@@ -1,0 +1,4 @@
+{
+  "render_type": "minecraft:translucent",
+  "parent": "block/gray_stained_glass"
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#c:clear_glass_blocks",
+    "#c:colored_glass_blocks",
+    "#c:dark_glass_blocks"
+  ]
+}

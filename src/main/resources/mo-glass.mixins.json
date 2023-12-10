@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.wurstclient.glass.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mo-glass.refmap.json",
+  "mixins": [
+    "GlassBlockMixin",
+    "LightEngineMixin",
+    "StainedGlassBlockMixin",
+    "TintedGlassBlockMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

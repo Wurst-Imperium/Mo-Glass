@@ -1,0 +1,15 @@
+{
+    "parent": "mo_glass:block/template_glass_stairs_outer",
+    "textures": {
+        "full": "block/cyan_stained_glass",
+        "half_bottom": "mo_glass:block/cyan_stained_glass_slab",
+        "half_top": "mo_glass:block/cyan_stained_glass_slab_top",
+        "stairs_bottom_left": "mo_glass:block/cyan_stained_glass_stairs_bottom_left",
+        "stairs_bottom_right": "mo_glass:block/cyan_stained_glass_stairs_bottom_right",
+        "stairs_top_left": "mo_glass:block/cyan_stained_glass_stairs_top_left",
+        "corner_bottom_left": "mo_glass:block/cyan_stained_glass_corner_bottom_left",
+        "corner_bottom_right": "mo_glass:block/cyan_stained_glass_corner_bottom_right",
+        "corner_top_left": "mo_glass:block/cyan_stained_glass_corner_top_left",
+        "corner_top_right": "mo_glass:block/cyan_stained_glass_corner_top_right"
+    }
+}

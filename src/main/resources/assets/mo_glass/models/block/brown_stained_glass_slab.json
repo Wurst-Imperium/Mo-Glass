@@ -1,0 +1,9 @@
+{
+  "render_type": "minecraft:translucent",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "minecraft:block/brown_stained_glass",
+    "top": "minecraft:block/brown_stained_glass",
+    "side": "mo_glass:block/brown_stained_glass_slab"
+  }
+}
