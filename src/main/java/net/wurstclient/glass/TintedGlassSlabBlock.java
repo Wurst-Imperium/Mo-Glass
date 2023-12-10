@@ -62,14 +62,15 @@ public final class TintedGlassSlabBlock extends SlabBlock
 		SlabType type = state.get(SlabBlock.TYPE);
 		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
 		
-		if(typeFrom == SlabType.DOUBLE)
-			return true;
-		
 		switch(direction)
 		{
 			case UP:
+			if(typeFrom != SlabType.TOP && type != SlabType.BOTTOM)
+				return true;
+			break;
+			
 			case DOWN:
-			if(type != typeFrom)
+			if(typeFrom != SlabType.BOTTOM && type != SlabType.TOP)
 				return true;
 			break;
 			
@@ -77,7 +78,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			case EAST:
 			case SOUTH:
 			case WEST:
-			if(type == typeFrom)
+			if(type == typeFrom || typeFrom == SlabType.DOUBLE)
 				return true;
 			break;
 		}
