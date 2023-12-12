@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
+ * Copyright (c) 2019-2023 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -29,9 +29,9 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 {
 	private final DyeColor color;
 	
-	public StainedGlassSlabBlock(DyeColor color, Settings block$Settings_1)
+	public StainedGlassSlabBlock(DyeColor color, Settings settings)
 	{
-		super(block$Settings_1);
+		super(settings);
 		this.color = color;
 	}
 	
@@ -44,42 +44,42 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 	@SuppressWarnings("deprecation")
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		Block block_2 = blockState_2.getBlock();
+		Block blockFrom = stateFrom.getBlock();
 		
-		if(block_2 instanceof StainedGlassBlock
-			&& ((StainedGlassBlock)block_2).getColor() == color)
+		if(blockFrom instanceof StainedGlassBlock
+			&& ((StainedGlassBlock)blockFrom).getColor() == color)
 			return true;
 		
-		if(block_2 == this)
-			if(isInvisibleToGlassSlab(blockState_1, blockState_2, direction_1))
+		if(blockFrom == this)
+			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(block_2 instanceof StainedGlassStairsBlock
-			&& ((StainedGlassStairsBlock)block_2).getColor() == color)
-			if(isInvisibleToGlassStairs(blockState_1, blockState_2,
-				direction_1))
+		if(blockFrom instanceof StainedGlassStairsBlock
+			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
+			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
-		return super.isSideInvisible(blockState_1, blockState_2, direction_1);
+		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	
-	private boolean isInvisibleToGlassSlab(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassSlab(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		SlabType type1 = blockState_1.get(SlabBlock.TYPE);
-		SlabType type2 = blockState_2.get(SlabBlock.TYPE);
+		SlabType type = state.get(SlabBlock.TYPE);
+		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
 		
-		if(type2 == SlabType.DOUBLE)
-			return true;
-		
-		switch(direction_1)
+		switch(direction)
 		{
 			case UP:
+			if(typeFrom != SlabType.TOP && type != SlabType.BOTTOM)
+				return true;
+			break;
+			
 			case DOWN:
-			if(type1 != type2)
+			if(typeFrom != SlabType.BOTTOM && type != SlabType.TOP)
 				return true;
 			break;
 			
@@ -87,7 +87,7 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 			case EAST:
 			case SOUTH:
 			case WEST:
-			if(type1 == type2)
+			if(type == typeFrom || typeFrom == SlabType.DOUBLE)
 				return true;
 			break;
 		}
@@ -95,34 +95,34 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 		return false;
 	}
 	
-	private boolean isInvisibleToGlassStairs(BlockState blockState_1,
-		BlockState blockState_2, Direction direction_1)
+	private boolean isInvisibleToGlassStairs(BlockState state,
+		BlockState stateFrom, Direction direction)
 	{
-		SlabType type1 = blockState_1.get(SlabBlock.TYPE);
-		BlockHalf half2 = blockState_2.get(StairsBlock.HALF);
-		Direction facing2 = blockState_2.get(StairsBlock.FACING);
+		SlabType type = state.get(SlabBlock.TYPE);
+		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
+		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
 		
 		// up
-		if(direction_1 == Direction.UP)
-			if(half2 == BlockHalf.BOTTOM)
+		if(direction == Direction.UP)
+			if(halfFrom == BlockHalf.BOTTOM)
 				return true;
 			
 		// down
-		if(direction_1 == Direction.DOWN)
-			if(half2 == BlockHalf.TOP)
+		if(direction == Direction.DOWN)
+			if(halfFrom == BlockHalf.TOP)
 				return true;
 			
 		// other stairs rear
-		if(facing2 == direction_1.getOpposite())
+		if(facingFrom == direction.getOpposite())
 			return true;
 		
 		// sides
-		if(direction_1.getHorizontal() != -1)
+		if(direction.getHorizontal() != -1)
 		{
-			if(type1 == SlabType.BOTTOM && half2 == BlockHalf.BOTTOM)
+			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
 				return true;
 			
-			if(type1 == SlabType.TOP && half2 == BlockHalf.TOP)
+			if(type == SlabType.TOP && halfFrom == BlockHalf.TOP)
 				return true;
 		}
 		
@@ -138,23 +138,17 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1)
+	public float getAmbientOcclusionLightLevel(BlockState state,
+		BlockView world, BlockPos pos)
 	{
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState blockState_1, BlockView blockView_1,
-		BlockPos blockPos_1)
+	public boolean isTransparent(BlockState state, BlockView world,
+		BlockPos pos)
 	{
 		return true;
-	}
-	
-	public boolean isSimpleFullBlock(BlockState blockState_1,
-		BlockView blockView_1, BlockPos blockPos_1)
-	{
-		return false;
 	}
 	
 	@Override
