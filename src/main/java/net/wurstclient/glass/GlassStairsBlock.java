@@ -221,18 +221,29 @@ public final class GlassStairsBlock extends StairBlock
 		}
 		
 		// other stairs rear
-		if(facingFrom == direction.getOpposite())
+		if(facingFrom == direction.getOpposite()
+			&& shapeFrom != StairsShape.OUTER_LEFT
+			&& shapeFrom != StairsShape.OUTER_RIGHT)
+			return true;
+		
+		// other curved stairs fully covered side
+		if(facingFrom == direction.getClockWise()
+			&& shapeFrom == StairsShape.INNER_RIGHT)
+			return true;
+		if(facingFrom == direction.getCounterClockWise()
+			&& shapeFrom == StairsShape.INNER_LEFT)
 			return true;
 		
 		// rear
-		if(direction == facing && half == halfFrom
-			&& shape != StairsShape.STRAIGHT)
+		if(direction == facing && half == halfFrom)
 		{
 			if(facingFrom == facing.getCounterClockWise()
+				&& shape == StairsShape.OUTER_LEFT
 				&& shapeFrom != StairsShape.OUTER_RIGHT)
 				return true;
 			
 			if(facingFrom == facing.getClockWise()
+				&& shape == StairsShape.OUTER_RIGHT
 				&& shapeFrom != StairsShape.OUTER_LEFT)
 				return true;
 		}
@@ -262,6 +273,11 @@ public final class GlassStairsBlock extends StairBlock
 			if(facingFrom == facing && shapeFrom != StairsShape.OUTER_LEFT)
 				return true;
 			
+			if(facingFrom == facing.getClockWise()
+				&& shapeFrom == StairsShape.OUTER_LEFT
+				&& shape != StairsShape.INNER_LEFT)
+				return true;
+			
 			if(facingFrom == facing.getOpposite()
 				&& shape == StairsShape.OUTER_RIGHT)
 				return true;
@@ -275,6 +291,11 @@ public final class GlassStairsBlock extends StairBlock
 				return true;
 			
 			if(facingFrom == facing && shapeFrom != StairsShape.OUTER_RIGHT)
+				return true;
+			
+			if(facingFrom == facing.getCounterClockWise()
+				&& shapeFrom == StairsShape.OUTER_RIGHT
+				&& shape != StairsShape.INNER_RIGHT)
 				return true;
 			
 			if(facingFrom == facing.getOpposite()

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
 
@@ -69,6 +70,7 @@ public class TintedGlassBlockMixin extends AbstractGlassBlock
 	{
 		Half halfFrom = stateFrom.getValue(StairBlock.HALF);
 		Direction facingFrom = stateFrom.getValue(StairBlock.FACING);
+		StairsShape shapeFrom = stateFrom.getValue(StairBlock.SHAPE);
 		
 		// up
 		if(direction == Direction.UP)
@@ -81,7 +83,17 @@ public class TintedGlassBlockMixin extends AbstractGlassBlock
 				return true;
 			
 		// other stairs rear
-		if(facingFrom == direction.getOpposite())
+		if(facingFrom == direction.getOpposite()
+			&& shapeFrom != StairsShape.OUTER_LEFT
+			&& shapeFrom != StairsShape.OUTER_RIGHT)
+			return true;
+		
+		// other curved stairs fully covered side
+		if(facingFrom == direction.getClockWise()
+			&& shapeFrom == StairsShape.INNER_RIGHT)
+			return true;
+		if(facingFrom == direction.getCounterClockWise()
+			&& shapeFrom == StairsShape.INNER_LEFT)
 			return true;
 		
 		return false;
