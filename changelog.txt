@@ -1,2 +1,2 @@
-<p>A changelog can be found at:&nbsp;<a href="https://www.wimods.net/mo-glass/mo-glass-1-6-1/?mc=1.20.3&utm_source=CurseForge&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Mo+Glass+MC1.20.3">https://www.wimods.net/mo-glass/mo-glass-1-6-1/</a></p>
+<p>A changelog can be found at:&nbsp;<a href="https://www.wimods.net/mo-glass/mo-glass-1-7/?mc=1.20.3&utm_source=CurseForge&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Mo+Glass+MC1.20.3">https://www.wimods.net/mo-glass/mo-glass-1-7/</a></p>
 <p><strong>Note:</strong> This mod requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/4905493" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 1.20.3</a>.</p>

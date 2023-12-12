@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
+ * Copyright (c) 2019-2023 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,12 +11,10 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
@@ -26,8 +24,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 
 public enum MoGlassBlocks
 {
@@ -36,28 +32,24 @@ public enum MoGlassBlocks
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
 		AbstractBlock.Settings.create().instrument(Instrument.HAT)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
+			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
 		AbstractBlock.Settings.create().instrument(Instrument.HAT)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
+			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
 		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
+			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
 		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
+			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.WHITE);
@@ -210,37 +202,22 @@ public enum MoGlassBlocks
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
-		return new StainedGlassSlabBlock(color, AbstractBlock.Settings.create()
-			.mapColor(color).instrument(Instrument.HAT).strength(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
+		return new StainedGlassSlabBlock(color,
+			AbstractBlock.Settings.create().mapColor(color)
+				.instrument(Instrument.HAT).strength(0.3F)
+				.sounds(BlockSoundGroup.GLASS).nonOpaque()
+				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+				.suffocates(Blocks::never).blockVision(Blocks::never));
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
-		return new StainedGlassStairsBlock(color, AbstractBlock.Settings
-			.create().mapColor(color).instrument(Instrument.HAT).strength(0.3F)
-			.sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(MoGlassBlocks::never)
-			.solidBlock(MoGlassBlocks::never).suffocates(MoGlassBlocks::never)
-			.blockVision(MoGlassBlocks::never));
-	}
-	
-	// Copies of the Blocks.never() methods because the originals are not
-	// accessible from here.
-	
-	private static Boolean never(BlockState blockState, BlockView blockView,
-		BlockPos blockPos, EntityType<?> entityType)
-	{
-		return false;
-	}
-	
-	private static boolean never(BlockState blockState, BlockView blockView,
-		BlockPos blockPos)
-	{
-		return false;
+		return new StainedGlassStairsBlock(color,
+			AbstractBlock.Settings.create().mapColor(color)
+				.instrument(Instrument.HAT).strength(0.3F)
+				.sounds(BlockSoundGroup.GLASS).nonOpaque()
+				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+				.suffocates(Blocks::never).blockVision(Blocks::never));
 	}
 }

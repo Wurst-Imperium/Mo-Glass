@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Wurst-Imperium and contributors.
+ * Copyright (c) 2019-2023 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -10,14 +10,17 @@ package net.wurstclient.glass.mixin;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.Stainable;
 import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Direction;
 import net.wurstclient.glass.MoGlass;
@@ -26,6 +29,7 @@ import net.wurstclient.glass.StainedGlassStairsBlock;
 
 @Mixin(StainedGlassBlock.class)
 public abstract class StainedGlassBlockMixin extends TransparentBlock
+	implements Stainable
 {
 	@Shadow
 	@Final
@@ -78,7 +82,8 @@ public abstract class StainedGlassBlockMixin extends TransparentBlock
 		BlockState stateFrom, Direction direction)
 	{
 		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
-		Direction directionFrom = stateFrom.get(StairsBlock.FACING);
+		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
+		StairShape shapeFrom = stateFrom.get(StairsBlock.SHAPE);
 		
 		// up
 		if(direction == Direction.UP)
@@ -91,7 +96,17 @@ public abstract class StainedGlassBlockMixin extends TransparentBlock
 				return true;
 			
 		// other stairs rear
-		if(directionFrom == direction.getOpposite())
+		if(facingFrom == direction.getOpposite()
+			&& shapeFrom != StairShape.OUTER_LEFT
+			&& shapeFrom != StairShape.OUTER_RIGHT)
+			return true;
+		
+		// other curved stairs fully covered side
+		if(facingFrom == direction.rotateYClockwise()
+			&& shapeFrom == StairShape.INNER_RIGHT)
+			return true;
+		if(facingFrom == direction.rotateYCounterclockwise()
+			&& shapeFrom == StairShape.INNER_LEFT)
 			return true;
 		
 		return false;
