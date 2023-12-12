@@ -16,6 +16,7 @@ import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.math.Direction;
 import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
@@ -67,6 +68,7 @@ public class GlassBlockMixin extends AbstractGlassBlock
 	{
 		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
 		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
+		StairShape shapeFrom = stateFrom.get(StairsBlock.SHAPE);
 		
 		// up
 		if(direction == Direction.UP)
@@ -79,7 +81,17 @@ public class GlassBlockMixin extends AbstractGlassBlock
 				return true;
 			
 		// other stairs rear
-		if(facingFrom == direction.getOpposite())
+		if(facingFrom == direction.getOpposite()
+			&& shapeFrom != StairShape.OUTER_LEFT
+			&& shapeFrom != StairShape.OUTER_RIGHT)
+			return true;
+		
+		// other curved stairs fully covered side
+		if(facingFrom == direction.rotateYClockwise()
+			&& shapeFrom == StairShape.INNER_RIGHT)
+			return true;
+		if(facingFrom == direction.rotateYCounterclockwise()
+			&& shapeFrom == StairShape.INNER_LEFT)
 			return true;
 		
 		return false;
