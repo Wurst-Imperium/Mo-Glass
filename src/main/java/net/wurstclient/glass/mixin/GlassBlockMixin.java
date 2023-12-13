@@ -91,10 +91,10 @@ public abstract class GlassBlockMixin extends TranslucentBlock
 			return true;
 		
 		// other curved stairs fully covered side
-		if(facingFrom == direction.rotateYClockwise()
+		if(facingFrom.rotateYCounterclockwise() == direction
 			&& shapeFrom == StairShape.INNER_RIGHT)
 			return true;
-		if(facingFrom == direction.rotateYCounterclockwise()
+		if(facingFrom.rotateYClockwise() == direction
 			&& shapeFrom == StairShape.INNER_LEFT)
 			return true;
 		
