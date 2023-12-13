@@ -9,11 +9,12 @@ package net.wurstclient.glass.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.GlassBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TranslucentBlock;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
@@ -21,8 +22,8 @@ import net.minecraft.util.math.Direction;
 import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
 
-@Mixin(GlassBlock.class)
-public class GlassBlockMixin extends AbstractGlassBlock
+@Mixin(TransparentBlock.class)
+public abstract class GlassBlockMixin extends TranslucentBlock
 {
 	private GlassBlockMixin(MoGlass moGlass, Settings settings)
 	{
@@ -33,14 +34,17 @@ public class GlassBlockMixin extends AbstractGlassBlock
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB)
-			if(isInvisibleToGlassSlab(state, stateFrom, direction))
-				return true;
-			
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
-			if(isInvisibleToGlassStairs(state, stateFrom, direction))
-				return true;
-			
+		if(state.getBlock() == Blocks.GLASS)
+		{
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB)
+				if(isInvisibleToGlassSlab(state, stateFrom, direction))
+					return true;
+				
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
+				if(isInvisibleToGlassStairs(state, stateFrom, direction))
+					return true;
+		}
+		
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	

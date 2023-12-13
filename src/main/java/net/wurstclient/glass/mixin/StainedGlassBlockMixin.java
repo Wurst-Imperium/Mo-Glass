@@ -11,13 +11,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.block.Stainable;
 import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
@@ -28,8 +27,7 @@ import net.wurstclient.glass.StainedGlassSlabBlock;
 import net.wurstclient.glass.StainedGlassStairsBlock;
 
 @Mixin(StainedGlassBlock.class)
-public abstract class StainedGlassBlockMixin extends AbstractGlassBlock
-	implements Stainable
+public abstract class StainedGlassBlockMixin extends TransparentBlock
 {
 	@Shadow
 	@Final

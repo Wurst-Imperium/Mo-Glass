@@ -9,11 +9,11 @@ package net.wurstclient.glass.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TintedGlassBlock;
+import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
@@ -22,7 +22,7 @@ import net.wurstclient.glass.MoGlass;
 import net.wurstclient.glass.MoGlassBlocks;
 
 @Mixin(TintedGlassBlock.class)
-public class TintedGlassBlockMixin extends AbstractGlassBlock
+public abstract class TintedGlassBlockMixin extends TransparentBlock
 {
 	private TintedGlassBlockMixin(MoGlass moGlass, Settings settings)
 	{
