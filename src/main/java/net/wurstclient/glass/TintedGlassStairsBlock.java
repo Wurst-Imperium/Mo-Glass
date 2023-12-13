@@ -227,10 +227,10 @@ public final class TintedGlassStairsBlock extends StairBlock
 			return true;
 		
 		// other curved stairs fully covered side
-		if(facingFrom == direction.getClockWise()
+		if(facingFrom.getCounterClockWise() == direction
 			&& shapeFrom == StairsShape.INNER_RIGHT)
 			return true;
-		if(facingFrom == direction.getCounterClockWise()
+		if(facingFrom.getClockWise() == direction
 			&& shapeFrom == StairsShape.INNER_LEFT)
 			return true;
 		
