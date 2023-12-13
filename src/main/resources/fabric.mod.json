@@ -6,20 +6,13 @@
   "name": "Mo Glass",
   "description": "Adds glass stairs and glass slabs to Minecraft.",
   "authors": [
-  	{
-      "name": "Alexander01998",
-      "contact": {
-        "homepage": "https://www.wurstclient.net/",
-        "email": "contact.wurstimperium@gmail.com",
-        "twitter": "https://twitter.com/Wurst_Imperium"
-      }
-    }
+  	"Alexander01998"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mo-glass",
+    "homepage": "https://www.wimods.net/mo-glass/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+website+link",
     "sources": "https://github.com/Wurst-Imperium/Mo-Glass",
-    "email": "contact.wurstimperium@gmail.com",
     "issues": "https://github.com/Wurst-Imperium/Mo-Glass/issues",
+    "email": "contact.wurstimperium@gmail.com",
     "twitter": "https://twitter.com/Wurst_Imperium"
   },
 
@@ -40,12 +33,19 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.19",
+    "fabricloader": ">=0.15.0",
     "fabric-api": ">=0.79.1",
     "minecraft": "~1.20-alpha.23.17.a",
     "java": ">=17"
   },
   "suggests": {
     "flamingo": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "Donate": "https://www.wurstclient.net/donate/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+donate+link"
+      }
+    }
   }
 }

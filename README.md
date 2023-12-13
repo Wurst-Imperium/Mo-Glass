@@ -1,14 +1,12 @@
-![Mo Glass 1.6](https://user-images.githubusercontent.com/10100202/146299553-864f59fb-74a1-4a8a-9214-92febeecf236.jpg)
-
 # Mo Glass
 
-Adds glass stairs and glass slabs to Minecraft.
+Mo Glass is a Minecraft mod that adds glass stairs and glass slabs, including stained and tinted glass variants. They look great in any build and connect seamlessly with vanilla glass blocks. The mod is available for many different Minecraft versions, including snapshots.
 
-![Requires Fabric API](https://user-images.githubusercontent.com/10100202/93722968-0aec9180-fb9b-11ea-9983-bc0fc51b47ab.png)
+![A Minecraft house with its roof made out of glass stairs, powered by the Mo Glass mod](https://user-images.githubusercontent.com/10100202/69939492-ab78a480-14e8-11ea-8aa7-c351657b334b.jpg)
 
 ## Downloads (for users)
 
-[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wurstimperium.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_campaign=README.md&utm_content=Download+Mo+Glass)
+[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wimods.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_content=Mo+Glass+GitHub+repo+download+button)
 
 ## Setup (for developers)
 
@@ -19,8 +17,8 @@ Adds glass stairs and glass slabs to Minecraft.
 2. Run these two commands in PowerShell:
 
    ```powershell
-   ./gradlew.bat genSources
-   ./gradlew.bat eclipse
+   ./gradlew.bat --stop
+   ./gradlew.bat genSources eclipse
    ```
 
 3. In Eclipse, go to `Import...` > `Existing Projects into Workspace` and select this project.
@@ -40,13 +38,13 @@ Adds glass stairs and glass slabs to Minecraft.
 
 Both the stairs and the slabs are see-through in the same way as vanilla glass blocks. You can place multiple stairs, slabs and full blocks next to each other and they will look like a single piece of glass.
 
-![](https://user-images.githubusercontent.com/10100202/69958444-821e3f80-150d-11ea-8f89-b241c66a8849.jpg)
+![an example of seamless transparency in Mo Glass, annotated with arrows to show where the glass pieces connect](https://user-images.githubusercontent.com/10100202/69958444-821e3f80-150d-11ea-8f89-b241c66a8849.jpg)
 
 ## Working Translucency
 
 Slabs and stairs made from tinted glass will block light if you place them without any air gaps, or let the light through if there is a gap.
 
-![](https://user-images.githubusercontent.com/10100202/145865191-04baa767-39f8-445d-8ea1-7e08619bb975.jpg)
+![an example of translucency in Mo Glass, demonstrated with tinted glass stairs that either block light or let it through depending on their orientation](https://user-images.githubusercontent.com/10100202/145865191-04baa767-39f8-445d-8ea1-7e08619bb975.jpg)
 
 ## Why aren't these blocks part of vanilla Minecraft?
 
@@ -116,8 +114,10 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
 - French (France) (since v1.6)
 - German (Germany) (since v1.2)
 - Italian (Italy) (since v1.6)
+- Japanese (Japan) (since v1.7)
 - Oshiwambo (Oshindonga) (since v1.5)
 - Oshiwambo (Oshikwanyama) (since v1.5)
+- Portuguese (Brazil) (since v1.7)
 - Russian (Russia) (since v1.5)
 - Spanish (Argentina) (since v1.4)
 - Spanish (Chile) (since v1.4)
@@ -126,11 +126,3 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
 - Spanish (Mexico) (since v1.4)
 - Spanish (Uruguay) (since v1.4)
 - Spanish (Venezuela) (since v1.4)
-
-## Will you add Forge support?
-
-No. A Forge version is not being considered due to [Forge's new CoreMod policy](https://forums.minecraftforge.net/topic/58706-regarding-minecraft-112-and-policy-changes/) as well as issues with the [Forge community's treatment of modders](https://web.archive.org/web/20201125032822/https://gist.github.com/jellysquid3/629eb84a74ab326046faf971150dc6c3).
-
-However, the experimental [Patchwork](https://patchworkmc.net/) project can sometimes make Forge mods and Fabric mods work together. Depending on which other mods you use, this might work with Mo Glass.
-
-Also, keep in mind that many former Forge mods now have Fabric versions (or have switched to Fabric entirely due to the above-mentioned issues).
