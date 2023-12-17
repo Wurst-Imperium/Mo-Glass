@@ -9,6 +9,7 @@ plugins {
 	id 'maven-publish'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 	id "com.modrinth.minotaur" version "2.+"
+	id 'com.diffplug.spotless' version '6.23.3'
 }
 
 def ENV = System.getenv()
@@ -64,6 +65,16 @@ jar {
 	}
 	
 	exclude("/assets/mo_glass/textures/block/*.psd")
+}
+
+spotless {
+	java {
+		removeUnusedImports()
+		indentWithTabs()
+		trimTrailingWhitespace()
+		eclipse().configFile(file("codestyle/formatter.xml"))
+		lineEndings('WINDOWS')
+	}
 }
 
 // configure the maven publication
