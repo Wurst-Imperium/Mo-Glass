@@ -8,11 +8,11 @@
 package net.wurstclient.glass;
 
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 @Mod(MoGlass.MODID)
 @Mod.EventBusSubscriber(modid = MoGlass.MODID,
@@ -45,13 +45,13 @@ public final class MoGlass
 		// stairs
 		event.accept(MoGlassBlocks.GLASS_STAIRS);
 		event.accept(MoGlassBlocks.TINTED_GLASS_STAIRS);
-		for(RegistryObject<StainedGlassStairsBlock> stairs : MoGlassBlocks.STAINED_GLASS_STAIRS)
+		for(DeferredBlock<StainedGlassStairsBlock> stairs : MoGlassBlocks.STAINED_GLASS_STAIRS)
 			event.accept(stairs);
 		
 		// slabs
 		event.accept(MoGlassBlocks.GLASS_SLAB);
 		event.accept(MoGlassBlocks.TINTED_GLASS_SLAB);
-		for(RegistryObject<StainedGlassSlabBlock> slab : MoGlassBlocks.STAINED_GLASS_SLABS)
+		for(DeferredBlock<StainedGlassSlabBlock> slab : MoGlassBlocks.STAINED_GLASS_SLABS)
 			event.accept(slab);
 	}
 }
