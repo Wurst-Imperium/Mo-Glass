@@ -1,2 +1,2 @@
-<p>A changelog can be found at:&nbsp;<a href="https://www.wimods.net/mo-glass/mo-glass-1-7/?mc=24w07a&utm_source=CurseForge&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Mo+Glass+MC24w07a">https://www.wimods.net/mo-glass/mo-glass-1-7/</a></p>
-<p><strong>Note:</strong> This mod requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/5108212" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 24w07a</a>.</p>
+<p>A changelog can be found at:&nbsp;<a href="https://www.wimods.net/mo-glass/mo-glass-1-7/?mc=24w09a&utm_source=CurseForge&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Mo+Glass+MC24w09a">https://www.wimods.net/mo-glass/mo-glass-1-7/</a></p>
+<p><strong>Note:</strong> This mod requires <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/5149224" target="_blank" rel="noopener noreferrer">Fabric API for Minecraft 24w09a</a>.</p>
