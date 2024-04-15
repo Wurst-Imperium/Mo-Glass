@@ -19,8 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.wurstclient.glass.GlassSlabBlock;
+import net.wurstclient.glass.GlassStairsBlock;
 import net.wurstclient.glass.MoGlass;
-import net.wurstclient.glass.MoGlassBlocks;
 
 @Mixin(GlassBlock.class)
 public class GlassBlockMixin extends AbstractGlassBlock
@@ -34,11 +35,11 @@ public class GlassBlockMixin extends AbstractGlassBlock
 	public boolean skipRendering(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB.get())
+		if(stateFrom.getBlock() instanceof GlassSlabBlock)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS.get())
+		if(stateFrom.getBlock() instanceof GlassStairsBlock)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			

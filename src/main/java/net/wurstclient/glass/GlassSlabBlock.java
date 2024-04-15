@@ -40,7 +40,7 @@ public final class GlassSlabBlock extends SlabBlock
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS.get())
+		if(stateFrom.getBlock() instanceof GlassStairsBlock)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			

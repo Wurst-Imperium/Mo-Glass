@@ -40,7 +40,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS.get())
+		if(stateFrom.getBlock() instanceof TintedGlassStairsBlock)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			

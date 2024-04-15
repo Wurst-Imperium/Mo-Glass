@@ -20,7 +20,8 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.wurstclient.glass.MoGlass;
-import net.wurstclient.glass.MoGlassBlocks;
+import net.wurstclient.glass.TintedGlassSlabBlock;
+import net.wurstclient.glass.TintedGlassStairsBlock;
 
 @Mixin(TintedGlassBlock.class)
 public class TintedGlassBlockMixin extends AbstractGlassBlock
@@ -35,11 +36,11 @@ public class TintedGlassBlockMixin extends AbstractGlassBlock
 	public boolean skipRendering(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB.get())
+		if(stateFrom.getBlock() instanceof TintedGlassSlabBlock)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS.get())
+		if(stateFrom.getBlock() instanceof TintedGlassStairsBlock)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
