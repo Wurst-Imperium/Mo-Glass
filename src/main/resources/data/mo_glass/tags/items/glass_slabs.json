@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "mo_glass:glass_slab",
-    "#mo_glass:colored_glass_slabs",
+    "#mo_glass:stained_glass_slabs",
     "mo_glass:tinted_glass_slab"
   ]
 }
