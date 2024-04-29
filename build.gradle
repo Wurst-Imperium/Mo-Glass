@@ -14,8 +14,8 @@ plugins {
 
 def ENV = System.getenv()
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -48,8 +48,8 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 17
+	// Minecraft 1.20.5 (24w14a) upwards uses Java 21.
+	it.options.release = 21
 }
 
 java {
@@ -104,7 +104,7 @@ curseforge {
 		changelogType = "html"
 		changelog = file("changelog.txt")
 		releaseType = "release"
-		addGameVersion "1.20.4"
+		addGameVersion "1.20.6"
 		addGameVersion "Fabric"
 
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
@@ -135,7 +135,7 @@ modrinth {
 		file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar"),
 		file("${project.buildDir}/libs/${archivesBaseName}-${version}-sources-dev.jar")
 	]
-	changelog = "A changelog can be found at: [https://www.wimods.net/mo-glass/mo-glass-1-7/](https://www.wimods.net/mo-glass/mo-glass-1-7/?mc=${project.minecraft_version}&utm_source=Modrinth&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Modrinth+Mo+Glass+MC${project.minecraft_version})"
+	changelog = "A changelog can be found at: [https://www.wimods.net/mo-glass/mo-glass-1-8/](https://www.wimods.net/mo-glass/mo-glass-1-8/?mc=${project.minecraft_version}&utm_source=Modrinth&utm_medium=Mo+Glass&utm_campaign=Changelog&utm_content=Modrinth+Mo+Glass+MC${project.minecraft_version})"
 	dependencies {
 		required.version "fabric-api", project.fabric_version
 	}

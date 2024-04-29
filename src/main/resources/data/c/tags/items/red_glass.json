@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#c:red_glass_blocks",
-    "#c:red_glass_panes",
-    "#c:red_glass_slabs",
-    "#c:red_glass_stairs"
-  ]
-}
