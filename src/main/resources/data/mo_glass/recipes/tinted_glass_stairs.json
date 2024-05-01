@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#  ",
-    "## ",
-    "###"
-  ],
+  "category": "building",
   "key": {
     "#": {
       "item": "minecraft:tinted_glass"
     }
   },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
   "result": {
-    "item": "mo_glass:tinted_glass_stairs",
-    "count": 4
+    "count": 4,
+    "id": "mo_glass:tinted_glass_stairs"
   }
 }

@@ -3,6 +3,8 @@
   "ingredient": {
     "item": "minecraft:light_gray_stained_glass"
   },
-  "result": "mo_glass:light_gray_stained_glass_slab",
-  "count": 2
+  "result": {
+    "count": 2,
+    "id": "mo_glass:light_gray_stained_glass_slab"
+  }
 }
