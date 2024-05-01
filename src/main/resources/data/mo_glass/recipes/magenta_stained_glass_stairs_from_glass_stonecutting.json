@@ -3,6 +3,8 @@
   "ingredient": {
     "item": "minecraft:magenta_stained_glass"
   },
-  "result": "mo_glass:magenta_stained_glass_stairs",
-  "count": 1
+  "result": {
+    "count": 1,
+    "id": "mo_glass:magenta_stained_glass_stairs"
+  }
 }

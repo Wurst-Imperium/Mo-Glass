@@ -1,17 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#  ",
-    "## ",
-    "###"
-  ],
+  "category": "building",
+  "group": "stained_glass_stairs",
   "key": {
     "#": {
       "item": "minecraft:magenta_stained_glass"
     }
   },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
   "result": {
-    "item": "mo_glass:magenta_stained_glass_stairs",
-    "count": 4
+    "count": 4,
+    "id": "mo_glass:magenta_stained_glass_stairs"
   }
 }

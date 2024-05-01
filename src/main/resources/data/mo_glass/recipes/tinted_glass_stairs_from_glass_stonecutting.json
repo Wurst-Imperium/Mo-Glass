@@ -3,6 +3,8 @@
   "ingredient": {
     "item": "minecraft:tinted_glass"
   },
-  "result": "mo_glass:tinted_glass_stairs",
-  "count": 1
+  "result": {
+    "count": 1,
+    "id": "mo_glass:tinted_glass_stairs"
+  }
 }

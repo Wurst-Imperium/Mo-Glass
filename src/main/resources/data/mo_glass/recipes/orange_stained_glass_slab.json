@@ -1,15 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###"
-  ],
+  "category": "building",
+  "group": "stained_glass_slab",
   "key": {
     "#": {
       "item": "minecraft:orange_stained_glass"
     }
   },
+  "pattern": [
+    "###"
+  ],
   "result": {
-    "item": "mo_glass:orange_stained_glass_slab",
-    "count": 6
+    "count": 6,
+    "id": "mo_glass:orange_stained_glass_slab"
   }
 }

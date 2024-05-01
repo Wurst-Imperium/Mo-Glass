@@ -3,6 +3,8 @@
   "ingredient": {
     "item": "minecraft:white_stained_glass"
   },
-  "result": "mo_glass:white_stained_glass_slab",
-  "count": 2
+  "result": {
+    "count": 2,
+    "id": "mo_glass:white_stained_glass_slab"
+  }
 }
