@@ -192,7 +192,7 @@ public enum MoGlassBlocks
 	
 	private static void registerBlock(Block block, String idPath)
 	{
-		Identifier identifier = new Identifier("mo_glass", idPath);
+		Identifier identifier = Identifier.of("mo_glass", idPath);
 		Registry.register(Registries.BLOCK, identifier, block);
 		
 		Settings itemSettings = new Item.Settings();
