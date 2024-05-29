@@ -108,7 +108,6 @@ afterEvaluate {
 	tasks.publishMods.dependsOn moveDevLibs
 	tasks.publishCurseforge.dependsOn moveDevLibs
 	tasks.publishModrinth.dependsOn moveDevLibs
-	tasks.github.dependsOn moveDevLibs
 }
 
 task moveDevLibs(dependsOn: [remapJar, remapSourcesJar]) {
