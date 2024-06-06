@@ -1,5 +1,6 @@
 {
   "block.mo_glass.glass_slab": "Стеклянная плита",
+  "block.mo_glass.tinted_glass_slab": "Тонированная стеклянная плита",
   "block.mo_glass.white_stained_glass_slab": "Белая стеклянная плита",
   "block.mo_glass.orange_stained_glass_slab": "Оранжевая стеклянная плита",
   "block.mo_glass.magenta_stained_glass_slab": "Пурпурная стеклянная плита",
@@ -17,6 +18,7 @@
   "block.mo_glass.red_stained_glass_slab": "Красная стеклянная плита",
   "block.mo_glass.black_stained_glass_slab": "Черная стеклянная плита",
   "block.mo_glass.glass_stairs": "Стеклянные ступеньки",
+  "block.mo_glass.tinted_glass_stairs": "Тонированные стеклянные ступеньки",
   "block.mo_glass.white_stained_glass_stairs": "Белые стеклянные ступеньки",
   "block.mo_glass.orange_stained_glass_stairs": "Оранжевые стеклянные ступеньки",
   "block.mo_glass.magenta_stained_glass_stairs": "Пурпурные стеклянные ступеньки",
