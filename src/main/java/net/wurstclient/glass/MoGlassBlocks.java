@@ -13,7 +13,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.enums.Instrument;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -30,13 +30,13 @@ public enum MoGlassBlocks
 	;
 	
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		AbstractBlock.Settings.create().instrument(Instrument.HAT)
+		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		AbstractBlock.Settings.create().instrument(Instrument.HAT)
+		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
 			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 			.suffocates(Blocks::never).blockVision(Blocks::never));
@@ -192,7 +192,7 @@ public enum MoGlassBlocks
 	
 	private static void registerBlock(Block block, String idPath)
 	{
-		Identifier identifier = new Identifier("mo_glass", idPath);
+		Identifier identifier = Identifier.of("mo_glass", idPath);
 		Registry.register(Registries.BLOCK, identifier, block);
 		
 		Settings itemSettings = new Item.Settings();
@@ -204,7 +204,7 @@ public enum MoGlassBlocks
 	{
 		return new StainedGlassSlabBlock(color,
 			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(Instrument.HAT).strength(0.3F)
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
 				.sounds(BlockSoundGroup.GLASS).nonOpaque()
 				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 				.suffocates(Blocks::never).blockVision(Blocks::never));
@@ -215,7 +215,7 @@ public enum MoGlassBlocks
 	{
 		return new StainedGlassStairsBlock(color,
 			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(Instrument.HAT).strength(0.3F)
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
 				.sounds(BlockSoundGroup.GLASS).nonOpaque()
 				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 				.suffocates(Blocks::never).blockVision(Blocks::never));
