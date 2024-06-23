@@ -1,7 +1,13 @@
 {
   "variants": {
-    "type=bottom": { "model": "mo_glass:block/glass_slab" },
-    "type=top": { "model": "mo_glass:block/glass_slab_top" },
-    "type=double": { "model": "block/glass" }
+    "type=bottom": {
+      "model": "mo_glass:block/glass_slab"
+    },
+    "type=top": {
+      "model": "mo_glass:block/glass_slab_top"
+    },
+    "type=double": {
+      "model": "block/glass"
+    }
   }
 }
