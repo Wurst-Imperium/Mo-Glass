@@ -8,8 +8,7 @@
     "StainedGlassBlockMixin",
     "TintedGlassBlockMixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

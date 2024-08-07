@@ -2,11 +2,10 @@
   "schemaVersion": 1,
   "id": "mo_glass",
   "version": "${version}",
-
   "name": "Mo Glass",
   "description": "Adds glass stairs and glass slabs to Minecraft.",
   "authors": [
-  	"Alexander01998"
+    "Alexander01998"
   ],
   "contact": {
     "homepage": "https://www.wimods.net/mo-glass/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+website+link",
@@ -15,10 +14,8 @@
     "email": "contact.wurstimperium@gmail.com",
     "twitter": "https://twitter.com/Wurst_Imperium"
   },
-
   "license": "GPL-3.0-or-later",
   "icon": "assets/mo_glass/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -31,7 +28,6 @@
   "mixins": [
     "mo-glass.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.15.9",
     "fabric-api": ">=0.99.1",

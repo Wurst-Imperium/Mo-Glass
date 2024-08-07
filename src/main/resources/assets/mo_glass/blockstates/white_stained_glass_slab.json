@@ -1,7 +1,13 @@
 {
   "variants": {
-    "type=bottom": { "model": "mo_glass:block/white_stained_glass_slab" },
-    "type=top": { "model": "mo_glass:block/white_stained_glass_slab_top" },
-    "type=double": { "model": "block/white_stained_glass" }
+    "type=bottom": {
+      "model": "mo_glass:block/white_stained_glass_slab"
+    },
+    "type=top": {
+      "model": "mo_glass:block/white_stained_glass_slab_top"
+    },
+    "type=double": {
+      "model": "block/white_stained_glass"
+    }
   }
 }
