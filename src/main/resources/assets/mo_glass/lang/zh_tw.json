@@ -1,5 +1,6 @@
 {
   "block.mo_glass.glass_slab": "玻璃半磚",
+  "block.mo_glass.tinted_glass_slab": "遮光玻璃半磚",
   "block.mo_glass.white_stained_glass_slab": "白色玻璃半磚",
   "block.mo_glass.orange_stained_glass_slab": "橙色玻璃半磚",
   "block.mo_glass.magenta_stained_glass_slab": "洋紅色玻璃半磚",
@@ -17,6 +18,7 @@
   "block.mo_glass.red_stained_glass_slab": "紅色玻璃半磚",
   "block.mo_glass.black_stained_glass_slab": "黑色玻璃半磚",
   "block.mo_glass.glass_stairs": "玻璃階梯",
+  "block.mo_glass.tinted_glass_stairs": "遮光玻璃階梯",
   "block.mo_glass.white_stained_glass_stairs": "白色玻璃階梯",
   "block.mo_glass.orange_stained_glass_stairs": "橙色玻璃階梯",
   "block.mo_glass.magenta_stained_glass_stairs": "洋紅色玻璃階梯",
