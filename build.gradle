@@ -86,7 +86,7 @@ publishMods {
 	file = remapJar.archiveFile
 	def versionString = project.version as String
 	def ghVersion = "v" + versionString.substring(0, versionString.indexOf("-"))
-	def changelogUrl = "https://www.wimods.net/mo-glass/mo-glass-1-8-1/"
+	def changelogUrl = "https://www.wimods.net/mo-glass/mo-glass-1-9/"
 	def archivesName = project.base.archivesName.get() as String
 	additionalFiles.from(
 		file("${project.buildDir}/libs/${archivesName}-${versionString}-sources.jar"),
