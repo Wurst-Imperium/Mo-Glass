@@ -35,7 +35,8 @@
     "java": ">=21"
   },
   "suggests": {
-    "flamingo": "*"
+    "translucent-glass": ">=0.2.0",
+    "wi_zoom": "*"
   },
   "custom": {
     "modmenu": {
