@@ -9,6 +9,7 @@ package net.wurstclient.glass;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -139,8 +140,15 @@ public enum MoGlassBlocks
 	
 	public static void initialize()
 	{
-		registerBlockCutoutMipped(GLASS_SLAB, "glass_slab");
-		registerBlockCutoutMipped(GLASS_STAIRS, "glass_stairs");
+		if(FabricLoader.getInstance().isModLoaded("translucent-glass"))
+		{
+			registerBlockTranslucent(GLASS_SLAB, "glass_slab");
+			registerBlockTranslucent(GLASS_STAIRS, "glass_stairs");
+		}else
+		{
+			registerBlockCutoutMipped(GLASS_SLAB, "glass_slab");
+			registerBlockCutoutMipped(GLASS_STAIRS, "glass_stairs");
+		}
 		
 		registerBlockTranslucent(TINTED_GLASS_SLAB, "tinted_glass_slab");
 		registerBlockTranslucent(TINTED_GLASS_STAIRS, "tinted_glass_stairs");
