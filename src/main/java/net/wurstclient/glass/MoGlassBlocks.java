@@ -144,6 +144,7 @@ public enum MoGlassBlocks
 		{
 			registerBlockTranslucent(GLASS_SLAB, "glass_slab");
 			registerBlockTranslucent(GLASS_STAIRS, "glass_stairs");
+			
 		}else
 		{
 			registerBlockCutoutMipped(GLASS_SLAB, "glass_slab");
