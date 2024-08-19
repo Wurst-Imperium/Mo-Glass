@@ -321,8 +321,7 @@ public final class TintedGlassStairsBlock extends StairsBlock
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state, BlockView world,
-		BlockPos pos)
+	public boolean isTransparent(BlockState state)
 	{
 		return false;
 	}

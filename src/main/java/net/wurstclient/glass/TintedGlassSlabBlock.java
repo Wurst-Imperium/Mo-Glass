@@ -128,16 +128,14 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state, BlockView world,
-		BlockPos pos)
+	public boolean isTransparent(BlockState state)
 	{
 		return false;
 	}
 	
 	@Override
-	public int getOpacity(BlockState state, BlockView world, BlockPos pos)
+	public int getOpacity(BlockState state)
 	{
-		return state.get(TYPE) == SlabType.DOUBLE ? world.getMaxLightLevel()
-			: 0;
+		return state.get(TYPE) == SlabType.DOUBLE ? 15 : 0;
 	}
 }

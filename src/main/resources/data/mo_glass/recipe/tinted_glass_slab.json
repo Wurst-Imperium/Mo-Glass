@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "minecraft:tinted_glass"
-    }
+    "#": "minecraft:tinted_glass"
   },
   "pattern": [
     "###"
