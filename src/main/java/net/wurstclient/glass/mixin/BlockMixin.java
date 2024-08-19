@@ -35,7 +35,7 @@ public abstract class BlockMixin extends AbstractBlock
 	 * See {@link MoGlassTags#NON_OPAQUE_FOR_CULLING} for why this exists.
 	 */
 	@Inject(at = @At("HEAD"),
-		method = "shouldDrawSide(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;)Z",
+		method = "shouldDrawSide(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
 		cancellable = true)
 	private static void onShouldDrawSide(BlockState state,
 		BlockState otherState, Direction direction,
