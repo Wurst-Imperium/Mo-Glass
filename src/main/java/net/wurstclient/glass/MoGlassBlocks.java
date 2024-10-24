@@ -42,14 +42,18 @@ public enum MoGlassBlocks
 			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
-	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+	public static final Block TINTED_GLASS_SLAB =
+		new TintedGlassSlabBlock(AbstractBlock.Settings.create()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).mapColor(MapColor.GRAY)
+			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
-	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
+	public static final Block TINTED_GLASS_STAIRS =
+		new TintedGlassStairsBlock(AbstractBlock.Settings.create()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sounds(BlockSoundGroup.GLASS).mapColor(MapColor.GRAY)
+			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
 			.suffocates(Blocks::never).blockVision(Blocks::never));
 	
 	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =

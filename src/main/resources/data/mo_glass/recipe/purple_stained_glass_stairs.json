@@ -3,9 +3,7 @@
   "category": "building",
   "group": "stained_glass_stairs",
   "key": {
-    "#": {
-      "item": "minecraft:purple_stained_glass"
-    }
+    "#": "minecraft:purple_stained_glass"
   },
   "pattern": [
     "#  ",

@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:yellow_stained_glass"
-  },
+  "ingredient": "minecraft:yellow_stained_glass",
   "result": {
     "count": 1,
     "id": "mo_glass:yellow_stained_glass_stairs"
