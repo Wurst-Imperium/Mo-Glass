@@ -11,24 +11,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.world.chunk.light.ChunkLightProvider;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.lighting.LightEngine;
 import net.wurstclient.glass.MoGlassTags;
 
-@Mixin(ChunkLightProvider.class)
-public class ChunkLightProviderMixin
+@Mixin(LightEngine.class)
+public class LightEngineMixin
 {
 	/**
 	 * See {@link MoGlassTags#OPAQUE_FOR_LIGHTING} for why this exists.
 	 */
-	@Redirect(
-		at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/block/BlockState;isOpaque()Z",
-			ordinal = 0),
-		method = "isTrivialForLighting(Lnet/minecraft/block/BlockState;)Z")
+	@Redirect(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/world/level/block/state/BlockState;canOcclude()Z",
+		ordinal = 0),
+		method = "isEmptyShape(Lnet/minecraft/world/level/block/state/BlockState;)Z")
 	private static boolean isOpaqueForLightingShape(BlockState blockState)
 	{
-		return blockState.isOpaque()
-			|| blockState.isIn(MoGlassTags.OPAQUE_FOR_LIGHTING);
+		return blockState.canOcclude()
+			|| blockState.is(MoGlassTags.OPAQUE_FOR_LIGHTING);
 	}
 }

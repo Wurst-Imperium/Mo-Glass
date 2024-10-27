@@ -1,0 +1,4 @@
+{
+  "render_type": "minecraft:cutout_mipped",
+  "parent": "block/glass"
+}

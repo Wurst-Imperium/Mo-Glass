@@ -7,7 +7,7 @@
       "model": "mo_glass:block/magenta_stained_glass_slab_top"
     },
     "type=double": {
-      "model": "block/magenta_stained_glass"
+      "model": "mo_glass:block/magenta_stained_glass_slab_double"
     }
   }
 }

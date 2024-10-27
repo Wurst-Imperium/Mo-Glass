@@ -18,7 +18,7 @@ Mo Glass is a Minecraft mod that adds glass stairs and glass slabs, including st
 
    ```powershell
    ./gradlew.bat --stop
-   ./gradlew.bat genSources eclipse
+   ./gradlew.bat eclipse
    ```
 
 3. In Eclipse, go to `Import...` > `Existing Projects into Workspace` and select this project.

@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:cutout_mipped",
   "parent": "mo_glass:block/template_glass_stairs_inner",
   "textures": {
     "full": "block/glass",

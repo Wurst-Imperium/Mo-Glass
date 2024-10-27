@@ -7,7 +7,7 @@
       "model": "mo_glass:block/light_gray_stained_glass_slab_top"
     },
     "type=double": {
-      "model": "block/light_gray_stained_glass"
+      "model": "mo_glass:block/light_gray_stained_glass_slab_double"
     }
   }
 }

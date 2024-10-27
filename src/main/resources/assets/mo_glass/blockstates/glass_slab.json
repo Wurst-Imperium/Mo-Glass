@@ -7,7 +7,7 @@
       "model": "mo_glass:block/glass_slab_top"
     },
     "type=double": {
-      "model": "block/glass"
+      "model": "mo_glass:block/glass_slab_double"
     }
   }
 }

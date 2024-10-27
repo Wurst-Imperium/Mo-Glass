@@ -7,7 +7,7 @@
       "model": "mo_glass:block/pink_stained_glass_slab_top"
     },
     "type=double": {
-      "model": "block/pink_stained_glass"
+      "model": "mo_glass:block/pink_stained_glass_slab_double"
     }
   }
 }

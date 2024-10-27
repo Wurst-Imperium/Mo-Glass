@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:translucent",
   "parent": "block/slab",
   "textures": {
     "bottom": "minecraft:block/green_stained_glass",

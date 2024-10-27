@@ -7,226 +7,204 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.Settings;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public enum MoGlassBlocks
 {
 	;
 	
-	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+	public static final DeferredRegister.Blocks BLOCKS =
+		DeferredRegister.createBlocks(MoGlass.MODID);
 	
-	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+	public static final DeferredRegister.Items ITEMS =
+		DeferredRegister.createItems(MoGlass.MODID);
 	
-	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+	public static final DeferredBlock<Block> GLASS_SLAB =
+		registerBlock("glass_slab",
+			() -> new GlassSlabBlock(BlockBehaviour.Properties.of()
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(MoGlassBlocks::never)
+				.isRedstoneConductor(MoGlassBlocks::never)
+				.isSuffocating(MoGlassBlocks::never)
+				.isViewBlocking(MoGlassBlocks::never)));
 	
-	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+	public static final DeferredBlock<Block> GLASS_STAIRS =
+		registerBlock("glass_stairs",
+			() -> new GlassStairsBlock(BlockBehaviour.Properties.of()
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(MoGlassBlocks::never)
+				.isRedstoneConductor(MoGlassBlocks::never)
+				.isSuffocating(MoGlassBlocks::never)
+				.isViewBlocking(MoGlassBlocks::never)));
 	
-	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<Block> TINTED_GLASS_SLAB =
+		registerBlock("tinted_glass_slab",
+			() -> new TintedGlassSlabBlock(BlockBehaviour.Properties
+				.ofFullCopy(Blocks.GLASS).mapColor(MapColor.COLOR_GRAY)
+				.noOcclusion().isValidSpawn(MoGlassBlocks::never)
+				.isRedstoneConductor(MoGlassBlocks::never)
+				.isSuffocating(MoGlassBlocks::never)
+				.isViewBlocking(MoGlassBlocks::never)));
+	
+	public static final DeferredBlock<Block> TINTED_GLASS_STAIRS =
+		registerBlock("tinted_glass_stairs",
+			() -> new TintedGlassStairsBlock(BlockBehaviour.Properties
+				.ofFullCopy(Blocks.GLASS).mapColor(MapColor.COLOR_GRAY)
+				.noOcclusion().isValidSpawn(MoGlassBlocks::never)
+				.isRedstoneConductor(MoGlassBlocks::never)
+				.isSuffocating(MoGlassBlocks::never)
+				.isViewBlocking(MoGlassBlocks::never)));
+	
+	public static final ArrayList<DeferredBlock<StainedGlassSlabBlock>> STAINED_GLASS_SLABS =
+		new ArrayList<>();
+	
+	public static final ArrayList<DeferredBlock<StainedGlassStairsBlock>> STAINED_GLASS_STAIRS =
+		new ArrayList<>();
+	
+	public static final DeferredBlock<StainedGlassSlabBlock> WHITE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.WHITE);
-	public static final StainedGlassSlabBlock ORANGE_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> ORANGE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.ORANGE);
-	public static final StainedGlassSlabBlock MAGENTA_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> MAGENTA_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.MAGENTA);
-	public static final StainedGlassSlabBlock LIGHT_BLUE_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> LIGHT_BLUE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.LIGHT_BLUE);
-	public static final StainedGlassSlabBlock YELLOW_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> YELLOW_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.YELLOW);
-	public static final StainedGlassSlabBlock LIME_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> LIME_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.LIME);
-	public static final StainedGlassSlabBlock PINK_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> PINK_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.PINK);
-	public static final StainedGlassSlabBlock GRAY_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> GRAY_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.GRAY);
-	public static final StainedGlassSlabBlock LIGHT_GRAY_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> LIGHT_GRAY_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.LIGHT_GRAY);
-	public static final StainedGlassSlabBlock CYAN_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> CYAN_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.CYAN);
-	public static final StainedGlassSlabBlock PURPLE_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> PURPLE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.PURPLE);
-	public static final StainedGlassSlabBlock BLUE_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> BLUE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.BLUE);
-	public static final StainedGlassSlabBlock BROWN_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> BROWN_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.BROWN);
-	public static final StainedGlassSlabBlock GREEN_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> GREEN_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.GREEN);
-	public static final StainedGlassSlabBlock RED_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> RED_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.RED);
-	public static final StainedGlassSlabBlock BLACK_STAINED_GLASS_SLAB =
+	public static final DeferredBlock<StainedGlassSlabBlock> BLACK_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.BLACK);
 	
-	public static final StainedGlassStairsBlock WHITE_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> WHITE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.WHITE);
-	public static final StainedGlassStairsBlock ORANGE_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> ORANGE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.ORANGE);
-	public static final StainedGlassStairsBlock MAGENTA_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> MAGENTA_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.MAGENTA);
-	public static final StainedGlassStairsBlock LIGHT_BLUE_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> LIGHT_BLUE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.LIGHT_BLUE);
-	public static final StainedGlassStairsBlock YELLOW_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> YELLOW_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.YELLOW);
-	public static final StainedGlassStairsBlock LIME_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> LIME_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.LIME);
-	public static final StainedGlassStairsBlock PINK_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> PINK_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.PINK);
-	public static final StainedGlassStairsBlock GRAY_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> GRAY_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.GRAY);
-	public static final StainedGlassStairsBlock LIGHT_GRAY_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> LIGHT_GRAY_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.LIGHT_GRAY);
-	public static final StainedGlassStairsBlock CYAN_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> CYAN_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.CYAN);
-	public static final StainedGlassStairsBlock PURPLE_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> PURPLE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.PURPLE);
-	public static final StainedGlassStairsBlock BLUE_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> BLUE_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.BLUE);
-	public static final StainedGlassStairsBlock BROWN_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> BROWN_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.BROWN);
-	public static final StainedGlassStairsBlock GREEN_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> GREEN_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.GREEN);
-	public static final StainedGlassStairsBlock RED_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> RED_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.RED);
-	public static final StainedGlassStairsBlock BLACK_STAINED_GLASS_STAIRS =
+	public static final DeferredBlock<StainedGlassStairsBlock> BLACK_STAINED_GLASS_STAIRS =
 		createStainedGlassStairs(DyeColor.BLACK);
 	
-	public static final StainedGlassSlabBlock[] STAINED_GLASS_SLABS =
-		{WHITE_STAINED_GLASS_SLAB, ORANGE_STAINED_GLASS_SLAB,
-			MAGENTA_STAINED_GLASS_SLAB, LIGHT_BLUE_STAINED_GLASS_SLAB,
-			YELLOW_STAINED_GLASS_SLAB, LIME_STAINED_GLASS_SLAB,
-			PINK_STAINED_GLASS_SLAB, GRAY_STAINED_GLASS_SLAB,
-			LIGHT_GRAY_STAINED_GLASS_SLAB, CYAN_STAINED_GLASS_SLAB,
-			PURPLE_STAINED_GLASS_SLAB, BLUE_STAINED_GLASS_SLAB,
-			BROWN_STAINED_GLASS_SLAB, GREEN_STAINED_GLASS_SLAB,
-			RED_STAINED_GLASS_SLAB, BLACK_STAINED_GLASS_SLAB};
-	
-	public static final StainedGlassStairsBlock[] STAINED_GLASS_STAIRS =
-		{WHITE_STAINED_GLASS_STAIRS, ORANGE_STAINED_GLASS_STAIRS,
-			MAGENTA_STAINED_GLASS_STAIRS, LIGHT_BLUE_STAINED_GLASS_STAIRS,
-			YELLOW_STAINED_GLASS_STAIRS, LIME_STAINED_GLASS_STAIRS,
-			PINK_STAINED_GLASS_STAIRS, GRAY_STAINED_GLASS_STAIRS,
-			LIGHT_GRAY_STAINED_GLASS_STAIRS, CYAN_STAINED_GLASS_STAIRS,
-			PURPLE_STAINED_GLASS_STAIRS, BLUE_STAINED_GLASS_STAIRS,
-			BROWN_STAINED_GLASS_STAIRS, GREEN_STAINED_GLASS_STAIRS,
-			RED_STAINED_GLASS_STAIRS, BLACK_STAINED_GLASS_STAIRS};
-	
-	public static void initialize()
+	private static <T extends Block> DeferredBlock<T> registerBlock(
+		String idPath, Supplier<T> block)
 	{
-		if(FabricLoader.getInstance().isModLoaded("translucent-glass"))
-		{
-			registerBlockTranslucent(GLASS_SLAB, "glass_slab");
-			registerBlockTranslucent(GLASS_STAIRS, "glass_stairs");
-			
-		}else
-		{
-			registerBlockCutoutMipped(GLASS_SLAB, "glass_slab");
-			registerBlockCutoutMipped(GLASS_STAIRS, "glass_stairs");
-		}
+		System.out.println("Registering block & item for mo_glass:" + idPath);
+		DeferredBlock<T> result = BLOCKS.register(idPath, block);
+		ITEMS.register(idPath,
+			() -> new BlockItem(result.get(), new Item.Properties()));
 		
-		registerBlockTranslucent(TINTED_GLASS_SLAB, "tinted_glass_slab");
-		registerBlockTranslucent(TINTED_GLASS_STAIRS, "tinted_glass_stairs");
-		
-		String[] colors = {"white", "orange", "magenta", "light_blue", "yellow",
-			"lime", "pink", "gray", "light_gray", "cyan", "purple", "blue",
-			"brown", "green", "red", "black"};
-		
-		for(int i = 0; i < 16; i++)
-			registerBlockTranslucent(STAINED_GLASS_SLABS[i],
-				colors[i] + "_stained_glass_slab");
-		
-		for(int i = 0; i < 16; i++)
-			registerBlockTranslucent(STAINED_GLASS_STAIRS[i],
-				colors[i] + "_stained_glass_stairs");
-		
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
-			.register(content -> {
-				
-				// stairs
-				content.addBefore(Blocks.GLASS_PANE, GLASS_STAIRS,
-					TINTED_GLASS_STAIRS);
-				content.addBefore(Blocks.GLASS_PANE, STAINED_GLASS_STAIRS);
-				
-				// slabs
-				content.addBefore(Blocks.GLASS_PANE, GLASS_SLAB,
-					TINTED_GLASS_SLAB);
-				content.addBefore(Blocks.GLASS_PANE, STAINED_GLASS_SLABS);
-			});
+		return result;
 	}
 	
-	private static void registerBlockTranslucent(Block block, String idPath)
-	{
-		registerBlock(block, idPath);
-		
-		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getTranslucent());
-	}
-	
-	private static void registerBlockCutoutMipped(Block block, String idPath)
-	{
-		registerBlock(block, idPath);
-		
-		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getCutoutMipped());
-	}
-	
-	private static void registerBlock(Block block, String idPath)
-	{
-		Identifier identifier = Identifier.of("mo_glass", idPath);
-		Registry.register(Registries.BLOCK, identifier, block);
-		
-		Settings itemSettings = new Item.Settings();
-		BlockItem blockItem = new BlockItem(block, itemSettings);
-		Registry.register(Registries.ITEM, identifier, blockItem);
-	}
-	
-	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
-	{
-		return new StainedGlassSlabBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never));
-	}
-	
-	private static StainedGlassStairsBlock createStainedGlassStairs(
+	private static DeferredBlock<StainedGlassSlabBlock> createStainedGlassSlab(
 		DyeColor color)
 	{
-		return new StainedGlassStairsBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never));
+		DeferredBlock<StainedGlassSlabBlock> result =
+			registerBlock(color + "_stained_glass_slab",
+				() -> new StainedGlassSlabBlock(color,
+					BlockBehaviour.Properties.of().mapColor(color)
+						.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+						.sound(SoundType.GLASS).noOcclusion()
+						.isValidSpawn(MoGlassBlocks::never)
+						.isRedstoneConductor(MoGlassBlocks::never)
+						.isSuffocating(MoGlassBlocks::never)
+						.isViewBlocking(MoGlassBlocks::never)));
+		
+		STAINED_GLASS_SLABS.add(result);
+		return result;
+	}
+	
+	private static DeferredBlock<StainedGlassStairsBlock> createStainedGlassStairs(
+		DyeColor color)
+	{
+		DeferredBlock<StainedGlassStairsBlock> result =
+			registerBlock(color + "_stained_glass_stairs",
+				() -> new StainedGlassStairsBlock(color,
+					BlockBehaviour.Properties.of().mapColor(color)
+						.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+						.sound(SoundType.GLASS).noOcclusion()
+						.isValidSpawn(MoGlassBlocks::never)
+						.isRedstoneConductor(MoGlassBlocks::never)
+						.isSuffocating(MoGlassBlocks::never)
+						.isViewBlocking(MoGlassBlocks::never)));
+		
+		STAINED_GLASS_STAIRS.add(result);
+		return result;
+	}
+	
+	// Copies of the Blocks.never() methods because the originals are not
+	// accessible from here.
+	
+	private static Boolean never(BlockState blockState, BlockGetter blockView,
+		BlockPos blockPos, EntityType<?> entityType)
+	{
+		return false;
+	}
+	
+	private static boolean never(BlockState blockState, BlockGetter blockView,
+		BlockPos blockPos)
+	{
+		return false;
 	}
 }

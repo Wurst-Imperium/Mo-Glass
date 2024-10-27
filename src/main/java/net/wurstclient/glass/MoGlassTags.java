@@ -7,11 +7,11 @@
  */
 package net.wurstclient.glass;
 
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.wurstclient.glass.mixin.ChunkLightProviderMixin;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.wurstclient.glass.mixin.LightEngineMixin;
 
 public enum MoGlassTags
 {
@@ -36,7 +36,7 @@ public enum MoGlassTags
 	 * be fixed.
 	 *
 	 * <p>
-	 * See {@link ChunkLightProviderMixin} for how I modified the default
+	 * See {@link LightEngineMixin} for how I modified the default
 	 * lighting engine to make this work. If your mod replaces the default
 	 * lighting engine (hi jellysquid), you will likely need to make a similar
 	 * change to make it compatible with Mo Glass's tinted glass blocks.
@@ -46,6 +46,7 @@ public enum MoGlassTags
 	
 	private static TagKey<Block> createTag(String idPath)
 	{
-		return TagKey.of(RegistryKeys.BLOCK, Identifier.of("mo_glass", idPath));
+		return TagKey.create(Registries.BLOCK,
+			ResourceLocation.fromNamespaceAndPath("mo_glass", idPath));
 	}
 }

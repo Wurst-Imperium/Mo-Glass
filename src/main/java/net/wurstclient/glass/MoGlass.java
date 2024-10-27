@@ -7,24 +7,50 @@
  */
 package net.wurstclient.glass;
 
-public enum MoGlass
+import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+
+@Mod(MoGlass.MODID)
+@EventBusSubscriber(modid = MoGlass.MODID, bus = EventBusSubscriber.Bus.MOD)
+public final class MoGlass
 {
-	INSTANCE;
+	public static final String MODID = "mo_glass";
+	private static boolean initialized;
 	
-	private boolean client;
-	
-	public void initialize(boolean client)
+	public MoGlass(IEventBus modBus, ModContainer container)
 	{
-		this.client = client;
+		if(initialized)
+			throw new RuntimeException("MoGlass constructor ran twice!");
+		
+		initialized = true;
 		System.out.println("Starting Mo Glass...");
-		MoGlassBlocks.initialize();
+		MoGlassBlocks.BLOCKS.register(modBus);
+		MoGlassBlocks.ITEMS.register(modBus);
 	}
 	
-	/**
-	 * @return true if running on the client-side
-	 */
-	public boolean isClient()
+	@SubscribeEvent
+	public static void onBuildCreativeTabContents(
+		BuildCreativeModeTabContentsEvent event)
 	{
-		return client;
+		if(event.getTabKey() != CreativeModeTabs.COLORED_BLOCKS)
+			return;
+		
+		// stairs
+		event.accept(MoGlassBlocks.GLASS_STAIRS);
+		event.accept(MoGlassBlocks.TINTED_GLASS_STAIRS);
+		for(DeferredBlock<StainedGlassStairsBlock> stairs : MoGlassBlocks.STAINED_GLASS_STAIRS)
+			event.accept(stairs);
+		
+		// slabs
+		event.accept(MoGlassBlocks.GLASS_SLAB);
+		event.accept(MoGlassBlocks.TINTED_GLASS_SLAB);
+		for(DeferredBlock<StainedGlassSlabBlock> slab : MoGlassBlocks.STAINED_GLASS_SLABS)
+			event.accept(slab);
 	}
 }

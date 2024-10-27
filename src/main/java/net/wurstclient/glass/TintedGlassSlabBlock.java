@@ -7,31 +7,29 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class TintedGlassSlabBlock extends SlabBlock
 {
-	public TintedGlassSlabBlock(Settings settings)
+	public TintedGlassSlabBlock(BlockBehaviour.Properties settings)
 	{
 		super(settings);
 	}
 	
 	@Override
-	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+	public boolean skipRendering(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
 		if(stateFrom.getBlock() == Blocks.TINTED_GLASS)
@@ -41,18 +39,18 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
+		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS.get())
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
-		return super.isSideInvisible(state, stateFrom, direction);
+		return super.skipRendering(state, stateFrom, direction);
 	}
 	
 	private boolean isInvisibleToGlassSlab(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
-		SlabType type = state.get(SlabBlock.TYPE);
-		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
+		SlabType type = state.getValue(SlabBlock.TYPE);
+		SlabType typeFrom = stateFrom.getValue(SlabBlock.TYPE);
 		
 		switch(direction)
 		{
@@ -81,18 +79,18 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	private boolean isInvisibleToGlassStairs(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
-		SlabType type = state.get(SlabBlock.TYPE);
-		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
-		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
+		SlabType type = state.getValue(SlabBlock.TYPE);
+		Half halfFrom = stateFrom.getValue(StairBlock.HALF);
+		Direction facingFrom = stateFrom.getValue(StairBlock.FACING);
 		
 		// up
 		if(direction == Direction.UP)
-			if(halfFrom == BlockHalf.BOTTOM)
+			if(halfFrom == Half.BOTTOM)
 				return true;
 			
 		// down
 		if(direction == Direction.DOWN)
-			if(halfFrom == BlockHalf.TOP)
+			if(halfFrom == Half.TOP)
 				return true;
 			
 		// other stairs rear
@@ -100,12 +98,12 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			return true;
 		
 		// sides
-		if(direction.getHorizontal() != -1)
+		if(direction.get2DDataValue() != -1)
 		{
-			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
+			if(type == SlabType.BOTTOM && halfFrom == Half.BOTTOM)
 				return true;
 			
-			if(type == SlabType.TOP && halfFrom == BlockHalf.TOP)
+			if(type == SlabType.TOP && halfFrom == Half.TOP)
 				return true;
 		}
 		
@@ -113,31 +111,30 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
-		BlockPos pos, ShapeContext context)
+	public VoxelShape getVisualShape(BlockState state, BlockGetter world,
+		BlockPos pos, CollisionContext context)
 	{
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 	
 	@Override
-	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState state,
-		BlockView world, BlockPos pos)
+	public float getShadeBrightness(BlockState state, BlockGetter world,
+		BlockPos pos)
 	{
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state, BlockView world,
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter world,
 		BlockPos pos)
 	{
 		return false;
 	}
 	
 	@Override
-	public int getOpacity(BlockState state, BlockView world, BlockPos pos)
+	public int getLightBlock(BlockState state, BlockGetter world, BlockPos pos)
 	{
-		return state.get(TYPE) == SlabType.DOUBLE ? world.getMaxLightLevel()
-			: 0;
+		return state.getValue(TYPE) == SlabType.DOUBLE
+			? world.getMaxLightLevel() : 0;
 	}
 }
