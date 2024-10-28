@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:lime_stained_glass"
-  },
+  "ingredient": "minecraft:lime_stained_glass",
   "result": {
     "count": 1,
     "id": "mo_glass:lime_stained_glass_stairs"

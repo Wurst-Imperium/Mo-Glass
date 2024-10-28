@@ -320,8 +320,7 @@ public final class GlassStairsBlock extends StairBlock
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter world,
-		BlockPos pos)
+	public boolean propagatesSkylightDown(BlockState state)
 	{
 		return true;
 	}

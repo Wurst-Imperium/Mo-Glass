@@ -125,16 +125,14 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter world,
-		BlockPos pos)
+	public boolean propagatesSkylightDown(BlockState state)
 	{
 		return false;
 	}
 	
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter world, BlockPos pos)
+	public int getLightBlock(BlockState state)
 	{
-		return state.getValue(TYPE) == SlabType.DOUBLE
-			? world.getMaxLightLevel() : 0;
+		return state.getValue(TYPE) == SlabType.DOUBLE ? 15 : 0;
 	}
 }

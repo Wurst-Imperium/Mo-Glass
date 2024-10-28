@@ -3,9 +3,7 @@
   "category": "building",
   "group": "stained_glass_slab",
   "key": {
-    "#": {
-      "item": "minecraft:blue_stained_glass"
-    }
+    "#": "minecraft:blue_stained_glass"
   },
   "pattern": [
     "###"

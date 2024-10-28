@@ -8,16 +8,13 @@
 package net.wurstclient.glass;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,42 +34,43 @@ public enum MoGlassBlocks
 		DeferredRegister.createItems(MoGlass.MODID);
 	
 	public static final DeferredBlock<Block> GLASS_SLAB =
-		registerBlock("glass_slab",
-			() -> new GlassSlabBlock(BlockBehaviour.Properties.of()
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+		registerBlock("glass_slab", GlassSlabBlock::new,
+			BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+				.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
 				.sound(SoundType.GLASS).noOcclusion()
 				.isValidSpawn(MoGlassBlocks::never)
 				.isRedstoneConductor(MoGlassBlocks::never)
 				.isSuffocating(MoGlassBlocks::never)
-				.isViewBlocking(MoGlassBlocks::never)));
+				.isViewBlocking(MoGlassBlocks::never));
 	
 	public static final DeferredBlock<Block> GLASS_STAIRS =
-		registerBlock("glass_stairs",
-			() -> new GlassStairsBlock(BlockBehaviour.Properties.of()
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+		registerBlock("glass_stairs", GlassStairsBlock::new,
+			BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+				.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
 				.sound(SoundType.GLASS).noOcclusion()
 				.isValidSpawn(MoGlassBlocks::never)
 				.isRedstoneConductor(MoGlassBlocks::never)
 				.isSuffocating(MoGlassBlocks::never)
-				.isViewBlocking(MoGlassBlocks::never)));
+				.isViewBlocking(MoGlassBlocks::never));
 	
-	public static final DeferredBlock<Block> TINTED_GLASS_SLAB =
-		registerBlock("tinted_glass_slab",
-			() -> new TintedGlassSlabBlock(BlockBehaviour.Properties
-				.ofFullCopy(Blocks.GLASS).mapColor(MapColor.COLOR_GRAY)
-				.noOcclusion().isValidSpawn(MoGlassBlocks::never)
-				.isRedstoneConductor(MoGlassBlocks::never)
-				.isSuffocating(MoGlassBlocks::never)
-				.isViewBlocking(MoGlassBlocks::never)));
+	public static final DeferredBlock<Block> TINTED_GLASS_SLAB = registerBlock(
+		"tinted_glass_slab", TintedGlassSlabBlock::new,
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
+			.isValidSpawn(MoGlassBlocks::never)
+			.isRedstoneConductor(MoGlassBlocks::never)
+			.isSuffocating(MoGlassBlocks::never)
+			.isViewBlocking(MoGlassBlocks::never));
 	
 	public static final DeferredBlock<Block> TINTED_GLASS_STAIRS =
-		registerBlock("tinted_glass_stairs",
-			() -> new TintedGlassStairsBlock(BlockBehaviour.Properties
-				.ofFullCopy(Blocks.GLASS).mapColor(MapColor.COLOR_GRAY)
-				.noOcclusion().isValidSpawn(MoGlassBlocks::never)
+		registerBlock("tinted_glass_stairs", TintedGlassStairsBlock::new,
+			BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+				.strength(0.3F).sound(SoundType.GLASS)
+				.mapColor(MapColor.COLOR_GRAY)
+				.isValidSpawn(MoGlassBlocks::never)
 				.isRedstoneConductor(MoGlassBlocks::never)
 				.isSuffocating(MoGlassBlocks::never)
-				.isViewBlocking(MoGlassBlocks::never)));
+				.isViewBlocking(MoGlassBlocks::never));
 	
 	public static final ArrayList<DeferredBlock<StainedGlassSlabBlock>> STAINED_GLASS_SLABS =
 		new ArrayList<>();
@@ -147,12 +145,13 @@ public enum MoGlassBlocks
 		createStainedGlassStairs(DyeColor.BLACK);
 	
 	private static <T extends Block> DeferredBlock<T> registerBlock(
-		String idPath, Supplier<T> block)
+		String idPath, Function<BlockBehaviour.Properties, T> blockBuilder,
+		BlockBehaviour.Properties props)
 	{
 		System.out.println("Registering block & item for mo_glass:" + idPath);
-		DeferredBlock<T> result = BLOCKS.register(idPath, block);
-		ITEMS.register(idPath,
-			() -> new BlockItem(result.get(), new Item.Properties()));
+		DeferredBlock<T> result =
+			BLOCKS.registerBlock(idPath, blockBuilder, props);
+		ITEMS.registerSimpleBlockItem(result);
 		
 		return result;
 	}
@@ -162,14 +161,14 @@ public enum MoGlassBlocks
 	{
 		DeferredBlock<StainedGlassSlabBlock> result =
 			registerBlock(color + "_stained_glass_slab",
-				() -> new StainedGlassSlabBlock(color,
-					BlockBehaviour.Properties.of().mapColor(color)
-						.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-						.sound(SoundType.GLASS).noOcclusion()
-						.isValidSpawn(MoGlassBlocks::never)
-						.isRedstoneConductor(MoGlassBlocks::never)
-						.isSuffocating(MoGlassBlocks::never)
-						.isViewBlocking(MoGlassBlocks::never)));
+				props -> new StainedGlassSlabBlock(color, props),
+				BlockBehaviour.Properties.of().mapColor(color)
+					.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+					.sound(SoundType.GLASS).noOcclusion()
+					.isValidSpawn(MoGlassBlocks::never)
+					.isRedstoneConductor(MoGlassBlocks::never)
+					.isSuffocating(MoGlassBlocks::never)
+					.isViewBlocking(MoGlassBlocks::never));
 		
 		STAINED_GLASS_SLABS.add(result);
 		return result;
@@ -180,14 +179,14 @@ public enum MoGlassBlocks
 	{
 		DeferredBlock<StainedGlassStairsBlock> result =
 			registerBlock(color + "_stained_glass_stairs",
-				() -> new StainedGlassStairsBlock(color,
-					BlockBehaviour.Properties.of().mapColor(color)
-						.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-						.sound(SoundType.GLASS).noOcclusion()
-						.isValidSpawn(MoGlassBlocks::never)
-						.isRedstoneConductor(MoGlassBlocks::never)
-						.isSuffocating(MoGlassBlocks::never)
-						.isViewBlocking(MoGlassBlocks::never)));
+				props -> new StainedGlassStairsBlock(color, props),
+				BlockBehaviour.Properties.of().mapColor(color)
+					.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+					.sound(SoundType.GLASS).noOcclusion()
+					.isValidSpawn(MoGlassBlocks::never)
+					.isRedstoneConductor(MoGlassBlocks::never)
+					.isSuffocating(MoGlassBlocks::never)
+					.isViewBlocking(MoGlassBlocks::never));
 		
 		STAINED_GLASS_STAIRS.add(result);
 		return result;

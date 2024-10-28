@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:white_stained_glass"
-  },
+  "ingredient": "minecraft:white_stained_glass",
   "result": {
     "count": 1,
     "id": "mo_glass:white_stained_glass_stairs"
