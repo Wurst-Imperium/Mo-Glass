@@ -100,7 +100,7 @@ public final class GlassSlabBlock extends SlabBlock
 			return true;
 		
 		// sides
-		if(direction.getHorizontal() != -1)
+		if(direction.getHorizontalQuarterTurns() != -1)
 		{
 			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
 				return true;
