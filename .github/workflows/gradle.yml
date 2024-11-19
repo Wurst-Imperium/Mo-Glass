@@ -51,7 +51,7 @@ jobs:
         cache-read-only: ${{ github.ref != 'refs/heads/master' && !contains(github.ref, 'neoforge') }}
 
     - name: Compile Java code
-      run: ./gradlew remapJar --stacktrace --warning-mode=fail
+      run: ./gradlew jar --stacktrace --warning-mode=fail
 
     - name: Validate JSON files
       run: ./gradlew spotlessJsonCheck || (echo "::error::JSON validation failed! Run './gradlew spotlessApply' to fix style issues, or check the full error message for syntax errors." && exit 1)
@@ -61,9 +61,6 @@ jobs:
 
     - name: Run unit tests
       run: ./gradlew test --stacktrace --warning-mode=fail
-
-    - name: Validate access widener
-      run: ./gradlew validateAccessWidener --stacktrace --warning-mode=fail
 
     - name: Build
       run: ./gradlew build --stacktrace --warning-mode=fail
