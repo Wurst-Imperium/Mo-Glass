@@ -90,6 +90,14 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
   psGlassVanilla = (pvGlass + pvBlocks) * f * pvGlass = (1 + 1) * 6 * 1 = 12&nbsp;
 </details>
 
+## What about connected textures mods?
+
+So far, all connected textures mods that I've seen only seem to work on full blocks. They don't generate connected textures for stairs or slabs, which makes using them with Mo Glass impossible.
+
+It's not that Mo Glass doesn't have support for connected textures, it's that connected textures mods don't have support for Mo Glass (or any other mod that adds stairs/slabs).
+
+This might change one day as people make new mods all the time, so do let me know if there is a connected texture mod that supports stairs now. I'd be happy to add the extra texture files needed (if any) to make that work with Mo Glass.
+
 ## Crafting Recipes
 
 <details>
