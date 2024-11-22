@@ -96,7 +96,7 @@ So far, all connected textures mods that I've seen only seem to work on full blo
 
 It's not that Mo Glass doesn't have support for connected textures, it's that connected textures mods don't have support for Mo Glass (or any other mod that adds stairs/slabs).
 
-This might change one day as people make new mods all the time, so do let me know if there a connected texture mod that supports stairs now. I'd be happy to add the extra texture files needed (if any) to make that work with Mo Glass.
+This might change one day as people make new mods all the time, so do let me know if there is a connected texture mod that supports stairs now. I'd be happy to add the extra texture files needed (if any) to make that work with Mo Glass.
 
 ## Crafting Recipes
 
