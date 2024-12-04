@@ -4,24 +4,25 @@ Mo Glass is a Minecraft mod that adds glass stairs and glass slabs, including st
 
 ![A Minecraft house with its roof made out of glass stairs, powered by the Mo Glass mod](https://user-images.githubusercontent.com/10100202/69939492-ab78a480-14e8-11ea-8aa7-c351657b334b.jpg)
 
-## Downloads (for users)
+## Downloads
 
 [![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wimods.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_content=Mo+Glass+GitHub+repo+download+button)
 
-## Setup (for developers)
+## Installation
 
-(This assumes that you are using Windows with [Eclipse](https://www.eclipse.org/downloads/) and [Java Development Kit 21](https://adoptium.net/?variant=openjdk21&jvmVariant=hotspot) already installed.)
+> [!IMPORTANT]
+> Always make sure that your modloader and all of your mods are made for the same Minecraft version. Your game will crash if you mix different versions.
 
-1. Clone / download the repository.
+### Installation using Fabric
 
-2. Run these two commands in PowerShell:
+1. Install [Fabric Loader](https://fabricmc.net/use/installer/).
+2. Add [Fabric API](https://modrinth.com/mod/fabric-api) to your mods folder.
+3. Add Mo Glass to your mods folder.
 
-   ```powershell
-   ./gradlew.bat --stop
-   ./gradlew.bat genSources eclipse
-   ```
+### Installation using NeoForge
 
-3. In Eclipse, go to `Import...` > `Existing Projects into Workspace` and select this project.
+1. Install [NeoForge](https://neoforged.net/).
+2. Add Mo Glass to your mods folder.
 
 ## Features
 
@@ -59,51 +60,53 @@ That's a lot of effort just to add two new blocks to the game - and a lot of opp
 <details>
   <summary>*Here's how I got those numbers: (click to expand)</summary>
   
-  possible variations of stairs:
+  possible variations of stairs:  
   pvStairs = 4 * 2 * 5 = 40
   
-  possible variations of slabs:
+  possible variations of slabs:  
   pvSlabs = 3
   
-  possible variations of glass blocks:
+  possible variations of glass blocks:  
   pvGlass = 1
   
-  possible variations of non-transparent blocks:
+  possible variations of non-transparent blocks:  
   pvBlocks = 1 (because any variations would be ignored when calculating transparency)
   
-  possible combinations combined:
-  pvAll = pvStairs + pvSlabs + pvGlass + pvBlocks&nbsp;= 40 + 3 + 1 + 1 = 45
+  possible combinations combined:  
+  pvAll = pvStairs + pvSlabs + pvGlass + pvBlocks = 40 + 3 + 1 + 1 = 45
   
-  possibly transparent faces of a block (including stairs, even though they have more faces):
+  possibly transparent faces of a block (including stairs, even though they have more faces):  
   f = 6
   
-  possible scenarios for transparency of stairs:
+  possible scenarios for transparency of stairs:  
   psStairs = pvAll * f * pvStairs = 45 * 6 * 40 = 10800
   
-  possible scenarios for transparency of slabs:
+  possible scenarios for transparency of slabs:  
   psSlabs = pvAll * f * pvSlabs = 45 * 6 * 3 = 810
   
-  possible scenarios for transparency of glass blocks:
+  possible scenarios for transparency of glass blocks:  
   psGlass = pvAll * f * pvGlass = 45 * 6 * 1 = 270
   
-  possible scenarios for transparency of glass blocks if glass stairs and slabs don't exist:
-  psGlassVanilla = (pvGlass + pvBlocks) * f * pvGlass = (1 + 1) * 6 * 1 = 12&nbsp;
+  possible scenarios for transparency of glass blocks if glass stairs and slabs don't exist:  
+  psGlassVanilla = (pvGlass + pvBlocks) * f * pvGlass = (1 + 1) * 6 * 1 = 12
 </details>
 
 ## What about connected textures mods?
 
-So far, all connected textures mods that I've seen only seem to work on full blocks. They don't generate connected textures for stairs or slabs, which makes using them with Mo Glass impossible.
+~~So far, all connected textures mods that I've seen only seem to work on full blocks. They don't generate connected textures for stairs or slabs, which makes using them with Mo Glass impossible.~~
 
-It's not that Mo Glass doesn't have support for connected textures, it's that connected textures mods don't have support for Mo Glass (or any other mod that adds stairs/slabs).
+~~It's not that Mo Glass doesn't have support for connected textures, it's that connected textures mods don't have support for Mo Glass (or any other mod that adds stairs/slabs).~~
 
-This might change one day as people make new mods all the time, so do let me know if there is a connected texture mod that supports stairs now. I'd be happy to add the extra texture files needed (if any) to make that work with Mo Glass.
+~~This might change one day as people make new mods all the time, so do let me know if there is a connected texture mod that supports stairs now. I'd be happy to add the extra texture files needed (if any) to make that work with Mo Glass.~~
+
+This has changed and support for connected textures is currently being worked on. Please be patient.
 
 ## Crafting Recipes
 
 <details>
   <summary>Glass Slab: (click to expand)</summary>
   
-  ![glass slab crafting recipse](https://user-images.githubusercontent.com/10100202/69957444-5a2ddc80-150b-11ea-8c8c-e2afc5d72fb7.png)  
+  ![glass slab crafting recipe](https://user-images.githubusercontent.com/10100202/69957444-5a2ddc80-150b-11ea-8c8c-e2afc5d72fb7.png)  
   ![glass slab stonecutter recipe](https://user-images.githubusercontent.com/10100202/70445670-2a974b00-1a9c-11ea-9a09-46c304cd167b.png)
 </details>
 
@@ -114,7 +117,7 @@ This might change one day as people make new mods all the time, so do let me kno
   ![glass stairs stonecutter recipe](https://user-images.githubusercontent.com/10100202/70445677-2c610e80-1a9c-11ea-8e1b-108863b47124.png)
 </details>
 
-## Supported Languages
+## Supported languages
 
 - Chinese (Simplified) (since v1.2)
 - Chinese (Traditional) (since v1.2)
@@ -134,3 +137,72 @@ This might change one day as people make new mods all the time, so do let me kno
 - Spanish (Mexico) (since v1.4)
 - Spanish (Uruguay) (since v1.4)
 - Spanish (Venezuela) (since v1.4)
+
+## Development Setup
+
+> [!IMPORTANT]
+> Make sure you have [Java Development Kit 21](https://adoptium.net/?variant=openjdk21&jvmVariant=hotspot) installed. It won't work with other versions.
+
+### Development using Eclipse
+
+1. Clone the repository:
+
+   ```pwsh
+   git clone https://github.com/Wurst-Imperium/Mo-Glass.git
+   cd Mo-Glass
+   ```
+
+2. Generate the sources:
+
+   In Fabric versions:
+   ```pwsh
+   ./gradlew genSources eclipse
+   ```
+
+   In NeoForge versions:
+   ```pwsh
+   ./gradlew eclipse
+   ```
+
+3. In Eclipse, go to `Import...` > `Existing Projects into Workspace` and select this project.
+
+4. **Optional:** Right-click on the project and select `Properties` > `Java Code Style`. Then under `Clean Up`, `Code Templates`, `Formatter`, import the respective files in the `codestyle` folder.
+
+### Development using VSCode / Cursor
+
+> [!TIP]
+> You'll probably want to install the [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) to make development easier.
+
+1. Clone the repository:
+
+   ```pwsh
+   git clone https://github.com/Wurst-Imperium/Mo-Glass.git
+   cd Mo-Glass
+   ```
+
+2. Generate the sources:
+
+   In Fabric versions:
+   ```pwsh
+   ./gradlew genSources vscode
+   ```
+
+   In NeoForge versions:
+   ```pwsh
+   ./gradlew eclipse
+   ```
+   (That's not a typo. NeoForge doesn't have `vscode`, but `eclipse` works fine.)
+
+3. Open the `Mo-Glass` folder in VSCode / Cursor.
+
+4. **Optional:** In the VSCode settings, set `java.format.settings.url` to `https://raw.githubusercontent.com/Wurst-Imperium/Mo-Glass/master/codestyle/formatter.xml` and `java.format.settings.profile` to `Wurst-Imperium`.
+
+### Development using IntelliJ IDEA
+
+I don't use or recommend IntelliJ, but the commands to run would be:
+
+```pwsh
+git clone https://github.com/Wurst-Imperium/Mo-Glass.git
+cd Mo-Glass
+./gradlew genSources idea
+```
