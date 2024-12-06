@@ -91,6 +91,14 @@ jobs:
         if: ${{ inputs.publish_curseforge }}
         run: ./gradlew publishCurseforge --stacktrace
 
+      - name: Get CurseForge file ID
+        id: cf_file_id
+        if: ${{ inputs.publish_curseforge }}
+        run: |
+          file_id=$(./gradlew getCurseforgeId | grep -o 'CURSEFORGE_FILE_ID=[0-9]*' | grep -o '[0-9]*')
+          echo "file_id=$file_id" >> "$GITHUB_OUTPUT"
+          echo "CurseForge file ID: `$file_id`" >> $GITHUB_STEP_SUMMARY
+
       - name: Publish to Modrinth
         if: ${{ inputs.publish_modrinth }}
         run: ./gradlew publishModrinth --stacktrace
