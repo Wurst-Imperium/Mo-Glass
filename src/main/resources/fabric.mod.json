@@ -19,7 +19,8 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.wurstclient.glass.MoGlassInitializer"
+      "net.wurstclient.glass.MoGlassInitializer",
+      "net.wurstclient.glass.test.MoGlassTestClient"
     ],
     "server": [
       "net.wurstclient.glass.MoGlassInitializer"
@@ -28,6 +29,7 @@
   "mixins": [
     "mo-glass.mixins.json"
   ],
+  "accessWidener": "mo-glass.accesswidener",
   "depends": {
     "fabricloader": ">=0.15.9",
     "fabric-api": ">=0.99.1",
@@ -35,7 +37,8 @@
     "java": ">=21"
   },
   "suggests": {
-    "flamingo": "*"
+    "translucent-glass": ">=0.2.0",
+    "wi_zoom": "*"
   },
   "custom": {
     "modmenu": {
