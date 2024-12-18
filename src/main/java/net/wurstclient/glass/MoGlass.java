@@ -15,6 +15,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.wurstclient.glass.test.MoGlassTestClient;
 
 @Mod(MoGlass.MODID)
 @EventBusSubscriber(modid = MoGlass.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -32,6 +33,10 @@ public final class MoGlass
 		System.out.println("Starting Mo Glass...");
 		MoGlassBlocks.BLOCKS.register(modBus);
 		MoGlassBlocks.ITEMS.register(modBus);
+		
+		// Run end-to-end test, if enabled
+		if(System.getProperty("mo_glass.e2eTest") != null)
+			MoGlassTestClient.start();
 	}
 	
 	@SubscribeEvent
