@@ -92,7 +92,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MCX_PUBLISH_TOKEN }}
         run: ./gradlew github --stacktrace
 
-      - name: Publish to CurseForge  
+      - name: Publish to CurseForge
         if: ${{ inputs.publish_curseforge }}
         run: ./gradlew publishCurseforge --stacktrace
 
@@ -100,9 +100,9 @@ jobs:
         id: cf_file_id
         if: ${{ inputs.publish_curseforge }}
         run: |
-          file_id=$(./gradlew getCurseforgeId | grep -o 'CURSEFORGE_FILE_ID=[0-9]*' | grep -o '[0-9]*')
+          file_id=$(./gradlew getCurseforgeId -x publishCurseforge | grep -o 'CURSEFORGE_FILE_ID=[0-9]*' | grep -o '[0-9]*')
           echo "file_id=$file_id" >> "$GITHUB_OUTPUT"
-          echo "CurseForge file ID: `$file_id`" >> $GITHUB_STEP_SUMMARY
+          echo "CurseForge file ID: \`$file_id\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Publish to Modrinth
         if: ${{ inputs.publish_modrinth }}
@@ -112,9 +112,9 @@ jobs:
         id: website_inputs
         if: ${{ inputs.update_website && inputs.publish_curseforge }}
         run: |
-          MOD_VERSION=$(grep "mod_version" gradle.properties | cut -d'=' -f2 | tr -d ' \r' | sed 's/-MC.*$//')
-          MC_VERSION=$(grep "minecraft_version" gradle.properties | cut -d'=' -f2 | tr -d ' \r')
-          FAPI_VERSION=$(grep "fabric_version" gradle.properties | cut -d'=' -f2 | tr -d ' \r')
+          MOD_VERSION=$(grep "^mod_version" gradle.properties | cut -d'=' -f2 | tr -d ' \r' | sed 's/-MC.*$//')
+          MC_VERSION=$(grep "^minecraft_version=" gradle.properties | cut -d'=' -f2 | tr -d ' \r')
+          FAPI_VERSION=$(grep "^fabric_version" gradle.properties | cut -d'=' -f2 | tr -d ' \r')
           JSON_STRING=$(cat << EOF
           {
             "mod": "mo-glass",
