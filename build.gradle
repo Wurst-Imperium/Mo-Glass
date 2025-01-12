@@ -116,6 +116,7 @@ jar {
 	}
 	
 	exclude("/assets/mo_glass/textures/block/*.psd")
+	exclude("intentionally_untranslated.json")
 }
 
 import com.diffplug.spotless.generic.LicenseHeaderStep
@@ -123,7 +124,7 @@ spotless {
 	lineEndings("WINDOWS")
 	java {
 		removeUnusedImports()
-		indentWithTabs()
+		leadingSpacesToTabs()
 		trimTrailingWhitespace()
 		eclipse().configFile(file("codestyle/formatter.xml"))
 	}
