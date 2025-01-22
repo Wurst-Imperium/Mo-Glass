@@ -40,9 +40,6 @@ jobs:
         JSON_ARRAY=$(echo "[\"$(echo ${{ inputs.branches }} | tr ' ' '\",\"')\"]")
         echo "branches=$JSON_ARRAY" >> "$GITHUB_OUTPUT"
         echo "Branches: $JSON_ARRAY" >> "$GITHUB_STEP_SUMMARY"
-        echo "\`dry_run\`: ${{ inputs.dry_run }}" >> "$GITHUB_STEP_SUMMARY"
-        echo "\`fromJson(dry_run)\`: ${{ fromJson(inputs.dry_run) }}" >> "$GITHUB_STEP_SUMMARY"
-        echo "\`!fromJson(dry_run)\`: ${{ !fromJson(inputs.dry_run) }}" >> "$GITHUB_STEP_SUMMARY"
 
   publish_each:
     runs-on: ubuntu-latest
@@ -76,24 +73,24 @@ jobs:
         )
         # Convert to single line and escape quotes
         echo "json=${JSON_STRING//$'\n'/}" >> "$GITHUB_OUTPUT"
-    # - name: Trigger publish workflow
-    #   id: publish_dispatch
-    #   uses: codex-/return-dispatch@v2
-    #   with:
-    #     token: ${{ github.token }}
-    #     owner: Wurst-Imperium
-    #     repo: Mo-Glass
-    #     ref: ${{ matrix.branch }}
-    #     workflow: publish.yml
-    #     workflow_inputs: ${{ steps.publish_inputs.outputs.json }}
-    # - name: Wait for publish workflow to finish (run ${{ steps.publish_dispatch.outputs.run_id }})
-    #   uses: codex-/await-remote-run@v1
-    #   with:
-    #     token: ${{ github.token }}
-    #     owner: Wurst-Imperium
-    #     repo: Mo-Glass
-    #     run_id: ${{ steps.publish_dispatch.outputs.run_id }}
-    #     run_timeout_seconds: 600  # 10 minutes
+    - name: Trigger publish workflow
+      id: publish_dispatch
+      uses: codex-/return-dispatch@v2
+      with:
+        token: ${{ github.token }}
+        owner: Wurst-Imperium
+        repo: Mo-Glass
+        ref: ${{ matrix.branch }}
+        workflow: publish.yml
+        workflow_inputs: ${{ steps.publish_inputs.outputs.json }}
+    - name: Wait for publish workflow to finish (run ${{ steps.publish_dispatch.outputs.run_id }})
+      uses: codex-/await-remote-run@v1
+      with:
+        token: ${{ github.token }}
+        owner: Wurst-Imperium
+        repo: Mo-Glass
+        run_id: ${{ steps.publish_dispatch.outputs.run_id }}
+        run_timeout_seconds: 600  # 10 minutes
 
   announce:
     runs-on: ubuntu-latest
