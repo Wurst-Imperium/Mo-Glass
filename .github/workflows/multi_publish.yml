@@ -42,6 +42,7 @@ jobs:
         echo "Branches: $JSON_ARRAY" >> "$GITHUB_STEP_SUMMARY"
         echo "\`dry_run\`: ${{ inputs.dry_run }}" >> "$GITHUB_STEP_SUMMARY"
         echo "\`!dry_run\`: ${{ !inputs.dry_run }}" >> "$GITHUB_STEP_SUMMARY"
+        echo "\`!!dry_run\`: ${{ !!inputs.dry_run }}" >> "$GITHUB_STEP_SUMMARY"
         echo "\`dry_run=='true'\`: ${{ inputs.dry_run == 'true' }}" >> "$GITHUB_STEP_SUMMARY"
         echo "\`dry_run=='false'\`: ${{ inputs.dry_run == 'false' }}" >> "$GITHUB_STEP_SUMMARY"
 
