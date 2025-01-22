@@ -39,6 +39,7 @@ jobs:
       run: |
         JSON_ARRAY=$(echo "[\"$(echo ${{ inputs.branches }} | tr ' ' '\",\"')\"]")
         echo "branches=$JSON_ARRAY" >> "$GITHUB_OUTPUT"
+        echo "Branches: $JSON_ARRAY" >> "$GITHUB_STEP_SUMMARY"
 
   publish_each:
     runs-on: ubuntu-latest
