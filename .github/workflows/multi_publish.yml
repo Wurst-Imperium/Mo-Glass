@@ -1,4 +1,5 @@
 name: Publish Multiple Releases
+run-name: Publish v${{ github.event.inputs.mod_version }} build(s) from ${{ github.event.inputs.branches }}
 
 on:
   workflow_dispatch:
