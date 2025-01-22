@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2024 Wurst-Imperium and contributors.
+ * Copyright (c) 2019-2025 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,6 +7,7 @@
  */
 package net.wurstclient.glass.test;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,17 +25,23 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.OptionsList;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsList.Entry;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.tutorial.TutorialSteps;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 public enum WiModsTestHelper
 {
@@ -65,7 +72,7 @@ public enum WiModsTestHelper
 	/**
 	 * Waits for the given duration.
 	 */
-	public static void wait(Duration duration)
+	public static void waitFor(Duration duration)
 	{
 		try
 		{
@@ -100,11 +107,11 @@ public enum WiModsTestHelper
 				break;
 			}
 			
-			if(startTime.isAfter(timeout))
+			if(LocalDateTime.now().isAfter(timeout))
 				throw new RuntimeException(
 					"Waiting until " + event + " took too long");
 			
-			wait(Duration.ofMillis(50));
+			waitFor(Duration.ofMillis(50));
 		}
 	}
 	
@@ -165,6 +172,16 @@ public enum WiModsTestHelper
 			Duration.ofMillis(ticks * 100).plusMinutes(5));
 	}
 	
+	public static void waitForBlock(int relX, int relY, int relZ, Block block)
+	{
+		BlockPos pos = submitAndGet(
+			mc -> mc.player.blockPosition().offset(relX, relY, relZ));
+		waitUntil(
+			"block at ~" + relX + " ~" + relY + " ~" + relZ + " ("
+				+ pos.toShortString() + ") is " + block,
+			mc -> mc.level.getBlockState(pos).getBlock() == block);
+	}
+	
 	/**
 	 * Waits for 50ms and then takes a screenshot with the given name.
 	 */
@@ -179,13 +196,14 @@ public enum WiModsTestHelper
 	 */
 	public static void takeScreenshot(String name, Duration delay)
 	{
-		wait(delay);
+		waitFor(delay);
 		
 		String count =
 			String.format("%02d", screenshotCounter.incrementAndGet());
 		String filename = count + "_" + name + ".png";
+		File gameDir = Minecraft.getInstance().gameDirectory;
 		
-		submitAndWait(mc -> Screenshot.grab(mc.gameDirectory, filename,
+		submitAndWait(mc -> Screenshot.grab(gameDir, filename,
 			mc.getMainRenderTarget(), message -> {}));
 	}
 	
@@ -248,26 +266,83 @@ public enum WiModsTestHelper
 			
 			for(Renderable drawable : screen.renderables)
 			{
-				if(!(drawable instanceof AbstractWidget widget))
+				if(drawable instanceof AbstractWidget widget)
+					if(clickButtonInWidget(widget, buttonText))
+						return true;
+					
+				if(drawable instanceof OptionsList list)
+					for(OptionsList.Entry entry : list.children())
+						for(AbstractWidget widget : entry.children)
+							if(clickButtonInWidget(widget, buttonText))
+								return true;
+			}
+			
+			return false;
+		});
+	}
+	
+	/**
+	 * Clicks the edit button for the key bind with the given translation key,
+	 * or fails after 10 seconds.
+	 *
+	 * <p>
+	 * Must be called from the key binds screen.
+	 */
+	public static void clickEditKeybindButton(String translationKey)
+	{
+		waitUntil("edit button for " + translationKey + " is visible", mc -> {
+			Screen screen = mc.screen;
+			if(!(screen instanceof KeyBindsScreen))
+				throw new RuntimeException(
+					"clickEditKeybindButton() must be called from the Key Binds screen. Current screen: "
+						+ screen);
+			
+			for(Renderable drawable : screen.renderables)
+			{
+				if(!(drawable instanceof KeyBindsList list))
 					continue;
 				
-				if(widget instanceof Button button
-					&& buttonText.equals(button.getMessage().getString()))
+				for(Entry entry : list.children())
 				{
-					button.onPress();
-					return true;
-				}
-				
-				if(widget instanceof CycleButton<?> button
-					&& buttonText.equals(button.name.getString()))
-				{
-					button.onPress();
+					if(!(entry instanceof KeyBindsList.KeyEntry kbEntry))
+						continue;
+					
+					if(!translationKey.equals(kbEntry.key.getName()))
+						continue;
+					
+					int x = kbEntry.changeButton.getX() + list.getX()
+						+ kbEntry.changeButton.getWidth() / 2;
+					int y = kbEntry.changeButton.getY()
+						+ kbEntry.changeButton.getHeight() / 2;
+					System.out.println("Clicking at " + x + ", " + y);
+					screen.mouseClicked(x, y, 0);
+					screen.mouseReleased(x, y, 0);
 					return true;
 				}
 			}
 			
 			return false;
 		});
+	}
+	
+	private static boolean clickButtonInWidget(AbstractWidget widget,
+		String buttonText)
+	{
+		if(widget instanceof Button button
+			&& buttonText.equals(button.getMessage().getString()))
+		{
+			button.onPress();
+			return true;
+		}
+		
+		if(widget instanceof CycleButton<?> button
+			&& buttonText.equals(button.name.getString()))
+		{
+			button.onPress();
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -298,6 +373,18 @@ public enum WiModsTestHelper
 			
 			return false;
 		});
+	}
+	
+	public static void setKeyPressState(int key, boolean pressed)
+	{
+		submitAndWait(mc -> mc.keyboardHandler
+			.keyPress(mc.getWindow().getWindow(), key, 0, pressed ? 1 : 0, 0));
+	}
+	
+	public static void scrollMouse(int horizontal, int vertical)
+	{
+		submitAndWait(mc -> mc.mouseHandler.onScroll(mc.getWindow().getWindow(),
+			horizontal, vertical));
 	}
 	
 	public static void closeScreen()
