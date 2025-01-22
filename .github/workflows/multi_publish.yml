@@ -3,15 +3,24 @@ name: Publish Multiple Releases
 on:
   workflow_dispatch:
     inputs:
+      mod_version:
+        description: "Mod version (without v or -MC)"
+        required: true
+        type: string
       branches:
         description: "Space-separated list of branches to publish from"
         required: true
         type: string
-      # TODO: Maybe also get the mod_version in each branch and verify that it's as expected before publishing?
-      # mod_version:
-      #   description: "Expected mod version"
-      #   required: true
-      #   type: string
+      announce_ports:
+        description: "Announce as ports on WurstForum"
+        required: true
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry-run mode (don't actually publish anything)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   # Needed to trigger the publish workflow.
@@ -33,11 +42,18 @@ jobs:
   publish_each:
     runs-on: ubuntu-latest
     needs: prepare
+    if: ${{ inputs.dry_run == 'false' }}
     strategy:
+      # Each job pushes an automated commit to wimods.net@master, so running them all in parallel
+      # would likely cause conflicts. Also, various servers might hit rate limits if we just upload
+      # all of the files at once.
       max-parallel: 1
+      # If something goes wrong, all published files have to be manually deleted.
+      # Best to fail as early as possible.
       fail-fast: true
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
+    # TODO: Maybe also verify that the mod_version in each branch is as expected before publishing?
     steps:
     - name: Build publish inputs
       id: publish_inputs
@@ -73,4 +89,41 @@ jobs:
         repo: Mo-Glass
         run_id: ${{ steps.publish_dispatch.outputs.run_id }}
         run_timeout_seconds: 600  # 10 minutes
-      # TODO: Get the mc_version and modloader from each branch, then use them to start the announcement workflow
+
+  announce:
+    runs-on: ubuntu-latest
+    needs: publish_each
+    if: ${{ inputs.announce_ports }}
+    steps:
+    - name: Build announcement inputs
+      id: announce_inputs
+      run: |
+        JSON_STRING=$(cat << EOF
+        {
+          "mod": "mo-glass",
+          "mod_version": "${{ inputs.mod_version }}",
+          "branches": "${{ inputs.branches }}",
+          "dry_run": "${{ inputs.dry_run }}"
+        }
+        EOF
+        )
+        # Convert to single line and escape quotes
+        echo "json=${JSON_STRING//$'\n'/}" >> "$GITHUB_OUTPUT"
+    - name: Trigger announce workflow
+      id: announce_dispatch
+      uses: codex-/return-dispatch@v2
+      with:
+        token: ${{ secrets.WIMODS_NET_PUBLISH_TOKEN }}
+        owner: Wurst-Imperium
+        repo: wimods.net
+        ref: master
+        workflow: announce_mod_ports.yml
+        workflow_inputs: ${{ steps.announce_inputs.outputs.json }}
+    - name: Wait for announce workflow to finish (run ${{ steps.announce_dispatch.outputs.run_id }})
+      uses: codex-/await-remote-run@v1
+      with:
+        token: ${{ secrets.WIMODS_NET_PUBLISH_TOKEN }}
+        owner: Wurst-Imperium
+        repo: wimods.net
+        run_id: ${{ steps.announce_dispatch.outputs.run_id }}
+        run_timeout_seconds: 600  # 10 minutes
