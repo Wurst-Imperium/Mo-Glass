@@ -93,8 +93,8 @@ jobs:
 
   announce:
     runs-on: ubuntu-latest
-    needs: publish_each
-    if: ${{ inputs.announce_ports }}
+    needs: [prepare, publish_each]
+    if: ${{ !failure() && !cancelled() && inputs.announce_ports }}
     steps:
     - name: Build announcement inputs
       id: announce_inputs
