@@ -19,6 +19,9 @@ import net.minecraft.client.gui.screen.AccessibilityOnboardingScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.ItemStack;
+import net.wurstclient.glass.MoGlassBlocks;
 
 public final class MoGlassTestClient implements ClientModInitializer
 {
@@ -113,6 +116,7 @@ public final class MoGlassTestClient implements ClientModInitializer
 		clearChat();
 		
 		// TODO: Add Mo Glass-specific test code here
+		testItemNamesShowUpCorrectly();
 		
 		System.out.println("Opening game menu");
 		openGameMenu();
@@ -124,5 +128,32 @@ public final class MoGlassTestClient implements ClientModInitializer
 		
 		System.out.println("Stopping the game");
 		clickButton("menu.quit");
+	}
+	
+	private void testItemNamesShowUpCorrectly()
+	{
+		assertItemName("Glass Slab", new ItemStack(MoGlassBlocks.GLASS_SLAB));
+		assertItemName("Glass Stairs",
+			new ItemStack(MoGlassBlocks.GLASS_STAIRS));
+		assertItemName("Tinted Glass Slab",
+			new ItemStack(MoGlassBlocks.TINTED_GLASS_SLAB));
+		
+		String[] colors = {"White", "Orange", "Magenta", "Light Blue", "Yellow",
+			"Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue",
+			"Brown", "Green", "Red", "Black"};
+		for(int i = 0; i < colors.length; i++)
+		{
+			assertItemName(colors[i] + " Stained Glass Slab",
+				new ItemStack(MoGlassBlocks.STAINED_GLASS_SLABS.get(i)));
+			assertItemName(colors[i] + " Stained Glass Stairs",
+				new ItemStack(MoGlassBlocks.STAINED_GLASS_STAIRS.get(i)));
+		}
+	}
+	
+	private void assertItemName(String expected, ItemStack stack)
+	{
+		if(!expected.equals(I18n.translate(stack.getName().getString())))
+			throw new RuntimeException("Wrong item name: Expected <" + expected
+				+ "> but got <" + stack.getName() + ">");
 	}
 }
