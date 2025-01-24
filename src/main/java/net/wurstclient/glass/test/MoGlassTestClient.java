@@ -152,6 +152,8 @@ public final class MoGlassTestClient implements ClientModInitializer
 			new ItemStack(MoGlassBlocks.GLASS_STAIRS));
 		assertItemName("Tinted Glass Slab",
 			new ItemStack(MoGlassBlocks.TINTED_GLASS_SLAB));
+		assertItemName("Tinted Glass Stairs",
+			new ItemStack(MoGlassBlocks.TINTED_GLASS_STAIRS));
 		
 		String[] colors = {"White", "Orange", "Magenta", "Light Blue", "Yellow",
 			"Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue",
