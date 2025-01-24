@@ -150,6 +150,7 @@ public final class MoGlassTestClient implements ClientModInitializer
 		assertItemName("Glass Slab", new ItemStack(MoGlassBlocks.GLASS_SLAB));
 		assertItemName("Glass Stairs",
 			new ItemStack(MoGlassBlocks.GLASS_STAIRS));
+		
 		assertItemName("Tinted Glass Slab",
 			new ItemStack(MoGlassBlocks.TINTED_GLASS_SLAB));
 		assertItemName("Tinted Glass Stairs",
@@ -165,6 +166,13 @@ public final class MoGlassTestClient implements ClientModInitializer
 			assertItemName(colors[i] + " Stained Glass Stairs",
 				new ItemStack(MoGlassBlocks.STAINED_GLASS_STAIRS.get(i)));
 		}
+	}
+	
+	private void assertItemName(String expected, ItemStack stack)
+	{
+		if(!expected.equals(I18n.translate(stack.getName().getString())))
+			throw new RuntimeException("Wrong item name: Expected <" + expected
+				+ "> but got <" + stack.getName() + ">");
 	}
 	
 	private void testRecipesWork()
@@ -269,13 +277,6 @@ public final class MoGlassTestClient implements ClientModInitializer
 				+ input + " -> " + expectedResult
 				+ ", only found recipes that result in " + String.join(", ",
 					results.stream().map(ItemStack::toString).toList()));
-	}
-	
-	private void assertItemName(String expected, ItemStack stack)
-	{
-		if(!expected.equals(I18n.translate(stack.getName().getString())))
-			throw new RuntimeException("Wrong item name: Expected <" + expected
-				+ "> but got <" + stack.getName() + ">");
 	}
 	
 	// As of 1.21.4, vanilla Minecraft doesn't seem to have a method like this.
