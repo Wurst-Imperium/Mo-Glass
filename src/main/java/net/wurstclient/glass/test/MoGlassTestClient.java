@@ -105,8 +105,9 @@ public final class MoGlassTestClient implements ClientModInitializer
 		closeScreen();
 		
 		// Build a test platform and clear out the space above it
-		runChatCommand("fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 stone");
-		runChatCommand("fill ~-5 ~ ~-5 ~5 ~30 ~5 air");
+		runChatCommand("fill ~-7 ~-5 ~-7 ~7 ~-1 ~7 stone");
+		runChatCommand("fill ~-7 ~ ~-7 ~7 ~30 ~7 air");
+		runChatCommand("kill @e[type=!player,distance=..10]");
 		
 		// Clear inventory and chat before running tests
 		runChatCommand("clear");
