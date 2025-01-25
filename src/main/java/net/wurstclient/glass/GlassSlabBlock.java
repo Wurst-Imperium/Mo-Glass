@@ -29,24 +29,32 @@ public class GlassSlabBlock extends SlabBlock
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
 		if(stateFrom.getBlock() == Blocks.GLASS)
 			return true;
-
-		if(stateFrom.getBlock() == this && isInvisible(state, stateFrom, direction))
+		
+		if(stateFrom.getBlock() == this
+			&& isInvisible(state, stateFrom, direction))
 			return true;
-
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS && isInvisible(state, stateFrom, direction))
+		
+		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS
+			&& isInvisible(state, stateFrom, direction))
 			return true;
-
+		
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	
-	protected boolean isInvisible(BlockState state, BlockState stateFrom, Direction direction) {
-		VoxelShape stateCullingShape = state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		VoxelShape stateFromCullingShape = stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		return VoxelShapes.isSideCovered(stateCullingShape, stateFromCullingShape, direction);
+	protected boolean isInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
+	{
+		VoxelShape stateCullingShape =
+			state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		VoxelShape stateFromCullingShape =
+			stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		return VoxelShapes.isSideCovered(stateCullingShape,
+			stateFromCullingShape, direction);
 	}
 	
 	@Override

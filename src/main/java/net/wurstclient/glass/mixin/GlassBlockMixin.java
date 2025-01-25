@@ -36,10 +36,12 @@ public abstract class GlassBlockMixin extends TranslucentBlock
 	{
 		if(state.getBlock() == Blocks.GLASS)
 		{
-			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB && isInvisible(state, stateFrom, direction))
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_SLAB
+				&& isInvisible(state, stateFrom, direction))
 				return true;
-				
-			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS && isInvisible(state, stateFrom, direction))
+			
+			if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS
+				&& isInvisible(state, stateFrom, direction))
 				return true;
 		}
 		
@@ -47,10 +49,14 @@ public abstract class GlassBlockMixin extends TranslucentBlock
 	}
 	
 	@Unique
-	private boolean isInvisible(BlockState state, BlockState stateFrom, Direction direction)
+	private boolean isInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		VoxelShape stateCullingShape = state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		VoxelShape stateFromCullingShape = stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		return VoxelShapes.isSideCovered(stateCullingShape, stateFromCullingShape, direction);
+		VoxelShape stateCullingShape =
+			state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		VoxelShape stateFromCullingShape =
+			stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		return VoxelShapes.isSideCovered(stateCullingShape,
+			stateFromCullingShape, direction);
 	}
 }

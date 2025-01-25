@@ -33,19 +33,21 @@ public final class StainedGlassStairsBlock extends GlassStairsBlock
 	{
 		Block blockFrom = stateFrom.getBlock();
 		
-		if(blockFrom instanceof StainedGlassBlock && ((StainedGlassBlock)blockFrom).getColor() == color)
+		if(blockFrom instanceof StainedGlassBlock
+			&& ((StainedGlassBlock)blockFrom).getColor() == color)
 			return true;
 		
-		if(blockFrom instanceof StainedGlassSlabBlock && ((StainedGlassSlabBlock)blockFrom).getColor() == color)
+		if(blockFrom instanceof StainedGlassSlabBlock
+			&& ((StainedGlassSlabBlock)blockFrom).getColor() == color)
 			if(isInvisible(state, stateFrom, direction))
 				return true;
 			
 		if(blockFrom == this && isInvisible(state, stateFrom, direction))
-				return true;
-			
+			return true;
+		
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
-
+	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public float getAmbientOcclusionLightLevel(BlockState state,
@@ -53,7 +55,7 @@ public final class StainedGlassStairsBlock extends GlassStairsBlock
 	{
 		return 1.0F;
 	}
-
+	
 	@Override
 	public DyeColor getColor()
 	{

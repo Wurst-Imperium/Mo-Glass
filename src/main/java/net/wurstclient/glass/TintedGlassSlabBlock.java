@@ -25,20 +25,23 @@ public final class TintedGlassSlabBlock extends GlassSlabBlock
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
 		if(stateFrom.getBlock() == Blocks.TINTED_GLASS)
 			return true;
 		
-		if(stateFrom.getBlock() == this && isInvisible(state, stateFrom, direction))
+		if(stateFrom.getBlock() == this
+			&& isInvisible(state, stateFrom, direction))
 			return true;
-			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS && isInvisible(state, stateFrom, direction))
+		
+		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS
+			&& isInvisible(state, stateFrom, direction))
 			return true;
-			
+		
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
-
+	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public float getAmbientOcclusionLightLevel(BlockState state,

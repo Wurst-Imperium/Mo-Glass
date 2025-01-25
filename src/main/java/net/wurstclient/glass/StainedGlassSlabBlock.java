@@ -18,7 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
-public final class StainedGlassSlabBlock extends GlassSlabBlock implements Stainable
+public final class StainedGlassSlabBlock extends GlassSlabBlock
+	implements Stainable
 {
 	private final DyeColor color;
 	
@@ -30,23 +31,26 @@ public final class StainedGlassSlabBlock extends GlassSlabBlock implements Stain
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
 		Block blockFrom = stateFrom.getBlock();
 		
-		if (blockFrom instanceof StainedGlassBlock && ((StainedGlassBlock)blockFrom).getColor() == color)
+		if(blockFrom instanceof StainedGlassBlock
+			&& ((StainedGlassBlock)blockFrom).getColor() == color)
 			return true;
 		
-		if (blockFrom == this && isInvisible(state, stateFrom, direction))
-				return true;
-			
-		if (blockFrom instanceof StainedGlassStairsBlock && ((StainedGlassStairsBlock)blockFrom).getColor() == color)
-			if (isInvisible(state, stateFrom, direction))
+		if(blockFrom == this && isInvisible(state, stateFrom, direction))
+			return true;
+		
+		if(blockFrom instanceof StainedGlassStairsBlock
+			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
+			if(isInvisible(state, stateFrom, direction))
 				return true;
 			
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
-
+	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public float getAmbientOcclusionLightLevel(BlockState state,
@@ -54,7 +58,7 @@ public final class StainedGlassSlabBlock extends GlassSlabBlock implements Stain
 	{
 		return 1.0F;
 	}
-
+	
 	@Override
 	public DyeColor getColor()
 	{

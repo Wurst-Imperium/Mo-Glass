@@ -45,11 +45,14 @@ public abstract class TintedGlassBlockMixin extends TransparentBlock
 	}
 	
 	@Unique
-	private boolean isInvisible(BlockState state,
-								BlockState stateFrom, Direction direction)
+	private boolean isInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		VoxelShape stateCullingShape = state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		VoxelShape stateFromCullingShape = stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
-		return VoxelShapes.isSideCovered(stateCullingShape, stateFromCullingShape, direction);
+		VoxelShape stateCullingShape =
+			state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		VoxelShape stateFromCullingShape =
+			stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		return VoxelShapes.isSideCovered(stateCullingShape,
+			stateFromCullingShape, direction);
 	}
 }
