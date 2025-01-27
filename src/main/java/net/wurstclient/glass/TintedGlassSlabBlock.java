@@ -7,20 +7,20 @@
  */
 package net.wurstclient.glass;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.EmptyBlockView;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public final class TintedGlassSlabBlock extends SlabBlock
 {
@@ -38,78 +38,25 @@ public final class TintedGlassSlabBlock extends SlabBlock
 			return true;
 		
 		if(stateFrom.getBlock() == this)
-			if(isInvisibleToGlassSlab(state, stateFrom, direction))
+			if(isInvisible(state, stateFrom, direction))
 				return true;
 			
 		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
-			if(isInvisibleToGlassStairs(state, stateFrom, direction))
+			if(isInvisible(state, stateFrom, direction))
 				return true;
 			
 		return super.isSideInvisible(state, stateFrom, direction);
 	}
 	
-	private boolean isInvisibleToGlassSlab(BlockState state,
-		BlockState stateFrom, Direction direction)
+	protected boolean isInvisible(BlockState state, BlockState stateFrom,
+		Direction direction)
 	{
-		SlabType type = state.get(SlabBlock.TYPE);
-		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
-		
-		switch(direction)
-		{
-			case UP:
-			if(typeFrom != SlabType.TOP && type != SlabType.BOTTOM)
-				return true;
-			break;
-			
-			case DOWN:
-			if(typeFrom != SlabType.BOTTOM && type != SlabType.TOP)
-				return true;
-			break;
-			
-			case NORTH:
-			case EAST:
-			case SOUTH:
-			case WEST:
-			if(type == typeFrom || typeFrom == SlabType.DOUBLE)
-				return true;
-			break;
-		}
-		
-		return false;
-	}
-	
-	private boolean isInvisibleToGlassStairs(BlockState state,
-		BlockState stateFrom, Direction direction)
-	{
-		SlabType type = state.get(SlabBlock.TYPE);
-		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
-		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
-		
-		// up
-		if(direction == Direction.UP)
-			if(halfFrom == BlockHalf.BOTTOM)
-				return true;
-			
-		// down
-		if(direction == Direction.DOWN)
-			if(halfFrom == BlockHalf.TOP)
-				return true;
-			
-		// other stairs rear
-		if(facingFrom == direction.getOpposite())
-			return true;
-		
-		// sides
-		if(direction.getHorizontalQuarterTurns() != -1)
-		{
-			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
-				return true;
-			
-			if(type == SlabType.TOP && halfFrom == BlockHalf.TOP)
-				return true;
-		}
-		
-		return false;
+		VoxelShape stateCullingShape =
+			state.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		VoxelShape stateFromCullingShape =
+			stateFrom.getOutlineShape(EmptyBlockView.INSTANCE, BlockPos.ORIGIN);
+		return VoxelShapes.isSideCovered(stateCullingShape,
+			stateFromCullingShape, direction);
 	}
 	
 	@Override
