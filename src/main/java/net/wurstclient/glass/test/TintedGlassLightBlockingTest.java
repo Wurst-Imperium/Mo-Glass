@@ -97,7 +97,8 @@ public enum TintedGlassLightBlockingTest
 	{
 		setBlock(pos, state);
 		waitUntil("block " + state + " is placed at " + pos, mc -> {
-			return mc.world.getBlockState(pos) == state;
+			return mc.world.getBlockState(pos) == state
+				&& !mc.world.getLightingProvider().hasUpdates();
 		});
 		assertLightLevel(0, 0, 4, expectedLightLevel);
 		setBlock(pos, Blocks.TINTED_GLASS.getDefaultState());
@@ -114,9 +115,7 @@ public enum TintedGlassLightBlockingTest
 	private static void assertLightLevel(int x, int y, int z, int expected)
 	{
 		int lightLevel = submitAndGet(mc -> {
-			BlockPos pos = mc.player.getBlockPos().add(x, y, z);
-			mc.world.getLightingProvider().checkBlock(pos);
-			return mc.world.getLightLevel(pos);
+			return mc.world.getLightLevel(mc.player.getBlockPos().add(x, y, z));
 		});
 		
 		if(lightLevel == expected)
