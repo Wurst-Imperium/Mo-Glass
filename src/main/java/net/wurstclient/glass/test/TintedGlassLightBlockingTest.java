@@ -9,6 +9,19 @@ package net.wurstclient.glass.test;
 
 import static net.wurstclient.glass.test.WiModsTestHelper.*;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.StairShape;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+import net.wurstclient.glass.MoGlassBlocks;
+
 public enum TintedGlassLightBlockingTest
 {
 	;
@@ -16,142 +29,95 @@ public enum TintedGlassLightBlockingTest
 	public static void testTintedGlassBlocksLightCorrectly()
 	{
 		System.out.println("Testing tinted glass light blocking...");
-		String top = "~ ~1 ~4";
-		String front = "~ ~ ~3";
+		BlockPos playerPos = submitAndGet(mc -> mc.player.getBlockPos());
+		BlockPos top = playerPos.add(0, 1, 4);
+		BlockPos front = playerPos.add(0, 0, 3);
 		
 		// Build test rig
 		runChatCommand("fill ~-1 ~ ~3 ~1 ~1 ~5 tinted_glass");
 		runChatCommand("setblock ~ ~ ~4 air");
+		clearChat();
 		
 		// Slab on top - should always block light
-		testSlab(top, "bottom", 0);
-		testSlab(top, "top", 0);
-		testSlab(top, "double", 0);
+		for(SlabType type : SlabType.values())
+			testSlab(top, type, 0);
 		
 		// Slab in front - depends on type
-		testSlab(front, "bottom", 13);
-		testSlab(front, "top", 13);
-		testSlab(front, "double", 0);
+		testSlab(front, SlabType.BOTTOM, 13);
+		testSlab(front, SlabType.TOP, 13);
+		testSlab(front, SlabType.DOUBLE, 0);
 		
 		// Stairs on top - should always block light
-		testStairs(top, "south", "bottom", "straight", 0);
-		testStairs(top, "east", "bottom", "straight", 0);
-		testStairs(top, "north", "bottom", "straight", 0);
-		testStairs(top, "west", "bottom", "straight", 0);
-		testStairs(top, "south", "top", "straight", 0);
-		testStairs(top, "east", "top", "straight", 0);
-		testStairs(top, "north", "top", "straight", 0);
-		testStairs(top, "west", "top", "straight", 0);
-		testStairs(top, "south", "bottom", "outer_left", 0);
-		testStairs(top, "east", "bottom", "outer_left", 0);
-		testStairs(top, "north", "bottom", "outer_left", 0);
-		testStairs(top, "west", "bottom", "outer_left", 0);
-		testStairs(top, "south", "top", "outer_left", 0);
-		testStairs(top, "east", "top", "outer_left", 0);
-		testStairs(top, "north", "top", "outer_left", 0);
-		testStairs(top, "west", "top", "outer_left", 0);
-		testStairs(top, "south", "bottom", "outer_right", 0);
-		testStairs(top, "east", "bottom", "outer_right", 0);
-		testStairs(top, "north", "bottom", "outer_right", 0);
-		testStairs(top, "west", "bottom", "outer_right", 0);
-		testStairs(top, "south", "top", "outer_right", 0);
-		testStairs(top, "east", "top", "outer_right", 0);
-		testStairs(top, "north", "top", "outer_right", 0);
-		testStairs(top, "west", "top", "outer_right", 0);
-		testStairs(top, "south", "bottom", "inner_left", 0);
-		testStairs(top, "east", "bottom", "inner_left", 0);
-		testStairs(top, "north", "bottom", "inner_left", 0);
-		testStairs(top, "west", "bottom", "inner_left", 0);
-		testStairs(top, "south", "top", "inner_left", 0);
-		testStairs(top, "east", "top", "inner_left", 0);
-		testStairs(top, "north", "top", "inner_left", 0);
-		testStairs(top, "west", "top", "inner_left", 0);
-		testStairs(top, "south", "bottom", "inner_right", 0);
-		testStairs(top, "east", "bottom", "inner_right", 0);
-		testStairs(top, "north", "bottom", "inner_right", 0);
-		testStairs(top, "west", "bottom", "inner_right", 0);
-		testStairs(top, "south", "top", "inner_right", 0);
-		testStairs(top, "east", "top", "inner_right", 0);
-		testStairs(top, "north", "top", "inner_right", 0);
-		testStairs(top, "west", "top", "inner_right", 0);
+		for(Direction dir : Direction.Type.HORIZONTAL)
+			for(BlockHalf half : BlockHalf.values())
+				for(StairShape shape : StairShape.values())
+					testStairs(top, dir, half, shape, 0);
+				
+		// Straight stairs in front - depends on direction
+		for(Direction dir : Direction.Type.HORIZONTAL)
+		{
+			int light = dir.getAxis() == Direction.Axis.X ? 13 : 0;
+			for(BlockHalf half : BlockHalf.values())
+				testStairs(front, dir, half, StairShape.STRAIGHT, light);
+		}
 		
-		// Straight stairs in front - depends on facing
-		testStairs(front, "south", "bottom", "straight", 0);
-		testStairs(front, "east", "bottom", "straight", 13);
-		testStairs(front, "north", "bottom", "straight", 0);
-		testStairs(front, "west", "bottom", "straight", 13);
-		testStairs(front, "south", "top", "straight", 0);
-		testStairs(front, "east", "top", "straight", 13);
-		testStairs(front, "north", "top", "straight", 0);
-		testStairs(front, "west", "top", "straight", 13);
-		
-		// Outer stairs in front - should always let light through
-		testStairs(front, "south", "bottom", "outer_left", 13);
-		testStairs(front, "east", "bottom", "outer_left", 13);
-		testStairs(front, "north", "bottom", "outer_left", 13);
-		testStairs(front, "west", "bottom", "outer_left", 13);
-		testStairs(front, "south", "top", "outer_left", 13);
-		testStairs(front, "east", "top", "outer_left", 13);
-		testStairs(front, "north", "top", "outer_left", 13);
-		testStairs(front, "west", "top", "outer_left", 13);
-		testStairs(front, "south", "bottom", "outer_right", 13);
-		testStairs(front, "east", "bottom", "outer_right", 13);
-		testStairs(front, "north", "bottom", "outer_right", 13);
-		testStairs(front, "west", "bottom", "outer_right", 13);
-		testStairs(front, "south", "top", "outer_right", 13);
-		testStairs(front, "east", "top", "outer_right", 13);
-		testStairs(front, "north", "top", "outer_right", 13);
-		testStairs(front, "west", "top", "outer_right", 13);
-		
-		// Inner stairs in front - should always block light
-		testStairs(front, "south", "bottom", "inner_left", 0);
-		testStairs(front, "east", "bottom", "inner_left", 0);
-		testStairs(front, "north", "bottom", "inner_left", 0);
-		testStairs(front, "west", "bottom", "inner_left", 0);
-		testStairs(front, "south", "top", "inner_left", 0);
-		testStairs(front, "east", "top", "inner_left", 0);
-		testStairs(front, "north", "top", "inner_left", 0);
-		testStairs(front, "west", "top", "inner_left", 0);
-		testStairs(front, "south", "bottom", "inner_right", 0);
-		testStairs(front, "east", "bottom", "inner_right", 0);
-		testStairs(front, "north", "bottom", "inner_right", 0);
-		testStairs(front, "west", "bottom", "inner_right", 0);
-		testStairs(front, "south", "top", "inner_right", 0);
-		testStairs(front, "east", "top", "inner_right", 0);
-		testStairs(front, "north", "top", "inner_right", 0);
-		testStairs(front, "west", "top", "inner_right", 0);
+		// Curved stairs in front - depends on curve type
+		for(Direction dir : Direction.Type.HORIZONTAL)
+			for(BlockHalf half : BlockHalf.values())
+			{
+				testStairs(front, dir, half, StairShape.INNER_LEFT, 0);
+				testStairs(front, dir, half, StairShape.INNER_RIGHT, 0);
+				testStairs(front, dir, half, StairShape.OUTER_LEFT, 13);
+				testStairs(front, dir, half, StairShape.OUTER_RIGHT, 13);
+			}
 		
 		// Clean up
 		runChatCommand("fill ~-1 ~ ~3 ~1 ~1 ~5 air");
 		clearChat();
 	}
 	
-	private static void testSlab(String position, String type, int light)
+	private static void testSlab(BlockPos pos, SlabType type, int light)
 	{
-		testConfiguration(position, "tinted_glass_slab[type=" + type + "]",
+		testConfiguration(pos, MoGlassBlocks.TINTED_GLASS_SLAB.getDefaultState()
+			.with(SlabBlock.TYPE, type), light);
+	}
+	
+	private static void testStairs(BlockPos pos, Direction facing,
+		BlockHalf half, StairShape shape, int light)
+	{
+		testConfiguration(pos,
+			MoGlassBlocks.TINTED_GLASS_STAIRS.getDefaultState()
+				.with(StairsBlock.FACING, facing).with(StairsBlock.HALF, half)
+				.with(StairsBlock.SHAPE, shape),
 			light);
 	}
 	
-	private static void testStairs(String position, String facing, String half,
-		String shape, int light)
-	{
-		testConfiguration(position, "tinted_glass_stairs[facing=" + facing
-			+ ",half=" + half + ",shape=" + shape + "]", light);
-	}
-	
-	private static void testConfiguration(String position, String block,
+	private static void testConfiguration(BlockPos pos, BlockState state,
 		int expectedLightLevel)
 	{
-		runChatCommand("setblock " + position + " mo_glass:" + block);
-		clearChat();
+		setBlock(pos, state);
+		waitUntil("block " + state + " is placed at " + pos, mc -> {
+			return mc.world.getBlockState(pos) == state;
+		});
 		assertLightLevel(0, 0, 4, expectedLightLevel);
-		runChatCommand("setblock " + position + " tinted_glass");
+		setBlock(pos, Blocks.TINTED_GLASS.getDefaultState());
+	}
+	
+	private static void setBlock(BlockPos pos, BlockState state)
+	{
+		// Set the block without any chat commands or block updates
+		submitAndWait(
+			mc -> mc.getServer().getWorld(World.OVERWORLD).setBlockState(pos,
+				state, Block.FORCE_STATE | Block.NOTIFY_LISTENERS));
 	}
 	
 	private static void assertLightLevel(int x, int y, int z, int expected)
 	{
-		int lightLevel = submitAndGet(
-			mc -> mc.world.getLightLevel(mc.player.getBlockPos().add(x, y, z)));
+		int lightLevel = submitAndGet(mc -> {
+			BlockPos pos = mc.player.getBlockPos().add(x, y, z);
+			mc.world.getLightingProvider().checkBlock(pos);
+			return mc.world.getLightLevel(pos);
+		});
 		
 		if(lightLevel == expected)
 			return;
