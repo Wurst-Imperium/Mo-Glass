@@ -19,12 +19,16 @@ public enum TintedGlassLightBlockingTest
 		String top = "~ ~1 ~4";
 		String front = "~ ~ ~3";
 		
+		// Build test rig
+		runChatCommand("fill ~-1 ~ ~3 ~1 ~1 ~5 tinted_glass");
+		runChatCommand("setblock ~ ~ ~4 air");
+		
 		// Slab on top - should always block light
 		testSlab(top, "bottom", 0);
 		testSlab(top, "top", 0);
 		testSlab(top, "double", 0);
 		
-		// Slab in front - should only block light if type is double
+		// Slab in front - depends on type
 		testSlab(front, "bottom", 13);
 		testSlab(front, "top", 13);
 		testSlab(front, "double", 0);
@@ -138,11 +142,10 @@ public enum TintedGlassLightBlockingTest
 	private static void testConfiguration(String position, String block,
 		int expectedLightLevel)
 	{
-		runChatCommand("fill ~-1 ~ ~3 ~1 ~1 ~5 tinted_glass");
-		runChatCommand("setblock ~ ~ ~4 air");
 		runChatCommand("setblock " + position + " mo_glass:" + block);
 		clearChat();
 		assertLightLevel(0, 0, 4, expectedLightLevel);
+		runChatCommand("setblock " + position + " tinted_glass");
 	}
 	
 	private static void assertLightLevel(int x, int y, int z, int expected)
