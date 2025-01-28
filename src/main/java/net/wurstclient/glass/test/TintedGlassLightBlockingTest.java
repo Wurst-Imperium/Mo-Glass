@@ -70,7 +70,7 @@ public enum TintedGlassLightBlockingTest
 			}
 		
 		// Clean up
-		runChatCommand("fill ~-1 ~ ~3 ~1 ~1 ~5 air");
+		runChatCommand("fill ~-7 ~ ~-4 ~7 ~30 ~10 air");
 		clearChat();
 	}
 	
