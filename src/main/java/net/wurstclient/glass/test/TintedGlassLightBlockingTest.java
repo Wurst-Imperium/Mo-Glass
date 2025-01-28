@@ -9,7 +9,6 @@ package net.wurstclient.glass.test;
 
 import static net.wurstclient.glass.test.WiModsTestHelper.*;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
@@ -19,7 +18,6 @@ import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import net.wurstclient.glass.MoGlassBlocks;
 
 public enum TintedGlassLightBlockingTest
@@ -102,14 +100,6 @@ public enum TintedGlassLightBlockingTest
 		});
 		assertLightLevel(0, 0, 4, expectedLightLevel);
 		setBlock(pos, Blocks.TINTED_GLASS.getDefaultState());
-	}
-	
-	private static void setBlock(BlockPos pos, BlockState state)
-	{
-		// Set the block without any chat commands or block updates
-		submitAndWait(
-			mc -> mc.getServer().getWorld(World.OVERWORLD).setBlockState(pos,
-				state, Block.FORCE_STATE | Block.NOTIFY_LISTENERS));
 	}
 	
 	private static void assertLightLevel(int x, int y, int z, int expected)
