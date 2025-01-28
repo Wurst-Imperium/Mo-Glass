@@ -269,7 +269,8 @@ public final class GlassStairsBlock extends StairsBlock
 				&& shapeFrom == StairShape.INNER_RIGHT)
 				return true;
 			
-			if(facingFrom == facing && shapeFrom != StairShape.OUTER_LEFT)
+			if(facingFrom == facing && shape != StairShape.INNER_LEFT
+				&& shapeFrom != StairShape.OUTER_LEFT)
 				return true;
 			
 			if(facingFrom == facing.rotateYClockwise()
@@ -289,7 +290,8 @@ public final class GlassStairsBlock extends StairsBlock
 				&& shapeFrom == StairShape.INNER_LEFT)
 				return true;
 			
-			if(facingFrom == facing && shapeFrom != StairShape.OUTER_RIGHT)
+			if(facingFrom == facing && shape != StairShape.INNER_RIGHT
+				&& shapeFrom != StairShape.OUTER_RIGHT)
 				return true;
 			
 			if(facingFrom == facing.rotateYCounterclockwise()
