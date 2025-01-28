@@ -18,6 +18,7 @@ import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -94,6 +95,7 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 		SlabType type = state.get(SlabBlock.TYPE);
 		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
 		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
+		StairShape shapeFrom = stateFrom.get(StairsBlock.SHAPE);
 		
 		// up
 		if(direction == Direction.UP)
@@ -106,11 +108,21 @@ public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 				return true;
 			
 		// other stairs rear
-		if(facingFrom == direction.getOpposite())
+		if(facingFrom == direction.getOpposite()
+			&& shapeFrom != StairShape.OUTER_LEFT
+			&& shapeFrom != StairShape.OUTER_RIGHT)
+			return true;
+		
+		// other curved stairs fully covered side
+		if(facingFrom.rotateYCounterclockwise() == direction
+			&& shapeFrom == StairShape.INNER_RIGHT)
+			return true;
+		if(facingFrom.rotateYClockwise() == direction
+			&& shapeFrom == StairShape.INNER_LEFT)
 			return true;
 		
 		// sides
-		if(direction.getHorizontalQuarterTurns() != -1)
+		if(direction.getAxis().isHorizontal())
 		{
 			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
 				return true;
