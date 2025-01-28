@@ -33,6 +33,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.option.InactivityFpsLimit;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.tutorial.TutorialStep;
@@ -359,6 +360,12 @@ public enum WiModsTestHelper
 	public static void dismissTutorialToasts()
 	{
 		submitAndWait(mc -> mc.getTutorialManager().setStep(TutorialStep.NONE));
+	}
+	
+	public static void disableInactivityFpsLimit()
+	{
+		submitAndWait(mc -> mc.options.getInactivityFpsLimit()
+			.setValue(InactivityFpsLimit.MINIMIZED));
 	}
 	
 	public static void clearChat()

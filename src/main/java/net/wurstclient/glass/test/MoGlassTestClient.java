@@ -39,6 +39,7 @@ public final class MoGlassTestClient implements ClientModInitializer
 	{
 		System.out.println("Starting Mo Glass End-to-End Test");
 		waitForResourceLoading();
+		disableInactivityFpsLimit();
 		
 		if(submitAndGet(mc -> mc.options.onboardAccessibility))
 		{
