@@ -10,6 +10,7 @@ package net.wurstclient.glass.test;
 import static net.wurstclient.glass.test.WiModsTestHelper.*;
 
 import java.time.Duration;
+import java.util.LinkedHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -83,12 +84,14 @@ public enum GlassPieceConnectionTest
 		BlockPos front2 = pos.add(0, 0, 4);
 		BlockPos front3 = pos.add(-2, 0, 4);
 		
-		setBlock(back1, backBlocks[0]);
-		setBlock(back2, backBlocks[1]);
-		setBlock(back3, backBlocks[2]);
-		setBlock(front1, frontBlocks[0]);
-		setBlock(front2, frontBlocks[1]);
-		setBlock(front3, frontBlocks[2]);
+		LinkedHashMap<BlockPos, BlockState> blocks = new LinkedHashMap<>();
+		blocks.put(back1, backBlocks[0]);
+		blocks.put(back2, backBlocks[1]);
+		blocks.put(back3, backBlocks[2]);
+		blocks.put(front1, frontBlocks[0]);
+		blocks.put(front2, frontBlocks[1]);
+		blocks.put(front3, frontBlocks[2]);
+		setBlocks(blocks);
 		
 		waitUntil("blocks are placed", mc -> {
 			return mc.world.getBlockState(back1) == backBlocks[0]

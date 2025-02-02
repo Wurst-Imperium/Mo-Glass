@@ -10,6 +10,8 @@ package net.wurstclient.glass.test;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -416,6 +418,20 @@ public enum WiModsTestHelper
 		submitAndWait(
 			mc -> mc.getServer().getWorld(World.OVERWORLD).setBlockState(pos,
 				state, Block.FORCE_STATE | Block.NOTIFY_LISTENERS));
+	}
+	
+	/**
+	 * Places all of the given blocks at the given positions at once without any
+	 * delays or block updates.
+	 */
+	public static void setBlocks(LinkedHashMap<BlockPos, BlockState> blocks)
+	{
+		submitAndWait(mc -> {
+			for(Entry<BlockPos, BlockState> entry : blocks.entrySet())
+				mc.getServer().getWorld(World.OVERWORLD).setBlockState(
+					entry.getKey(), entry.getValue(),
+					Block.FORCE_STATE | Block.NOTIFY_LISTENERS);
+		});
 	}
 	
 	public static void assertOneItemInSlot(int slot, Item item)
