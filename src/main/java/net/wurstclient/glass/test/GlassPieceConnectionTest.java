@@ -10,6 +10,7 @@ package net.wurstclient.glass.test;
 import static net.wurstclient.glass.test.WiModsTestHelper.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import net.minecraft.block.Block;
@@ -49,23 +50,23 @@ public enum GlassPieceConnectionTest
 		
 		for(BlockState[] back : blocksWithFullyCoveredNorthSide)
 		{
-			test(pos, back, blocks(), true, true);
-			test(pos, back, slabs(SlabType.BOTTOM), false, true);
-			test(pos, back, slabs(SlabType.TOP), false, true);
-			test(pos, back, slabs(SlabType.DOUBLE), true, true);
+			test(pos, back, blocks(), false, false);
+			test(pos, back, slabs(SlabType.BOTTOM), true, false);
+			test(pos, back, slabs(SlabType.TOP), true, false);
+			test(pos, back, slabs(SlabType.DOUBLE), false, false);
 			for(Direction dir : Direction.Type.HORIZONTAL)
 				for(BlockHalf half : BlockHalf.values())
 				{
 					test(pos, back, stairs(dir, half, StairShape.STRAIGHT),
-						dir == Direction.SOUTH, true);
+						dir != Direction.SOUTH, false);
 					test(pos, back, stairs(dir, half, StairShape.INNER_LEFT),
-						dir == Direction.SOUTH || dir == Direction.WEST, true);
+						dir != Direction.SOUTH && dir != Direction.WEST, false);
 					test(pos, back, stairs(dir, half, StairShape.INNER_RIGHT),
-						dir == Direction.SOUTH || dir == Direction.EAST, true);
+						dir != Direction.SOUTH && dir != Direction.EAST, false);
 					test(pos, back, stairs(dir, half, StairShape.OUTER_LEFT),
-						false, true);
+						true, false);
 					test(pos, back, stairs(dir, half, StairShape.OUTER_RIGHT),
-						false, true);
+						true, false);
 				}
 		}
 		
@@ -74,69 +75,60 @@ public enum GlassPieceConnectionTest
 		clearChat();
 	}
 	
-	private static void test(BlockPos pos, BlockState[] backBlocks,
-		BlockState[] frontBlocks, boolean frontSeamless, boolean backSeamless)
+	private static void test(BlockPos startPos, BlockState[] backBlocks,
+		BlockState[] frontBlocks, boolean drawFront, boolean drawBack)
 	{
-		BlockPos back1 = pos.add(2, 0, 5);
-		BlockPos back2 = pos.add(0, 0, 5);
-		BlockPos back3 = pos.add(-2, 0, 5);
-		BlockPos front1 = pos.add(2, 0, 4);
-		BlockPos front2 = pos.add(0, 0, 4);
-		BlockPos front3 = pos.add(-2, 0, 4);
+		record TestCase(BlockPos pos, Direction dir, boolean shouldDraw)
+		{
+			boolean test(LinkedHashMap<BlockPos, BlockState> blocks)
+			{
+				return Block.shouldDrawSide(blocks.get(pos),
+					blocks.get(pos.offset(dir)), dir) == shouldDraw;
+			}
+		}
 		
+		// Create test cases and map of blocks
+		ArrayList<TestCase> testCases = new ArrayList<>();
 		LinkedHashMap<BlockPos, BlockState> blocks = new LinkedHashMap<>();
-		blocks.put(back1, backBlocks[0]);
-		blocks.put(back2, backBlocks[1]);
-		blocks.put(back3, backBlocks[2]);
-		blocks.put(front1, frontBlocks[0]);
-		blocks.put(front2, frontBlocks[1]);
-		blocks.put(front3, frontBlocks[2]);
-		setBlocks(blocks);
-		
-		waitUntil("blocks are placed", mc -> {
-			return mc.world.getBlockState(back1) == backBlocks[0]
-				&& mc.world.getBlockState(back2) == backBlocks[1]
-				&& mc.world.getBlockState(back3) == backBlocks[2]
-				&& mc.world.getBlockState(front1) == frontBlocks[0]
-				&& mc.world.getBlockState(front2) == frontBlocks[1]
-				&& mc.world.getBlockState(front3) == frontBlocks[2];
-		});
-		
-		assertConnection(back1, Direction.NORTH, frontSeamless);
-		assertConnection(back2, Direction.NORTH, frontSeamless);
-		assertConnection(back3, Direction.NORTH, frontSeamless);
-		assertConnection(front1, Direction.SOUTH, backSeamless);
-		assertConnection(front2, Direction.SOUTH, backSeamless);
-		assertConnection(front3, Direction.SOUTH, backSeamless);
-	}
-	
-	private static void assertConnection(BlockPos pos, Direction dir,
-		boolean connected)
-	{
-		RuntimeException e = submitAndGet(mc -> {
-			BlockState state = mc.world.getBlockState(pos);
-			BlockState state2 = mc.world.getBlockState(pos.offset(dir));
-			if(Block.shouldDrawSide(state, state2, dir) != connected)
-				return null;
+		int[] xOffsets = new int[]{2, 0, -2};
+		for(int i = 0; i < 3; i++)
+		{
+			BlockPos backPos = startPos.add(xOffsets[i], 0, 5);
+			blocks.put(backPos, backBlocks[i]);
+			testCases.add(new TestCase(backPos, Direction.NORTH, drawFront));
 			
-			if(connected)
-				return new RuntimeException(
-					"Block " + state + " did not connect to " + state2);
-			else
-				return new RuntimeException(
-					"Block " + state + " connected to " + state2);
-		});
+			BlockPos frontPos = startPos.add(xOffsets[i], 0, 4);
+			blocks.put(frontPos, frontBlocks[i]);
+			testCases.add(new TestCase(frontPos, Direction.SOUTH, drawBack));
+		}
 		
-		if(e == null)
+		// Run tests and return if successful
+		TestCase failed =
+			testCases.stream().filter(testCase -> !testCase.test(blocks))
+				.findFirst().orElse(null);
+		if(failed == null)
 			return;
 		
-		setBlock(pos.up(2), Blocks.RED_CONCRETE.getDefaultState());
-		if(dir == Direction.SOUTH)
+		// Build the test case and mark where it failed
+		blocks.put(failed.pos().up(2), Blocks.RED_CONCRETE.getDefaultState());
+		setBlocks(blocks);
+		waitUntil("blocks are placed", mc -> {
+			return blocks.entrySet().stream().allMatch(entry -> mc.world
+				.getBlockState(entry.getKey()) == entry.getValue());
+		});
+		
+		// Take a screenshot
+		if(failed.dir() == Direction.SOUTH)
 			runChatCommand("tp @s ~ ~ ~9 180 0");
 		clearChat();
 		takeScreenshot("FAILED_TEST_glass_connected_incorrectly",
 			Duration.ofMillis(250));
-		throw e;
+		
+		BlockState state1 = blocks.get(failed.pos());
+		BlockState state2 = blocks.get(failed.pos().offset(failed.dir()));
+		throw new RuntimeException("Block " + state1
+			+ (failed.shouldDraw() ? " connected to " : " did not connect to ")
+			+ state2);
 	}
 	
 	private static BlockState[] blocks()
