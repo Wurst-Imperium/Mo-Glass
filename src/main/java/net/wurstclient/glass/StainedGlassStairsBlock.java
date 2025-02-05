@@ -74,7 +74,8 @@ public final class StainedGlassStairsBlock extends StairsBlock
 			return true;
 		
 		// front
-		if(direction == facing.getOpposite())
+		if(direction == facing.getOpposite() && shape != StairShape.INNER_LEFT
+			&& shape != StairShape.INNER_RIGHT)
 		{
 			if(typeFrom == SlabType.BOTTOM && half == BlockHalf.BOTTOM)
 				return true;
