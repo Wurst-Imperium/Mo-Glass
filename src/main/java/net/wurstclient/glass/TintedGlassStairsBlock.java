@@ -251,6 +251,10 @@ public final class TintedGlassStairsBlock extends StairsBlock
 		// front
 		if(direction == facing.getOpposite() && half == halfFrom)
 		{
+			if(shape != StairShape.INNER_LEFT
+				&& shape != StairShape.INNER_RIGHT)
+				return true;
+			
 			if(facingFrom == facing.rotateYCounterclockwise()
 				&& shapeFrom != StairShape.OUTER_LEFT)
 				return true;
@@ -260,25 +264,39 @@ public final class TintedGlassStairsBlock extends StairsBlock
 				return true;
 			
 			if(facingFrom == facing.getOpposite())
-				return true;
+				if(shape == StairShape.INNER_LEFT
+					&& shapeFrom == StairShape.INNER_RIGHT)
+					return true;
+				else if(shape == StairShape.INNER_RIGHT
+					&& shapeFrom == StairShape.INNER_LEFT)
+					return true;
 		}
 		
 		// left
 		if(direction == facing.rotateYCounterclockwise() && half == halfFrom)
 		{
-			if(facingFrom == direction && shape != StairShape.INNER_LEFT
-				&& shapeFrom == StairShape.INNER_RIGHT)
-				return true;
-			
-			if(facingFrom == facing && shape != StairShape.INNER_LEFT
-				&& shapeFrom != StairShape.OUTER_LEFT)
-				return true;
-			
-			if(facingFrom == facing.rotateYClockwise()
-				&& shapeFrom == StairShape.OUTER_LEFT
-				&& shape != StairShape.INNER_LEFT)
-				return true;
-			
+			if(facingFrom == direction)
+				if(shape != StairShape.INNER_LEFT
+					&& shapeFrom == StairShape.INNER_RIGHT)
+					return true;
+				else if(shape == StairShape.OUTER_RIGHT)
+					return true;
+				
+			if(facingFrom == facing && shape != StairShape.INNER_LEFT)
+				if(shapeFrom != StairShape.OUTER_LEFT)
+					return true;
+				else if(shape == StairShape.OUTER_RIGHT
+					&& shapeFrom == StairShape.OUTER_LEFT)
+					return true;
+				
+			if(facingFrom == facing.rotateYClockwise())
+				if(shapeFrom == StairShape.OUTER_RIGHT
+					&& shape == StairShape.OUTER_RIGHT)
+					return true;
+				else if(shapeFrom == StairShape.OUTER_LEFT
+					&& shape != StairShape.INNER_LEFT)
+					return true;
+				
 			if(facingFrom == facing.getOpposite()
 				&& shape == StairShape.OUTER_RIGHT)
 				return true;
@@ -287,19 +305,28 @@ public final class TintedGlassStairsBlock extends StairsBlock
 		// right
 		if(direction == facing.rotateYClockwise() && half == halfFrom)
 		{
-			if(facingFrom == direction && shape != StairShape.INNER_RIGHT
-				&& shapeFrom == StairShape.INNER_LEFT)
-				return true;
-			
-			if(facingFrom == facing && shape != StairShape.INNER_RIGHT
-				&& shapeFrom != StairShape.OUTER_RIGHT)
-				return true;
-			
-			if(facingFrom == facing.rotateYCounterclockwise()
-				&& shapeFrom == StairShape.OUTER_RIGHT
-				&& shape != StairShape.INNER_RIGHT)
-				return true;
-			
+			if(facingFrom == direction)
+				if(shape != StairShape.INNER_RIGHT
+					&& shapeFrom == StairShape.INNER_LEFT)
+					return true;
+				else if(shape == StairShape.OUTER_LEFT)
+					return true;
+				
+			if(facingFrom == facing && shape != StairShape.INNER_RIGHT)
+				if(shapeFrom != StairShape.OUTER_RIGHT)
+					return true;
+				else if(shape == StairShape.OUTER_LEFT
+					&& shapeFrom == StairShape.OUTER_RIGHT)
+					return true;
+				
+			if(facingFrom == facing.rotateYCounterclockwise())
+				if(shapeFrom == StairShape.OUTER_LEFT
+					&& shape == StairShape.OUTER_LEFT)
+					return true;
+				else if(shapeFrom == StairShape.OUTER_RIGHT
+					&& shape != StairShape.INNER_RIGHT)
+					return true;
+				
 			if(facingFrom == facing.getOpposite()
 				&& shape == StairShape.OUTER_LEFT)
 				return true;
