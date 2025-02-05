@@ -70,6 +70,74 @@ public enum GlassPieceConnectionTest
 				}
 		}
 		
+		BlockState[][] blocksWithBottomHalfCoveredNorthSide =
+			new BlockState[][]{slabs(SlabType.BOTTOM),
+				stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
+				stairs(Direction.SOUTH, BlockHalf.BOTTOM,
+					StairShape.OUTER_LEFT),
+				stairs(Direction.WEST, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
+				stairs(Direction.EAST, BlockHalf.BOTTOM,
+					StairShape.OUTER_RIGHT),
+				stairs(Direction.SOUTH, BlockHalf.BOTTOM,
+					StairShape.OUTER_RIGHT)};
+		
+		for(BlockState[] back : blocksWithBottomHalfCoveredNorthSide)
+		{
+			test(pos, back, slabs(SlabType.BOTTOM), false, false);
+			test(pos, back, slabs(SlabType.TOP), true, true);
+			for(BlockHalf half : BlockHalf.values())
+			{
+				test(pos, back,
+					stairs(Direction.NORTH, half, StairShape.STRAIGHT),
+					half == BlockHalf.TOP, half == BlockHalf.TOP);
+				test(pos, back,
+					stairs(Direction.EAST, half, StairShape.STRAIGHT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.WEST, half, StairShape.STRAIGHT),
+					half == BlockHalf.TOP, true);
+				
+				test(pos, back,
+					stairs(Direction.NORTH, half, StairShape.INNER_LEFT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.EAST, half, StairShape.INNER_LEFT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.NORTH, half, StairShape.INNER_RIGHT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.WEST, half, StairShape.INNER_RIGHT),
+					half == BlockHalf.TOP, true);
+				
+				test(pos, back,
+					stairs(Direction.NORTH, half, StairShape.OUTER_LEFT),
+					half == BlockHalf.TOP, half == BlockHalf.TOP);
+				test(pos, back,
+					stairs(Direction.EAST, half, StairShape.OUTER_LEFT),
+					half == BlockHalf.TOP, half == BlockHalf.TOP);
+				test(pos, back,
+					stairs(Direction.SOUTH, half, StairShape.OUTER_LEFT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.WEST, half, StairShape.OUTER_LEFT),
+					half == BlockHalf.TOP, true);
+				
+				test(pos, back,
+					stairs(Direction.NORTH, half, StairShape.OUTER_RIGHT),
+					half == BlockHalf.TOP, half == BlockHalf.TOP);
+				test(pos, back,
+					stairs(Direction.EAST, half, StairShape.OUTER_RIGHT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.SOUTH, half, StairShape.OUTER_RIGHT),
+					half == BlockHalf.TOP, true);
+				test(pos, back,
+					stairs(Direction.WEST, half, StairShape.OUTER_RIGHT),
+					half == BlockHalf.TOP, half == BlockHalf.TOP);
+			}
+		}
+		
 		// Clean up
 		runChatCommand("fill ~-7 ~ ~-4 ~7 ~30 ~10 air");
 		clearChat();
