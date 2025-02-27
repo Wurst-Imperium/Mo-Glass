@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-	id "fabric-loom" version "1.9-SNAPSHOT"
+	id "fabric-loom" version "1.10-SNAPSHOT"
 	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 	id "com.diffplug.spotless" version "7.0.2"
 }
@@ -99,7 +99,7 @@ processResources {
 	inputs.property "version", project.version
 	
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": inputs.properties.version
 	}
 }
 
@@ -119,8 +119,10 @@ java {
 }
 
 jar {
+	inputs.property "archivesName", project.base.archivesName
+	
 	from("LICENSE") {
-		rename {"${it}_${base.archivesName.get()}"}
+		rename {"${it}_${inputs.properties.archivesName}"}
 	}
 	
 	exclude("/assets/mo_glass/textures/block/*.psd")
@@ -129,7 +131,7 @@ jar {
 
 import com.diffplug.spotless.generic.LicenseHeaderStep
 spotless {
-	lineEndings("WINDOWS")
+	lineEndings ="WINDOWS"
 	java {
 		removeUnusedImports()
 		leadingSpacesToTabs()
