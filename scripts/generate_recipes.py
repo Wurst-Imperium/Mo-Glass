@@ -1,28 +1,11 @@
 import json
 from pathlib import Path
-
-minecraft_colors = [
-	"white",
-	"orange",
-	"magenta",
-	"light_blue",
-	"yellow",
-	"lime",
-	"pink",
-	"gray",
-	"light_gray",
-	"cyan",
-	"purple",
-	"blue",
-	"brown",
-	"green",
-	"red",
-	"black",
-]
+from util import minecraft_colors
 
 
 def write_recipe_file(file_name, recipe_data):
 	recipe_path = Path("src") / "main" / "resources" / "data" / "mo_glass" / "recipe" / file_name
+	recipe_path.parent.mkdir(parents=True, exist_ok=True)
 	recipe_path.write_text(json.dumps(recipe_data, indent=2) + "\n")
 	print(f"Created {recipe_path}")
 
