@@ -119,6 +119,7 @@ public final class MoGlassTestClient implements ClientModInitializer
 		// Test Mo Glass features
 		ItemNamesTest.testItemNamesShowUpCorrectly();
 		RecipesTest.testRecipesWork();
+		LootTableTest.testGlassPiecesDropCorrectItems();
 		GlassPieceConnectionTest.testGlassPiecesConnectCorrectly();
 		TintedGlassLightBlockingTest.testTintedGlassBlocksLightCorrectly();
 		
