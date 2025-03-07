@@ -35,8 +35,8 @@ public enum GlassPieceConnectionTest
 		System.out.println("Testing if glass pieces connect correctly...");
 		BlockPos pos = submitAndGet(mc -> mc.player.getBlockPos());
 		
-		BlockState[][] blocksWithFullyCoveredNorthSide = new BlockState[][]{
-			blocks(), slabs(SlabType.DOUBLE),
+		BlockState[][] blocksWithFullyCoveredNorthSide = {blocks(),
+			slabs(SlabType.DOUBLE),
 			stairs(Direction.NORTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
 			stairs(Direction.NORTH, BlockHalf.TOP, StairShape.STRAIGHT),
 			stairs(Direction.NORTH, BlockHalf.BOTTOM, StairShape.INNER_LEFT),
@@ -70,16 +70,13 @@ public enum GlassPieceConnectionTest
 				}
 		}
 		
-		BlockState[][] blocksWithBottomHalfCoveredNorthSide =
-			new BlockState[][]{slabs(SlabType.BOTTOM),
-				stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
-				stairs(Direction.SOUTH, BlockHalf.BOTTOM,
-					StairShape.OUTER_LEFT),
-				stairs(Direction.WEST, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
-				stairs(Direction.EAST, BlockHalf.BOTTOM,
-					StairShape.OUTER_RIGHT),
-				stairs(Direction.SOUTH, BlockHalf.BOTTOM,
-					StairShape.OUTER_RIGHT)};
+		BlockState[][] blocksWithBottomHalfCoveredNorthSide = {
+			slabs(SlabType.BOTTOM),
+			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
+			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
+			stairs(Direction.WEST, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
+			stairs(Direction.EAST, BlockHalf.BOTTOM, StairShape.OUTER_RIGHT),
+			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.OUTER_RIGHT)};
 		
 		for(BlockState[] back : blocksWithBottomHalfCoveredNorthSide)
 		{
@@ -158,7 +155,7 @@ public enum GlassPieceConnectionTest
 		// Create test cases and map of blocks
 		ArrayList<TestCase> testCases = new ArrayList<>();
 		LinkedHashMap<BlockPos, BlockState> blocks = new LinkedHashMap<>();
-		int[] xOffsets = new int[]{2, 0, -2};
+		int[] xOffsets = {2, 0, -2};
 		for(int i = 0; i < 3; i++)
 		{
 			BlockPos backPos = startPos.add(xOffsets[i], 0, 5);
@@ -180,10 +177,9 @@ public enum GlassPieceConnectionTest
 		// Build the test case and mark where it failed
 		blocks.put(failed.pos().up(2), Blocks.RED_CONCRETE.getDefaultState());
 		setBlocks(blocks);
-		waitUntil("blocks are placed", mc -> {
-			return blocks.entrySet().stream().allMatch(entry -> mc.world
-				.getBlockState(entry.getKey()) == entry.getValue());
-		});
+		waitUntil("blocks are placed",
+			mc -> blocks.entrySet().stream().allMatch(entry -> mc.world
+				.getBlockState(entry.getKey()) == entry.getValue()));
 		
 		// Take a screenshot
 		if(failed.dir() == Direction.SOUTH)

@@ -118,7 +118,7 @@ public enum RecipesTest
 		
 		List<StonecuttingRecipe> recipes = recipeGroups.entries().stream()
 			.map(group -> group.recipe().recipe()).filter(Optional::isPresent)
-			.map(Optional::get).map(entry -> entry.value()).toList();
+			.map(Optional::get).map(RecipeEntry::value).toList();
 		
 		if(recipes.isEmpty())
 			throw new RuntimeException(
