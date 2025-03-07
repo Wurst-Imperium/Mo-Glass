@@ -24,39 +24,44 @@ def create_slab_loot_table(slab, requires_silk_touch=True):
 		"type": "minecraft:block",
 		"pools": [
 			{
-				"rolls": 1,
+				"bonus_rolls": 0.0,
+				"conditions": [
+					{
+						"condition": "minecraft:match_tool",
+						"predicate": {
+							"predicates": {
+								"minecraft:enchantments": [
+									{"enchantments": "minecraft:silk_touch", "levels": {"min": 1}}
+								]
+							}
+						},
+					}
+				],
 				"entries": [
 					{
 						"type": "minecraft:item",
 						"functions": [
 							{
-								"function": "minecraft:set_count",
+								"add": False,
 								"conditions": [
 									{
-										"condition": "minecraft:block_state_property",
 										"block": f"mo_glass:{slab}",
+										"condition": "minecraft:block_state_property",
 										"properties": {"type": "double"},
 									}
 								],
-								"count": 2,
+								"count": 2.0,
+								"function": "minecraft:set_count",
 							},
 							{"function": "minecraft:explosion_decay"},
 						],
 						"name": f"mo_glass:{slab}",
 					}
 				],
-				"conditions": [
-					{
-						"condition": "minecraft:match_tool",
-						"predicate": {
-							"enchantments": [
-								{"enchantment": "minecraft:silk_touch", "levels": {"min": 1}}
-							]
-						},
-					}
-				],
+				"rolls": 1.0,
 			}
 		],
+		"random_sequence": f"mo_glass:blocks/{slab}",
 	}
 	if not requires_silk_touch:
 		data["pools"][0]["conditions"] = [{"condition": "minecraft:survives_explosion"}]
@@ -68,20 +73,24 @@ def create_stairs_loot_table(stairs, requires_silk_touch=True):
 		"type": "minecraft:block",
 		"pools": [
 			{
-				"rolls": 1,
-				"entries": [{"type": "minecraft:item", "name": f"mo_glass:{stairs}"}],
+				"bonus_rolls": 0.0,
 				"conditions": [
 					{
 						"condition": "minecraft:match_tool",
 						"predicate": {
-							"enchantments": [
-								{"enchantment": "minecraft:silk_touch", "levels": {"min": 1}}
-							]
+							"predicates": {
+								"minecraft:enchantments": [
+									{"enchantments": "minecraft:silk_touch", "levels": {"min": 1}}
+								]
+							}
 						},
 					}
 				],
+				"entries": [{"type": "minecraft:item", "name": f"mo_glass:{stairs}"}],
+				"rolls": 1.0,
 			}
 		],
+		"random_sequence": f"mo_glass:blocks/{stairs}",
 	}
 	if not requires_silk_touch:
 		data["pools"][0]["conditions"] = [{"condition": "minecraft:survives_explosion"}]
