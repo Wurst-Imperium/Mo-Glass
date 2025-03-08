@@ -39,6 +39,8 @@ public final class MoGlassTestClient implements ClientModInitializer
 	{
 		System.out.println("Starting Mo Glass End-to-End Test");
 		waitForResourceLoading();
+		disableInactivityFpsLimit();
+		submitAndWait(mc -> mc.options.getViewDistance().setValue(5));
 		
 		if(submitAndGet(mc -> mc.options.onboardAccessibility))
 		{
@@ -105,14 +107,21 @@ public final class MoGlassTestClient implements ClientModInitializer
 		closeScreen();
 		
 		// Build a test platform and clear out the space above it
-		runChatCommand("fill ~-5 ~-1 ~-5 ~5 ~-1 ~5 stone");
-		runChatCommand("fill ~-5 ~ ~-5 ~5 ~30 ~5 air");
+		runChatCommand("fill ~-7 ~-5 ~-4 ~7 ~-1 ~10 stone");
+		runChatCommand("fill ~-7 ~ ~-4 ~7 ~30 ~10 air");
+		runChatCommand("kill @e[type=!player,distance=..15]");
+		runChatCommand("kill @e[type=item]");
 		
 		// Clear inventory and chat before running tests
 		runChatCommand("clear");
 		clearChat();
 		
-		// TODO: Add Mo Glass-specific test code here
+		// Test Mo Glass features
+		ItemNamesTest.testItemNamesShowUpCorrectly();
+		RecipesTest.testRecipesWork();
+		LootTableTest.testGlassPiecesDropCorrectItems();
+		GlassPieceConnectionTest.testGlassPiecesConnectCorrectly();
+		TintedGlassLightBlockingTest.testTintedGlassBlocksLightCorrectly();
 		
 		System.out.println("Opening game menu");
 		openGameMenu();
