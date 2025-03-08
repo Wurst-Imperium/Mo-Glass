@@ -100,7 +100,7 @@ public enum LootTableTest
 		// Equip the appropriate tool
 		runChatCommand("clear");
 		runChatCommand("give @s diamond_pickaxe"
-			+ (silkTouch ? "[enchantments={levels:{silk_touch:1}}]" : ""));
+			+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
 		waitForWorldTicks(2);
 		
 		// Test all blocks
@@ -201,7 +201,7 @@ public enum LootTableTest
 			runChatCommand("loot spawn " + pos.getX() + " " + (pos.getY() + 1)
 				+ " " + pos.getZ() + " mine " + pos.getX() + " " + pos.getY()
 				+ " " + pos.getZ() + " diamond_pickaxe"
-				+ (silkTouch ? "[enchantments={levels:{silk_touch:1}}]" : ""));
+				+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
 			
 			// Take a screenshot
 			clearChat();
