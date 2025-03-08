@@ -149,8 +149,7 @@ public enum LootTableTest
 	private static ItemStack getExpectedDrops(BlockState state,
 		boolean silkTouch)
 	{
-		boolean doubleSlab =
-			state.getNullable(SlabBlock.TYPE) == SlabType.DOUBLE;
+		boolean doubleSlab = state.get(SlabBlock.TYPE, null) == SlabType.DOUBLE;
 		boolean tinted = state.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB
 			|| state.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS;
 		
@@ -177,7 +176,7 @@ public enum LootTableTest
 		private static String getBlockName(BlockState state)
 		{
 			boolean doubleSlab =
-				state.getNullable(SlabBlock.TYPE) == SlabType.DOUBLE;
+				state.get(SlabBlock.TYPE, null) == SlabType.DOUBLE;
 			Identifier id = Registries.BLOCK.getId(state.getBlock());
 			return (doubleSlab ? "double_" : "")
 				+ id.toString().replace("mo_glass:", "");
