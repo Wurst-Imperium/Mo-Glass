@@ -2,11 +2,11 @@
 
 Mo Glass is a Minecraft mod that adds glass stairs and glass slabs, including stained and tinted glass variants. They look great in any build and connect seamlessly with vanilla glass blocks. The mod is available for many different Minecraft versions, including snapshots.
 
-![A Minecraft house with its roof made out of glass stairs, powered by the Mo Glass mod](https://user-images.githubusercontent.com/10100202/69939492-ab78a480-14e8-11ea-8aa7-c351657b334b.jpg)
+![A Minecraft house with its roof made out of glass stairs, powered by the Mo Glass mod](https://img.wimods.net/github.com/Wurst-Imperium/Mo-Glass?to=https://user-images.githubusercontent.com/10100202/69939492-ab78a480-14e8-11ea-8aa7-c351657b334b.jpg)
 
 ## Downloads
 
-[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://www.wimods.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_content=Mo+Glass+GitHub+repo+download+button)
+[![Download Mo Glass](https://user-images.githubusercontent.com/10100202/214880552-859aa2ed-b4bc-4f8d-9ee7-bdd8c7fb33a2.png)](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://www.wimods.net/mo-glass/download/?utm_source=GitHub&utm_medium=Mo+Glass&utm_content=Mo+Glass+GitHub+repo+download+button)
 
 ## Installation
 
@@ -15,13 +15,13 @@ Mo Glass is a Minecraft mod that adds glass stairs and glass slabs, including st
 
 ### Installation using Fabric
 
-1. Install [Fabric Loader](https://fabricmc.net/use/installer/).
-2. Add [Fabric API](https://modrinth.com/mod/fabric-api) to your mods folder.
+1. Install [Fabric Loader](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://fabricmc.net/use/installer/).
+2. Add [Fabric API](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://modrinth.com/mod/fabric-api) to your mods folder.
 3. Add Mo Glass to your mods folder.
 
 ### Installation using NeoForge
 
-1. Install [NeoForge](https://neoforged.net/).
+1. Install [NeoForge](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://neoforged.net/).
 2. Add Mo Glass to your mods folder.
 
 ## Features
@@ -141,7 +141,7 @@ This has changed and support for connected textures is currently being worked on
 ## Development Setup
 
 > [!IMPORTANT]
-> Make sure you have [Java Development Kit 21](https://adoptium.net/?variant=openjdk21&jvmVariant=hotspot) installed. It won't work with other versions.
+> Make sure you have [Java Development Kit 21](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://adoptium.net/?variant=openjdk21&jvmVariant=hotspot) installed. It won't work with other versions.
 
 ### Development using Eclipse
 
@@ -171,7 +171,7 @@ This has changed and support for connected textures is currently being worked on
 ### Development using VSCode / Cursor
 
 > [!TIP]
-> You'll probably want to install the [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) to make development easier.
+> You'll probably want to install the [Extension Pack for Java](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) to make development easier.
 
 1. Clone the repository:
 
