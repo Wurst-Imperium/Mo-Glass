@@ -100,7 +100,7 @@ public enum LootTableTest
 		// Equip the appropriate tool
 		runChatCommand("clear");
 		runChatCommand("give @s diamond_pickaxe"
-			+ (silkTouch ? "[enchantments={levels:{silk_touch:1}}]" : ""));
+			+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
 		waitForWorldTicks(2);
 		
 		// Test all blocks
@@ -150,7 +150,7 @@ public enum LootTableTest
 		boolean silkTouch)
 	{
 		boolean doubleSlab =
-			state.getNullable(SlabBlock.TYPE) == SlabType.DOUBLE;
+			state.getOrEmpty(SlabBlock.TYPE).orElse(null) == SlabType.DOUBLE;
 		boolean tinted = state.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB
 			|| state.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS;
 		
@@ -176,8 +176,8 @@ public enum LootTableTest
 		
 		private static String getBlockName(BlockState state)
 		{
-			boolean doubleSlab =
-				state.getNullable(SlabBlock.TYPE) == SlabType.DOUBLE;
+			boolean doubleSlab = state.getOrEmpty(SlabBlock.TYPE)
+				.orElse(null) == SlabType.DOUBLE;
 			Identifier id = Registries.BLOCK.getId(state.getBlock());
 			return (doubleSlab ? "double_" : "")
 				+ id.toString().replace("mo_glass:", "");
@@ -201,7 +201,7 @@ public enum LootTableTest
 			runChatCommand("loot spawn " + pos.getX() + " " + (pos.getY() + 1)
 				+ " " + pos.getZ() + " mine " + pos.getX() + " " + pos.getY()
 				+ " " + pos.getZ() + " diamond_pickaxe"
-				+ (silkTouch ? "[enchantments={levels:{silk_touch:1}}]" : ""));
+				+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
 			
 			// Take a screenshot
 			clearChat();

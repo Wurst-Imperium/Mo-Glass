@@ -78,7 +78,7 @@ public enum MoGlassBlocks
 	
 	public static final List<RegistryKey<Block>> STAINED_GLASS_SLAB_KEYS =
 		Arrays.stream(DyeColor.values())
-			.map(color -> color.getName() + "_stained_glass_slab")
+			.map(color -> color.getId() + "_stained_glass_slab")
 			.map(MoGlassBlocks::blockKey).toList();
 	
 	public static final List<StainedGlassSlabBlock> STAINED_GLASS_SLABS = Arrays
@@ -88,7 +88,7 @@ public enum MoGlassBlocks
 	
 	public static final List<RegistryKey<Block>> STAINED_GLASS_STAIRS_KEYS =
 		Arrays.stream(DyeColor.values())
-			.map(color -> color.getName() + "_stained_glass_stairs")
+			.map(color -> color.getId() + "_stained_glass_stairs")
 			.map(MoGlassBlocks::blockKey).toList();
 	
 	public static final List<StainedGlassStairsBlock> STAINED_GLASS_STAIRS =
