@@ -63,7 +63,7 @@ dependencies {
 }
 
 import net.fabricmc.loom.util.Platform
-tasks.register('runEndToEndTest', JavaExec) {
+tasks.register("runEndToEndTest", JavaExec) {
 	dependsOn remapJar, downloadAssets
 	classpath.from configurations.productionRuntime
 	mainClass = "net.fabricmc.loader.impl.launch.knot.KnotClient"
@@ -95,7 +95,7 @@ tasks.register('runEndToEndTest', JavaExec) {
 	}
 }
 
-processResources {
+tasks.named("processResources") {
 	inputs.property "version", project.version
 	
 	filesMatching("fabric.mod.json") {
@@ -118,7 +118,7 @@ java {
 	targetCompatibility = JavaVersion.VERSION_21
 }
 
-jar {
+tasks.named("jar") {
 	inputs.property "archivesName", project.base.archivesName
 	
 	from("LICENSE") {
@@ -207,8 +207,8 @@ publishMods {
 }
 
 import groovy.json.JsonSlurper
-
 tasks.register("getCurseforgeId") {
+	dependsOn publishCurseforge
 	inputs.file publishCurseforge.result
 	doLast {
 		def result = new JsonSlurper().parseText(publishCurseforge.result.get().asFile.text)
@@ -216,17 +216,15 @@ tasks.register("getCurseforgeId") {
 	}
 }
 
-afterEvaluate {
-	tasks.publishMods.dependsOn build
-	tasks.publishCurseforge.dependsOn build
-	tasks.publishModrinth.dependsOn build
-	tasks.getCurseforgeId.dependsOn publishCurseforge
-}
+tasks.named("publishMods").configure { dependsOn(tasks.named("build")) }
+tasks.named("publishCurseforge").configure { dependsOn(tasks.named("build")) }
+tasks.named("publishModrinth").configure { dependsOn(tasks.named("build")) }
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub
-
-task github(dependsOn: build) {
+tasks.register("github") {
+	dependsOn build
+	
 	onlyIf {
 		ENV.GITHUB_TOKEN
 	}
@@ -253,8 +251,7 @@ task github(dependsOn: build) {
 import org.kohsuke.github.GHIssueState
 import org.kohsuke.github.GHMilestoneState
 import java.time.Instant
-
-task closeMilestone {
+tasks.register("closeMilestone") {
 	onlyIf {
 		ENV.GITHUB_TOKEN
 	}
@@ -279,7 +276,7 @@ task closeMilestone {
 	}
 }
 
-task uploadBackups {
+tasks.register("uploadBackups") {
 	dependsOn build
 	
 	onlyIf {
