@@ -45,6 +45,9 @@
       "links": {
         "Donate": "https://www.wurstclient.net/donate/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+donate+link"
       }
+    },
+    "mo_glass": {
+      "platform": null
     }
   }
 }

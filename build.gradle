@@ -64,7 +64,7 @@ dependencies {
 
 import net.fabricmc.loom.util.Platform
 tasks.register("runEndToEndTest", JavaExec) {
-	dependsOn remapJar, downloadAssets
+	dependsOn modrinthJar, downloadAssets
 	classpath.from configurations.productionRuntime
 	mainClass = "net.fabricmc.loader.impl.launch.knot.KnotClient"
 	workingDir = file("run")
@@ -84,7 +84,7 @@ tasks.register("runEndToEndTest", JavaExec) {
 		}
 		
 		jvmArgs(
-			"-Dfabric.addMods=${configurations.modImplementation.find { it.name.contains('fabric-api') }.absolutePath}${File.pathSeparator}${remapJar.archiveFile.get().asFile.absolutePath}",
+			"-Dfabric.addMods=${configurations.modImplementation.find { it.name.contains('fabric-api') }.absolutePath}${File.pathSeparator}${modrinthJar.archiveFile.get().asFile.absolutePath}",
 			"-Dmo_glass.e2eTest",
 			// TODO: translate the tags and then re-enable this
 			// "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=fail",
@@ -150,6 +150,62 @@ spotless {
 	}
 }
 
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
+def createPlatformJar(String platform) {
+	def simplePlatform = platform.toLowerCase().replace("-", "")
+	tasks.register("${simplePlatform}Jar", Jar) {
+		dependsOn remapJar
+		
+		archiveBaseName = base.archivesName.get()
+		archiveVersion = project.version
+		archiveClassifier = platform
+		destinationDirectory = file("${project.buildDir}/libs")
+		
+		preserveFileTimestamps = false
+		reproducibleFileOrder = true
+		
+		doFirst {
+			def originalJar = remapJar.archiveFile.get().asFile
+			
+			// Get the manifest from the original jar
+			zipTree(originalJar).matching { include 'META-INF/MANIFEST.MF' }
+				.each { manifestFile -> manifest.from(manifestFile) }
+			
+			// Extract original JAR into a temp directory
+			def tempDir = file("${buildDir}/tmp/${simplePlatform}Jar")
+			tempDir.deleteDir()
+			tempDir.mkdirs()
+			copy {
+				from zipTree(originalJar)
+				into tempDir
+			}
+			
+			// Modify fabric.mod.json
+			def fabricJsonFile = new File(tempDir, "fabric.mod.json")
+			def json = new JsonSlurper().parseText(fabricJsonFile.text)
+			
+			// Set the platform property
+			if (json.custom == null)
+				json.custom = [:]
+			if (json.custom.mo_glass == null)
+				json.custom.mo_glass = [:]
+			json.custom.mo_glass.platform = platform
+			
+			// Convert back to JSON
+			fabricJsonFile.text = new JsonBuilder(json)
+				.toPrettyString().replaceAll("    ", "  ") + "\n"
+			
+			// Build the platform jar
+			from(tempDir)
+		}
+	}
+}
+
+def modrinthJar = createPlatformJar("Modrinth")
+def curseforgeJar = createPlatformJar("CurseForge")
+def wimodsJar = createPlatformJar("WI-Mods")
+
 def getGhVersion() {
 	return "v" + version.substring(0, version.indexOf("-MC"))
 }
@@ -185,12 +241,12 @@ publishMods {
 	
 	type = getGhVersion().contains("pre") ? BETA : STABLE
 	modLoaders.add(project.mod_loader.toLowerCase())
-	file = remapJar.archiveFile
 	additionalFiles.from(
 		file("${project.buildDir}/libs/${archivesName}-${version}-sources.jar"),
 	)
 	
 	curseforge {
+		file = curseforgeJar.get().archiveFile
 		projectId = project.cf_project_id
 		accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
 		minecraftVersions.add(project.cf_game_version)
@@ -198,6 +254,7 @@ publishMods {
 		changelog = getChangelog("CurseForge", "curseforge.com/minecraft/mc-mods/${modSlug}/version/${version}")
 	}
 	modrinth {
+		file = modrinthJar.get().archiveFile
 		projectId = project.mr_project_id
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		minecraftVersions.add(project.minecraft_version)
@@ -206,7 +263,6 @@ publishMods {
 	}
 }
 
-import groovy.json.JsonSlurper
 tasks.register("getCurseforgeId") {
 	dependsOn publishCurseforge
 	inputs.file publishCurseforge.result
@@ -216,14 +272,20 @@ tasks.register("getCurseforgeId") {
 	}
 }
 
-tasks.named("publishMods").configure { dependsOn(tasks.named("build")) }
-tasks.named("publishCurseforge").configure { dependsOn(tasks.named("build")) }
-tasks.named("publishModrinth").configure { dependsOn(tasks.named("build")) }
+tasks.named("publishMods").configure {
+	dependsOn tasks.named("build"), tasks.named("curseforgeJar"), tasks.named("modrinthJar")
+}
+tasks.named("publishCurseforge").configure {
+	dependsOn tasks.named("build"), tasks.named("curseforgeJar")
+}
+tasks.named("publishModrinth").configure {
+	dependsOn tasks.named("build"), tasks.named("modrinthJar")
+}
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub
 tasks.register("github") {
-	dependsOn build
+	dependsOn wimodsJar, remapSourcesJar
 	
 	onlyIf {
 		ENV.GITHUB_TOKEN
@@ -243,7 +305,7 @@ tasks.register("github") {
 			ghRelease = releaseBuilder.create()
 		}
 		
-		ghRelease.uploadAsset(remapJar.archiveFile.get().getAsFile(), "application/java-archive")
+		ghRelease.uploadAsset(wimodsJar.get().archiveFile.get().getAsFile(), "application/java-archive")
 		ghRelease.uploadAsset(remapSourcesJar.archiveFile.get().getAsFile(), "application/java-archive")
 	}
 }
@@ -277,7 +339,7 @@ tasks.register("closeMilestone") {
 }
 
 tasks.register("uploadBackups") {
-	dependsOn build
+	dependsOn remapJar, remapSourcesJar, curseforgeJar, modrinthJar, wimodsJar
 	
 	onlyIf {
 		ENV.WI_BACKUPS_API_KEY
@@ -302,7 +364,7 @@ tasks.register("uploadBackups") {
 				connection.doOutput = true
 				
 				def output = connection.outputStream
-				[remapJar, remapSourcesJar].each { jarTask ->
+				[remapJar, remapSourcesJar, curseforgeJar.get(), modrinthJar.get(), wimodsJar.get()].each { jarTask ->
 					def file = jarTask.archiveFile.get().asFile
 					output << "--${boundary}\r\n"
 					output << "Content-Disposition: form-data; name=\"files\"; filename=\"${file.name}\"\r\n"

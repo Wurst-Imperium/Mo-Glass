@@ -55,6 +55,9 @@ public final class MoGlassTestClient implements ClientModInitializer
 		System.out.println("Reached title screen");
 		takeScreenshot("title_screen", Duration.ZERO);
 		
+		// Test things that don't need a world
+		PlatformTest.testPlatformDetection();
+		
 		System.out.println("Clicking singleplayer button");
 		clickButton("menu.singleplayer");
 		
