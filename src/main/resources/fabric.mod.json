@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.wurstclient.glass.MoGlassInitializer",
-      "net.wurstclient.glass.test.MoGlassTestClient"
+      "net.wimods.mo_glass.MoGlassInitializer",
+      "net.wimods.mo_glass.test.MoGlassTestClient"
     ],
     "server": [
-      "net.wurstclient.glass.MoGlassInitializer"
+      "net.wimods.mo_glass.MoGlassInitializer"
     ]
   },
   "mixins": [

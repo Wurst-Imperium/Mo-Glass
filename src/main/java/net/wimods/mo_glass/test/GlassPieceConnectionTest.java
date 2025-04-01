@@ -5,9 +5,9 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.test;
+package net.wimods.mo_glass.test;
 
-import static net.wurstclient.glass.test.WiModsTestHelper.*;
+import static net.wimods.mo_glass.test.WiModsTestHelper.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.wurstclient.glass.MoGlassBlocks;
+import net.wimods.mo_glass.MoGlassBlocks;
 
 public enum GlassPieceConnectionTest
 {
