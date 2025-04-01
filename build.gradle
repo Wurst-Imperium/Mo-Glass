@@ -157,6 +157,9 @@ def createPlatformJar(String platform) {
 	tasks.register("${simplePlatform}Jar", Jar) {
 		dependsOn remapJar
 		
+		inputs.file(remapJar.archiveFile)
+		inputs.property("platform", platform)
+		
 		archiveBaseName = base.archivesName.get()
 		archiveVersion = project.version
 		archiveClassifier = platform
@@ -165,17 +168,15 @@ def createPlatformJar(String platform) {
 		preserveFileTimestamps = false
 		reproducibleFileOrder = true
 		
-		doFirst {
-			def originalJar = remapJar.archiveFile.get().asFile
-			
-			// Get the manifest from the original jar
-			zipTree(originalJar).matching { include 'META-INF/MANIFEST.MF' }
-				.each { manifestFile -> manifest.from(manifestFile) }
-			
-			// Extract original JAR into a temp directory
-			def tempDir = file("${buildDir}/tmp/${simplePlatform}Jar")
+		def tempDir = file("${buildDir}/tmp/${simplePlatform}Jar")
+		
+		from {
+			// Clean temp directory
 			tempDir.deleteDir()
 			tempDir.mkdirs()
+			
+			// Extract original jar
+			def originalJar = remapJar.archiveFile.get().asFile
 			copy {
 				from zipTree(originalJar)
 				into tempDir
@@ -192,12 +193,18 @@ def createPlatformJar(String platform) {
 				json.custom.mo_glass = [:]
 			json.custom.mo_glass.platform = platform
 			
-			// Convert back to JSON
+			// Write modified json back to file
 			fabricJsonFile.text = new JsonBuilder(json)
 				.toPrettyString().replaceAll("    ", "  ") + "\n"
 			
-			// Build the platform jar
-			from(tempDir)
+			return tempDir
+		}
+		
+		// Get the manifest from the original jar
+		doFirst {
+			def originalJar = remapJar.archiveFile.get().asFile
+			zipTree(originalJar).matching { include 'META-INF/MANIFEST.MF' }
+				.each { manifestFile -> manifest.from(manifestFile) }
 		}
 	}
 }
