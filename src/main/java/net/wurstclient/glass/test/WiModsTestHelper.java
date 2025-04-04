@@ -10,8 +10,6 @@ package net.wurstclient.glass.test;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -22,7 +20,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.GameMenuScreen;
@@ -43,7 +40,6 @@ import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public enum WiModsTestHelper
 {
@@ -407,31 +403,6 @@ public enum WiModsTestHelper
 			netHandler.sendChatCommand(command);
 		});
 		waitForWorldTicks(1);
-	}
-	
-	/**
-	 * Places the given block at the given position without any delays or block
-	 * updates.
-	 */
-	public static void setBlock(BlockPos pos, BlockState state)
-	{
-		submitAndWait(
-			mc -> mc.getServer().getWorld(World.OVERWORLD).setBlockState(pos,
-				state, Block.FORCE_STATE | Block.NOTIFY_LISTENERS));
-	}
-	
-	/**
-	 * Places all of the given blocks at the given positions at once without any
-	 * delays or block updates.
-	 */
-	public static void setBlocks(LinkedHashMap<BlockPos, BlockState> blocks)
-	{
-		submitAndWait(mc -> {
-			for(Entry<BlockPos, BlockState> entry : blocks.entrySet())
-				mc.getServer().getWorld(World.OVERWORLD).setBlockState(
-					entry.getKey(), entry.getValue(),
-					Block.FORCE_STATE | Block.NOTIFY_LISTENERS);
-		});
 	}
 	
 	public static void assertOneItemInSlot(int slot, Item item)
