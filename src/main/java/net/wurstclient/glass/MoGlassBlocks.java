@@ -13,12 +13,12 @@ import java.util.List;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.class_11515;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.enums.NoteBlockInstrument;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
@@ -151,7 +151,7 @@ public enum MoGlassBlocks
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				class_11515.TRANSLUCENT);
+				BlockRenderLayer.TRANSLUCENT);
 	}
 	
 	private static void registerBlockCutoutMipped(Block block,
@@ -161,7 +161,7 @@ public enum MoGlassBlocks
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				class_11515.CUTOUT_MIPPED);
+				BlockRenderLayer.CUTOUT_MIPPED);
 	}
 	
 	private static void registerBlock(Block block, RegistryKey<Block> blockKey)
