@@ -10,7 +10,7 @@ package net.wurstclient.glass;
 import java.util.Arrays;
 import java.util.List;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
@@ -150,8 +150,7 @@ public enum MoGlassBlocks
 		registerBlock(block, key);
 		
 		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				BlockRenderLayer.TRANSLUCENT);
+			BlockRenderLayerMap.putBlock(block, BlockRenderLayer.TRANSLUCENT);
 	}
 	
 	private static void registerBlockCutoutMipped(Block block,
@@ -160,8 +159,7 @@ public enum MoGlassBlocks
 		registerBlock(block, key);
 		
 		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				BlockRenderLayer.CUTOUT_MIPPED);
+			BlockRenderLayerMap.putBlock(block, BlockRenderLayer.CUTOUT_MIPPED);
 	}
 	
 	private static void registerBlock(Block block, RegistryKey<Block> blockKey)
