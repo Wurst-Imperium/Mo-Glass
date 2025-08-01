@@ -351,7 +351,7 @@ public enum WiModsTestHelper
 	
 	public static void toggleDebugHud()
 	{
-		submitAndWait(mc -> mc.inGameHud.getDebugHud().toggleDebugHud());
+		submitAndWait(mc -> mc.debugHudEntryList.toggleF3Enabled());
 	}
 	
 	public static void setPerspective(Perspective perspective)
