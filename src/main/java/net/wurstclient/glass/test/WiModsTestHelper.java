@@ -17,10 +17,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.class_11908;
+import net.minecraft.class_11910;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -262,6 +266,7 @@ public enum WiModsTestHelper
 	public static void clickButton(String translationKey)
 	{
 		String buttonText = I18n.translate(translationKey);
+		class_11910 pressContext = new class_11910(GLFW.GLFW_KEY_UNKNOWN, 0);
 		
 		waitUntil("button saying " + buttonText + " is visible", mc -> {
 			Screen screen = mc.currentScreen;
@@ -276,14 +281,14 @@ public enum WiModsTestHelper
 				if(widget instanceof ButtonWidget button
 					&& buttonText.equals(button.getMessage().getString()))
 				{
-					button.onPress();
+					button.onPress(pressContext);
 					return true;
 				}
 				
 				if(widget instanceof CyclingButtonWidget<?> button
 					&& buttonText.equals(button.optionText.getString()))
 				{
-					button.onPress();
+					button.onPress(pressContext);
 					return true;
 				}
 			}
@@ -324,8 +329,14 @@ public enum WiModsTestHelper
 	
 	public static void setKeyPressState(int key, boolean pressed)
 	{
-		submitAndWait(mc -> mc.keyboard.onKey(mc.getWindow().getHandle(), key,
-			0, pressed ? 1 : 0, 0));
+		submitAndWait(mc -> {
+			long window = mc.getWindow().getHandle();
+			int action = pressed ? 1 : 0;
+			int scancode = 0;
+			int modifiers = 0;
+			class_11908 context = new class_11908(key, scancode, modifiers);
+			mc.keyboard.onKey(window, action, context);
+		});
 	}
 	
 	public static void scrollMouse(int horizontal, int vertical)
