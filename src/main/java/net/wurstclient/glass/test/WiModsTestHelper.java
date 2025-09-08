@@ -23,8 +23,6 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.class_11908;
-import net.minecraft.class_11910;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -38,6 +36,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
+import net.minecraft.client.input.MouseInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.InactivityFpsLimit;
 import net.minecraft.client.option.Perspective;
@@ -266,7 +266,7 @@ public enum WiModsTestHelper
 	public static void clickButton(String translationKey)
 	{
 		String buttonText = I18n.translate(translationKey);
-		class_11910 pressContext = new class_11910(GLFW.GLFW_KEY_UNKNOWN, 0);
+		MouseInput pressContext = new MouseInput(GLFW.GLFW_KEY_UNKNOWN, 0);
 		
 		waitUntil("button saying " + buttonText + " is visible", mc -> {
 			Screen screen = mc.currentScreen;
@@ -334,7 +334,7 @@ public enum WiModsTestHelper
 			int action = pressed ? 1 : 0;
 			int scancode = 0;
 			int modifiers = 0;
-			class_11908 context = new class_11908(key, scancode, modifiers);
+			KeyInput context = new KeyInput(key, scancode, modifiers);
 			mc.keyboard.onKey(window, action, context);
 		});
 	}
