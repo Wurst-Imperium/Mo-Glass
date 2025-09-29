@@ -7,7 +7,7 @@ buildscript {
 plugins {
 	id "fabric-loom" version "${loom_version}"
 	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
-	id "com.diffplug.spotless" version "7.2.1"
+	id "com.diffplug.spotless" version "8.0.0"
 }
 
 def ENV = System.getenv()
@@ -103,11 +103,12 @@ tasks.register("runEndToEndTest", JavaExec) {
 	}
 }
 
-tasks.named("processResources") {
-	inputs.property "version", project.version
+processResources {
+	def modVersion = project.version
+	inputs.property("version", modVersion)
 	
 	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
+		expand(version: modVersion)
 	}
 }
 
@@ -126,11 +127,12 @@ java {
 	targetCompatibility = JavaVersion.VERSION_21
 }
 
-tasks.named("jar") {
-	inputs.property "archivesName", project.base.archivesName
+jar {
+	def archivesName = project.base.archivesName
+	inputs.property("archivesName", archivesName)
 	
-	from("LICENSE") {
-		rename {"${it}_${inputs.properties.archivesName}"}
+	from("LICENSE.txt") {
+		rename { "LICENSE-${archivesName}.txt" }
 	}
 	
 	exclude("/assets/mo_glass/textures/block/*.psd")
@@ -230,9 +232,7 @@ tasks.named("publishModrinth").configure { dependsOn(tasks.named("build")) }
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub
-tasks.register("github") {
-	dependsOn build
-	
+task github(dependsOn: build) {
 	onlyIf {
 		ENV.GITHUB_TOKEN
 	}
@@ -259,7 +259,7 @@ tasks.register("github") {
 import org.kohsuke.github.GHIssueState
 import org.kohsuke.github.GHMilestoneState
 import java.time.Instant
-tasks.register("closeMilestone") {
+task closeMilestone {
 	onlyIf {
 		ENV.GITHUB_TOKEN
 	}
@@ -284,7 +284,7 @@ tasks.register("closeMilestone") {
 	}
 }
 
-tasks.register("uploadBackups") {
+task uploadBackups {
 	dependsOn build
 	
 	onlyIf {
