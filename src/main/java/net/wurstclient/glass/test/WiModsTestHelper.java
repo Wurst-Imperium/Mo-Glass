@@ -17,6 +17,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
@@ -34,6 +36,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
+import net.minecraft.client.input.MouseInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.InactivityFpsLimit;
 import net.minecraft.client.option.Perspective;
@@ -262,6 +266,7 @@ public enum WiModsTestHelper
 	public static void clickButton(String translationKey)
 	{
 		String buttonText = I18n.translate(translationKey);
+		MouseInput pressContext = new MouseInput(GLFW.GLFW_KEY_UNKNOWN, 0);
 		
 		waitUntil("button saying " + buttonText + " is visible", mc -> {
 			Screen screen = mc.currentScreen;
@@ -276,14 +281,14 @@ public enum WiModsTestHelper
 				if(widget instanceof ButtonWidget button
 					&& buttonText.equals(button.getMessage().getString()))
 				{
-					button.onPress();
+					button.onPress(pressContext);
 					return true;
 				}
 				
 				if(widget instanceof CyclingButtonWidget<?> button
 					&& buttonText.equals(button.optionText.getString()))
 				{
-					button.onPress();
+					button.onPress(pressContext);
 					return true;
 				}
 			}
@@ -324,8 +329,14 @@ public enum WiModsTestHelper
 	
 	public static void setKeyPressState(int key, boolean pressed)
 	{
-		submitAndWait(mc -> mc.keyboard.onKey(mc.getWindow().getHandle(), key,
-			0, pressed ? 1 : 0, 0));
+		submitAndWait(mc -> {
+			long window = mc.getWindow().getHandle();
+			int action = pressed ? 1 : 0;
+			int scancode = 0;
+			int modifiers = 0;
+			KeyInput context = new KeyInput(key, scancode, modifiers);
+			mc.keyboard.onKey(window, action, context);
+		});
 	}
 	
 	public static void scrollMouse(int horizontal, int vertical)
@@ -351,7 +362,7 @@ public enum WiModsTestHelper
 	
 	public static void toggleDebugHud()
 	{
-		submitAndWait(mc -> mc.inGameHud.getDebugHud().toggleDebugHud());
+		submitAndWait(mc -> mc.debugHudEntryList.toggleF3Enabled());
 	}
 	
 	public static void setPerspective(Perspective perspective)
