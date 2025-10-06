@@ -134,7 +134,7 @@ jar {
 	inputs.property("archivesName", archivesName)
 	
 	from("LICENSE.txt") {
-		rename { "LICENSE-${archivesName}.txt" }
+		rename { "LICENSE-${archivesName.get()}.txt" }
 	}
 	
 	exclude("/assets/mo_glass/textures/block/*.psd")
