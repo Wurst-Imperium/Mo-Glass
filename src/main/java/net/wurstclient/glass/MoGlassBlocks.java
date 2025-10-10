@@ -12,7 +12,6 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -99,16 +98,8 @@ public enum MoGlassBlocks
 	
 	public static void initialize()
 	{
-		if(FabricLoader.getInstance().isModLoaded("translucent-glass"))
-		{
-			registerBlockTranslucent(GLASS_SLAB, GLASS_SLAB_KEY);
-			registerBlockTranslucent(GLASS_STAIRS, GLASS_STAIRS_KEY);
-			
-		}else
-		{
-			registerBlockCutoutMipped(GLASS_SLAB, GLASS_SLAB_KEY);
-			registerBlockCutoutMipped(GLASS_STAIRS, GLASS_STAIRS_KEY);
-		}
+		registerBlockTranslucent(GLASS_SLAB, GLASS_SLAB_KEY);
+		registerBlockTranslucent(GLASS_STAIRS, GLASS_STAIRS_KEY);
 		
 		registerBlockTranslucent(TINTED_GLASS_SLAB, TINTED_GLASS_SLAB_KEY);
 		registerBlockTranslucent(TINTED_GLASS_STAIRS, TINTED_GLASS_STAIRS_KEY);
@@ -151,15 +142,6 @@ public enum MoGlassBlocks
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.putBlock(block, BlockRenderLayer.TRANSLUCENT);
-	}
-	
-	private static void registerBlockCutoutMipped(Block block,
-		RegistryKey<Block> key)
-	{
-		registerBlock(block, key);
-		
-		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.putBlock(block, BlockRenderLayer.CUTOUT_MIPPED);
 	}
 	
 	private static void registerBlock(Block block, RegistryKey<Block> blockKey)

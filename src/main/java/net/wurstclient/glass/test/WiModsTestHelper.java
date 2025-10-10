@@ -173,9 +173,9 @@ public enum WiModsTestHelper
 	
 	public static void waitForWorldTicks(int ticks)
 	{
-		long startTicks = submitAndGet(mc -> mc.world.getTime());
+		long startTicks = submitAndGet(mc -> mc.world.method_75260());
 		waitUntil(ticks + " world ticks have passed",
-			mc -> mc.world.getTime() >= startTicks + ticks,
+			mc -> mc.world.method_75260() >= startTicks + ticks,
 			Duration.ofMillis(ticks * 100).plusMinutes(5));
 	}
 	
