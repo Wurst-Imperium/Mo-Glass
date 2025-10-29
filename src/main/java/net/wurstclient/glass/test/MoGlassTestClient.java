@@ -83,10 +83,22 @@ public final class MoGlassTestClient implements ClientModInitializer
 		
 		waitForWorldLoad();
 		dismissTutorialToasts();
+		
+		// Disable anisotropic filtering
+		submitAndWait(mc -> mc.options.method_76247().setValue(0));
+		
+		// Disable chunk fade
+		submitAndWait(mc -> mc.options.method_76253().setValue(0.0));
+		
 		waitForWorldTicks(200);
 		runChatCommand("seed");
 		System.out.println("Reached singleplayer world");
 		takeScreenshot("in_game", Duration.ZERO);
+		runChatCommand("gamerule advance_time false");
+		runChatCommand("gamerule advance_weather false");
+		runChatCommand("gamerule spawn_wandering_traders false");
+		runChatCommand("gamerule spawn_patrols false");
+		runChatCommand("time set noon");
 		clearChat();
 		
 		System.out.println("Opening debug menu");
