@@ -61,7 +61,7 @@ public enum MoGlassBlocks
 	
 	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
 		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.mapColor(MapColor.GRAY).allowsSpawning(Blocks::never)
 			.solidBlock(Blocks::never).suffocates(Blocks::never)
 			.blockVision(Blocks::never).registryKey(TINTED_GLASS_SLAB_KEY));
@@ -71,7 +71,7 @@ public enum MoGlassBlocks
 	
 	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
 		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS)
+			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
 			.mapColor(MapColor.GRAY).allowsSpawning(Blocks::never)
 			.solidBlock(Blocks::never).suffocates(Blocks::never)
 			.blockVision(Blocks::never).registryKey(TINTED_GLASS_STAIRS_KEY));
