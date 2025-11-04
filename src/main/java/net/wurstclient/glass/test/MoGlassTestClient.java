@@ -85,10 +85,10 @@ public final class MoGlassTestClient implements ClientModInitializer
 		dismissTutorialToasts();
 		
 		// Disable anisotropic filtering
-		submitAndWait(mc -> mc.options.method_76247().setValue(0));
+		submitAndWait(mc -> mc.options.getMaxAnisotropy().setValue(0));
 		
 		// Disable chunk fade
-		submitAndWait(mc -> mc.options.method_76253().setValue(0.0));
+		submitAndWait(mc -> mc.options.getChunkFade().setValue(0.0));
 		
 		waitForWorldTicks(200);
 		runChatCommand("seed");
