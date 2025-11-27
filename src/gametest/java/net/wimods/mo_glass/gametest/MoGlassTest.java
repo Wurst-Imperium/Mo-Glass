@@ -109,8 +109,10 @@ public final class MoGlassTest implements FabricClientGameTest
 		ItemNamesTest.testItemNamesShowUpCorrectly();
 		RecipesTest.testRecipesWork(context);
 		LootTableTest.testGlassPiecesDropCorrectItems(context, spContext);
-		GlassPieceConnectionTest.testGlassPiecesConnectCorrectly(context, spContext);
-		TintedGlassLightBlockingTest.testTintedGlassBlocksLightCorrectly(context, spContext);
+		GlassPieceConnectionTest.testGlassPiecesConnectCorrectly(context,
+			spContext);
+		TintedGlassLightBlockingTest
+			.testTintedGlassBlocksLightCorrectly(context, spContext);
 		
 		LOGGER.info("Opening game menu");
 		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
