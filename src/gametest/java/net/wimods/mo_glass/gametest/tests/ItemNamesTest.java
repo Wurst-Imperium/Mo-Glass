@@ -5,10 +5,13 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.test;
+package net.wimods.mo_glass.gametest.tests;
 
-import net.minecraft.client.resource.language.I18n;
+import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.wimods.mo_glass.gametest.MoGlassTest;
 import net.wurstclient.glass.MoGlassBlocks;
 
 public enum ItemNamesTest
@@ -17,7 +20,7 @@ public enum ItemNamesTest
 	
 	public static void testItemNamesShowUpCorrectly()
 	{
-		System.out.println("Testing item names...");
+		MoGlassTest.LOGGER.info("Testing item names...");
 		
 		assertItemName("Glass Slab", new ItemStack(MoGlassBlocks.GLASS_SLAB));
 		assertItemName("Glass Stairs",
@@ -42,8 +45,15 @@ public enum ItemNamesTest
 	
 	private static void assertItemName(String expected, ItemStack stack)
 	{
-		if(!expected.equals(I18n.translate(stack.getName().getString())))
-			throw new RuntimeException("Wrong item name: Expected <" + expected
-				+ "> but got <" + stack.getName() + ">");
+		Text actual = stack.getName();
+		String actualString = actual.getString();
+		if(expected.equals(actualString))
+			return;
+		
+		String errorMessage = "Wrong item name: Expected `" + expected
+			+ "` but got `" + actualString + "` (`" + actual + "`)";
+		ghSummary("### One or more item names aren't showing up correctly");
+		ghSummary(errorMessage);
+		throw new RuntimeException(errorMessage);
 	}
 }

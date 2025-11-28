@@ -5,14 +5,15 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.test;
+package net.wimods.mo_glass.gametest.tests;
 
-import static net.wurstclient.glass.test.WiModsTestHelper.*;
+import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemConvertible;
@@ -25,22 +26,23 @@ import net.minecraft.recipe.display.CuttingRecipeDisplay;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.util.DyeColor;
+import net.wimods.mo_glass.gametest.MoGlassTest;
 import net.wurstclient.glass.MoGlassBlocks;
 
 public enum RecipesTest
 {
 	;
 	
-	public static void testRecipesWork()
+	public static void testRecipesWork(ClientGameTestContext context)
 	{
-		System.out.println("Testing crafting/stonecutting recipes...");
+		MoGlassTest.LOGGER.info("Testing crafting/stonecutting recipes...");
 		
 		// normal glass
-		testRecipesForGlassType(Blocks.GLASS, MoGlassBlocks.GLASS_SLAB,
+		testRecipesForGlassType(context, Blocks.GLASS, MoGlassBlocks.GLASS_SLAB,
 			MoGlassBlocks.GLASS_STAIRS);
 		
 		// tinted glass
-		testRecipesForGlassType(Blocks.TINTED_GLASS,
+		testRecipesForGlassType(context, Blocks.TINTED_GLASS,
 			MoGlassBlocks.TINTED_GLASS_SLAB, MoGlassBlocks.TINTED_GLASS_STAIRS);
 		
 		// stained glass
@@ -50,36 +52,38 @@ public enum RecipesTest
 			Block slab = MoGlassBlocks.STAINED_GLASS_SLABS.get(color.ordinal());
 			Block stairs =
 				MoGlassBlocks.STAINED_GLASS_STAIRS.get(color.ordinal());
-			testRecipesForGlassType(block, slab, stairs);
+			testRecipesForGlassType(context, block, slab, stairs);
 		}
 	}
 	
-	private static void testRecipesForGlassType(ItemConvertible input,
-		ItemConvertible slabOutput, ItemConvertible stairsOutput)
+	private static void testRecipesForGlassType(ClientGameTestContext context,
+		ItemConvertible input, ItemConvertible slabOutput,
+		ItemConvertible stairsOutput)
 	{
 		// slab crafting
-		assertCraftingRecipe(new ItemStack[][]{
-			{new ItemStack(input), new ItemStack(input), new ItemStack(input)}},
+		assertCraftingRecipe(
+			context, new ItemStack[][]{{new ItemStack(input),
+				new ItemStack(input), new ItemStack(input)}},
 			new ItemStack(slabOutput, 6));
 		
 		// stairs crafting
-		assertCraftingRecipe(new ItemStack[][]{
+		assertCraftingRecipe(context, new ItemStack[][]{
 			{new ItemStack(input), null, null},
 			{new ItemStack(input), new ItemStack(input), null},
 			{new ItemStack(input), new ItemStack(input), new ItemStack(input)}},
 			new ItemStack(stairsOutput, 4));
 		
 		// slab stonecutting
-		assertStonecuttingRecipe(new ItemStack(input),
+		assertStonecuttingRecipe(context, new ItemStack(input),
 			new ItemStack(slabOutput, 2));
 		
 		// stairs stonecutting
-		assertStonecuttingRecipe(new ItemStack(input),
+		assertStonecuttingRecipe(context, new ItemStack(input),
 			new ItemStack(stairsOutput, 1));
 	}
 	
-	private static void assertCraftingRecipe(ItemStack[][] inputGrid,
-		ItemStack expectedResult)
+	private static void assertCraftingRecipe(ClientGameTestContext context,
+		ItemStack[][] inputGrid, ItemStack expectedResult)
 	{
 		int width = inputGrid[0].length;
 		int height = inputGrid.length;
@@ -92,28 +96,44 @@ public enum RecipesTest
 		CraftingRecipeInput input =
 			CraftingRecipeInput.createPositioned(width, height, stacks).input();
 		Optional<RecipeEntry<CraftingRecipe>> optional =
-			submitAndGet(mc -> mc.getServer().getRecipeManager()
+			context.computeOnClient(mc -> mc.getServer().getRecipeManager()
 				.getFirstMatch(RecipeType.CRAFTING, input, mc.world));
 		
 		if(!optional.isPresent())
-			throw new RuntimeException(
-				"No crafting recipe found for " + expectedResult);
+			fail("The following recipe for " + expectedResult + " is missing:\n"
+				+ formatCraftingRecipe(inputGrid));
 		
 		RecipeEntry<CraftingRecipe> entry = optional.get();
 		CraftingRecipe recipe = entry.value();
-		ItemStack result = submitAndGet(
+		ItemStack result = context.computeOnClient(
 			mc -> recipe.craft(input, mc.world.getRegistryManager()));
 		
 		if(!ItemStack.areEqual(expectedResult, result))
-			throw new RuntimeException("Wrong crafting result: Expected "
-				+ expectedResult + " but got " + result);
+			fail("Wrong crafting result: Expected " + expectedResult
+				+ " but got " + result + " for recipe:\n"
+				+ formatCraftingRecipe(inputGrid));
 	}
 	
-	private static void assertStonecuttingRecipe(ItemStack input,
-		ItemStack expectedResult)
+	private static String formatCraftingRecipe(ItemStack[][] inputGrid)
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("```\n");
+		for(ItemStack[] row : inputGrid)
+		{
+			for(int i = 0; i < row.length; i++)
+				builder.append(i > 0 ? ", " : "[ ").append(row[i]);
+			
+			builder.append(" ]\n");
+		}
+		builder.append("```");
+		return builder.toString();
+	}
+	
+	private static void assertStonecuttingRecipe(ClientGameTestContext context,
+		ItemStack input, ItemStack expectedResult)
 	{
 		CuttingRecipeDisplay.Grouping<StonecuttingRecipe> recipeGroups =
-			submitAndGet(mc -> mc.getServer().getRecipeManager()
+			context.computeOnClient(mc -> mc.getServer().getRecipeManager()
 				.getStonecutterRecipes().filter(input));
 		
 		List<StonecuttingRecipe> recipes = recipeGroups.entries().stream()
@@ -121,23 +141,22 @@ public enum RecipesTest
 			.map(Optional::get).map(RecipeEntry::value).toList();
 		
 		if(recipes.isEmpty())
-			throw new RuntimeException(
-				"No stonecutting recipes found for " + input);
+			fail("No stonecutting recipes found for " + input);
 		
-		List<ItemStack> results = submitAndGet(mc -> recipes.stream()
+		List<ItemStack> results = context.computeOnClient(mc -> recipes.stream()
 			.map(recipe -> recipe.craft(new SingleStackRecipeInput(input),
 				mc.world.getRegistryManager()))
 			.toList());
 		
 		if(!results.stream()
 			.anyMatch(stack -> ItemStack.areEqual(stack, expectedResult)))
-			throw new RuntimeException("No stonecutting recipe found for "
-				+ input + " -> " + expectedResult
-				+ ", only found recipes that result in " + String.join(", ",
+			fail("No stonecutting recipe found for " + input + " -> "
+				+ expectedResult + ", only found recipes that result in "
+				+ String.join(", ",
 					results.stream().map(ItemStack::toString).toList()));
 	}
 	
-	// As of 1.21.4, vanilla Minecraft doesn't seem to have a method like this.
+	// As of 1.21.10, vanilla Minecraft doesn't seem to have a method like this.
 	private static Block getStainedGlassBlock(DyeColor color)
 	{
 		return switch(color)
@@ -159,5 +178,13 @@ public enum RecipesTest
 			case RED -> Blocks.RED_STAINED_GLASS;
 			case BLACK -> Blocks.BLACK_STAINED_GLASS;
 		};
+	}
+	
+	private static void fail(String message)
+	{
+		ghSummary(
+			"### One or more crafting/stonecutting recipes aren't working");
+		ghSummary(message);
+		throw new RuntimeException(message);
 	}
 }

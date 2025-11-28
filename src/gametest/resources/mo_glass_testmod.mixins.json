@@ -1,13 +1,8 @@
 {
   "required": true,
-  "package": "net.wurstclient.glass.mixin",
+  "package": "net.wimods.mo_glass.gametest.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "BlockMixin",
-    "GlassBlockMixin",
-    "StainedGlassBlockMixin",
-    "TintedGlassBlockMixin"
-  ],
+  "mixins": [],
   "client": [],
   "injectors": {
     "defaultRequire": 1
