@@ -19,8 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.wurstclient.glass.MoGlassInitializer",
-      "net.wurstclient.glass.test.MoGlassTestClient"
+      "net.wurstclient.glass.MoGlassInitializer"
     ],
     "server": [
       "net.wurstclient.glass.MoGlassInitializer"

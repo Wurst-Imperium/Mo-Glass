@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "mo_glass_testmod",
+  "version": "1.0.0",
+  "name": "Mo Glass Test Mod",
+  "license": "GPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "net.wimods.mo_glass.gametest.MoGlassTest"
+    ]
+  },
+  "mixins": [
+    "mo_glass_testmod.mixins.json"
+  ]
+}

@@ -5,14 +5,20 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.test;
+package net.wimods.mo_glass.gametest.tests;
 
-import static net.wurstclient.glass.test.WiModsTestHelper.*;
+import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
@@ -27,40 +33,49 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.wimods.mo_glass.gametest.MoGlassTest;
 import net.wurstclient.glass.MoGlassBlocks;
 
 public enum LootTableTest
 {
 	;
 	
-	public static void testGlassPiecesDropCorrectItems()
+	public static void testGlassPiecesDropCorrectItems(
+		ClientGameTestContext context, TestSingleplayerContext spContext)
 	{
-		System.out.println("Testing if glass pieces drop the correct items...");
-		BlockPos playerPos = submitAndGet(mc -> mc.player.getBlockPos());
+		TestClientWorldContext world = spContext.getClientWorld();
+		TestServerContext server = spContext.getServer();
+		
+		MoGlassTest.LOGGER
+			.info("Testing if glass pieces drop the correct items...");
+		BlockPos playerPos =
+			context.computeOnClient(mc -> mc.player.getBlockPos());
 		BlockPos startPos = playerPos.add(-4, 0, 7);
 		
 		// Build the test rig
 		LinkedHashMap<BlockPos, BlockState> blocks = createTestRig(startPos);
-		setBlocks(blocks);
+		setBlocks(server, blocks);
+		context.waitTicks(2);
+		world.waitForChunksRender();
 		
 		try
 		{
 			// Test with and without silk touch pickaxe
-			testWithTool(false, blocks, startPos);
-			testWithTool(true, blocks, startPos);
-			takeScreenshot("loot_table_test");
+			testWithTool(context, spContext, false, blocks, startPos);
+			testWithTool(context, spContext, true, blocks, startPos);
+			assertScreenshotEquals(context, "loot_table_test",
+				"https://i.imgur.com/v4HsQox.png");
 			
 		}catch(TestFailureException e)
 		{
-			clearChat();
-			e.showFailure(playerPos);
+			e.showFailure(context, spContext, playerPos);
 			throw e;
 		}
 		
 		// Clean up
-		runChatCommand("fill ~-7 ~ ~-4 ~7 ~30 ~10 air");
-		runChatCommand("clear");
-		clearChat();
+		runCommand(server, "fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
+		context.waitTicks(2);
+		world.waitForChunksRender();
 	}
 	
 	private static LinkedHashMap<BlockPos, BlockState> createTestRig(
@@ -94,46 +109,48 @@ public enum LootTableTest
 			slab.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE));
 	}
 	
-	private static void testWithTool(boolean silkTouch,
+	private static void testWithTool(ClientGameTestContext context,
+		TestSingleplayerContext spContext, boolean silkTouch,
 		Map<BlockPos, BlockState> blocks, BlockPos startPos)
 	{
+		TestServerContext server = spContext.getServer();
+		
 		// Equip the appropriate tool
-		runChatCommand("clear");
-		runChatCommand("give @s diamond_pickaxe"
+		runCommand(server, "give @s diamond_pickaxe"
 			+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
-		waitForWorldTicks(2);
+		context.waitTick();
 		
 		// Test all blocks
 		for(int row = 0; row < 6; row++)
 			for(int col = 0; col < 9; col++)
 			{
 				BlockPos pos = startPos.add(col, row, 0);
-				testBlockDrops(pos, blocks.get(pos), silkTouch);
+				testBlockDrops(context, spContext, pos, blocks.get(pos),
+					silkTouch);
 			}
 		
-		clearChat();
+		clearInventory(context);
+		context.waitTicks(7);
 	}
 	
-	private static void testBlockDrops(BlockPos pos, BlockState state,
+	private static void testBlockDrops(ClientGameTestContext context,
+		TestSingleplayerContext spContext, BlockPos pos, BlockState state,
 		boolean silkTouch)
 	{
+		TestServerContext server = spContext.getServer();
+		
 		// Check what the block would drop if mined by the player
 		// (requires server-side player and world)
-		List<ItemStack> drops = submitAndGet(mc -> {
+		UUID playerUuid = context.computeOnClient(mc -> mc.player.getUuid());
+		List<ItemStack> drops = server.computeOnServer(mc -> {
 			
-			ServerPlayerEntity player = mc.getServer().getPlayerManager()
-				.getPlayer(mc.player.getUuid());
-			ServerWorld world = mc.getServer().getWorld(World.OVERWORLD);
+			ServerPlayerEntity player =
+				mc.getPlayerManager().getPlayer(playerUuid);
+			ServerWorld world = mc.getWorld(World.OVERWORLD);
 			
 			return Block.getDroppedStacks(state, world, pos, null, player,
 				player.getMainHandStack());
 		});
-		
-		// Log the results
-		String dropsString = drops.stream().map(ItemStack::toString)
-			.reduce((a, b) -> a + ", " + b).orElse("no items");
-		System.out.println(state + " " + (silkTouch ? "with" : "without")
-			+ " silk touch drops " + dropsString);
 		
 		// Check if the drops are as expected
 		ItemStack expectedStack = getExpectedDrops(state, silkTouch);
@@ -142,6 +159,8 @@ public enum LootTableTest
 		if(drops.size() <= 1 && ItemStack.areEqual(expectedStack, firstDrop))
 			return;
 		
+		String dropsString = drops.stream().map(ItemStack::toString)
+			.reduce((a, b) -> a + ", " + b).orElse("no items");
 		throw new TestFailureException(state, silkTouch, expectedStack,
 			dropsString);
 	}
@@ -191,23 +210,36 @@ public enum LootTableTest
 				+ expectedStack;
 		}
 		
-		public void showFailure(BlockPos playerPos)
+		public void showFailure(ClientGameTestContext context,
+			TestSingleplayerContext spContext, BlockPos playerPos)
 		{
-			// Place the failed block in front of the player
+			TestClientWorldContext world = spContext.getClientWorld();
+			TestServerContext server = spContext.getServer();
+			
+			runCommand(server, "fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
 			BlockPos pos = playerPos.south(4);
-			setBlock(pos, state);
+			setBlock(server, pos, state);
 			
-			// Spawn the items on top of the block
-			runChatCommand("loot spawn " + pos.getX() + " " + (pos.getY() + 1)
-				+ " " + pos.getZ() + " mine " + pos.getX() + " " + pos.getY()
-				+ " " + pos.getZ() + " diamond_pickaxe"
-				+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
+			context.waitTicks(3);
+			world.waitForChunksRender();
 			
-			// Take a screenshot
-			clearChat();
-			takeScreenshot(
-				"FAILED_TEST_" + getBlockName(state) + "_drops_wrong_items_"
-					+ (silkTouch ? "with" : "without") + "_silk_touch");
+			runCommand(server,
+				"loot spawn " + pos.getX() + " " + (pos.getY() + 1) + " "
+					+ pos.getZ() + " mine " + pos.getX() + " " + pos.getY()
+					+ " " + pos.getZ() + " diamond_pickaxe"
+					+ (silkTouch ? "[enchantments={silk_touch:1}]" : ""));
+			context.waitTick();
+			
+			ghSummary("### One or more loot tables are broken");
+			ghSummary(getMessage() + "\n");
+			String fileName = "loot_table_test_failure";
+			Path screenshotPath = context.takeScreenshot(fileName);
+			String url = tryUploadToImgur(screenshotPath);
+			if(url != null)
+				ghSummary("![" + fileName + "](" + url + ")");
+			else
+				ghSummary("Couldn't upload " + fileName
+					+ ".png to Imgur. Check the Test Screenshots.zip artifact.");
 		}
 	}
 }
