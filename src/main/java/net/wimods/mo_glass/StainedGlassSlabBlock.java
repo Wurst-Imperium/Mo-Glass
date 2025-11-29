@@ -5,29 +5,35 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass;
+package net.wimods.mo_glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.Stainable;
+import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
-public final class GlassSlabBlock extends SlabBlock
+public final class StainedGlassSlabBlock extends SlabBlock implements Stainable
 {
-	public GlassSlabBlock(Settings settings)
+	private final DyeColor color;
+	
+	public StainedGlassSlabBlock(DyeColor color, Settings settings)
 	{
 		super(settings);
+		this.color = color;
 	}
 	
 	@Override
@@ -35,14 +41,18 @@ public final class GlassSlabBlock extends SlabBlock
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == Blocks.GLASS)
+		Block blockFrom = stateFrom.getBlock();
+		
+		if(blockFrom instanceof StainedGlassBlock
+			&& ((StainedGlassBlock)blockFrom).getColor() == color)
 			return true;
 		
-		if(stateFrom.getBlock() == this)
+		if(blockFrom == this)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
+		if(blockFrom instanceof StainedGlassStairsBlock
+			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
@@ -144,5 +154,11 @@ public final class GlassSlabBlock extends SlabBlock
 		BlockPos pos)
 	{
 		return true;
+	}
+	
+	@Override
+	public DyeColor getColor()
+	{
+		return color;
 	}
 }

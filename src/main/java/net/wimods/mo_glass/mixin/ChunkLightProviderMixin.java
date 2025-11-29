@@ -5,7 +5,7 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.mixin;
+package net.wimods.mo_glass.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.world.chunk.light.ChunkLightProvider;
-import net.wurstclient.glass.MoGlassTags;
+import net.wimods.mo_glass.MoGlassTags;
 
 @Mixin(ChunkLightProvider.class)
 public class ChunkLightProviderMixin

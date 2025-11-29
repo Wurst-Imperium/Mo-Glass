@@ -5,39 +5,44 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.mixin;
+package net.wimods.mo_glass;
 
-import org.spongepowered.asm.mixin.Mixin;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.block.TintedGlassBlock;
-import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.wurstclient.glass.MoGlass;
-import net.wurstclient.glass.MoGlassBlocks;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 
-@Mixin(TintedGlassBlock.class)
-public abstract class TintedGlassBlockMixin extends TransparentBlock
+public final class GlassSlabBlock extends SlabBlock
 {
-	private TintedGlassBlockMixin(MoGlass moGlass, Settings settings)
+	public GlassSlabBlock(Settings settings)
 	{
 		super(settings);
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB)
+		if(stateFrom.getBlock() == Blocks.GLASS)
+			return true;
+		
+		if(stateFrom.getBlock() == this)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
+		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
@@ -47,25 +52,37 @@ public abstract class TintedGlassBlockMixin extends TransparentBlock
 	private boolean isInvisibleToGlassSlab(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
+		SlabType type = state.get(SlabBlock.TYPE);
 		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
 		
-		if(typeFrom == SlabType.DOUBLE)
-			return true;
+		switch(direction)
+		{
+			case UP:
+			if(typeFrom != SlabType.TOP && type != SlabType.BOTTOM)
+				return true;
+			break;
+			
+			case DOWN:
+			if(typeFrom != SlabType.BOTTOM && type != SlabType.TOP)
+				return true;
+			break;
+			
+			case NORTH:
+			case EAST:
+			case SOUTH:
+			case WEST:
+			if(type == typeFrom || typeFrom == SlabType.DOUBLE)
+				return true;
+			break;
+		}
 		
-		if(direction == Direction.UP)
-			if(typeFrom != SlabType.TOP)
-				return true;
-			
-		if(direction == Direction.DOWN)
-			if(typeFrom != SlabType.BOTTOM)
-				return true;
-			
 		return false;
 	}
 	
 	private boolean isInvisibleToGlassStairs(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
+		SlabType type = state.get(SlabBlock.TYPE);
 		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
 		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
 		StairShape shapeFrom = stateFrom.get(StairsBlock.SHAPE);
@@ -94,6 +111,38 @@ public abstract class TintedGlassBlockMixin extends TransparentBlock
 			&& shapeFrom == StairShape.INNER_LEFT)
 			return true;
 		
+		// sides
+		if(direction.getHorizontal() != -1)
+		{
+			if(type == SlabType.BOTTOM && halfFrom == BlockHalf.BOTTOM)
+				return true;
+			
+			if(type == SlabType.TOP && halfFrom == BlockHalf.TOP)
+				return true;
+		}
+		
 		return false;
+	}
+	
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
+		BlockPos pos, ShapeContext context)
+	{
+		return VoxelShapes.empty();
+	}
+	
+	@Override
+	@Environment(EnvType.CLIENT)
+	public float getAmbientOcclusionLightLevel(BlockState state,
+		BlockView world, BlockPos pos)
+	{
+		return 1.0F;
+	}
+	
+	@Override
+	public boolean isTransparent(BlockState state, BlockView world,
+		BlockPos pos)
+	{
+		return true;
 	}
 }

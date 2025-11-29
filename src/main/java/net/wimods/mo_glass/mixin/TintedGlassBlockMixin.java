@@ -5,35 +5,26 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.mixin;
+package net.wimods.mo_glass.mixin;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StainedGlassBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TintedGlassBlock;
 import net.minecraft.block.TransparentBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Direction;
-import net.wurstclient.glass.MoGlass;
-import net.wurstclient.glass.StainedGlassSlabBlock;
-import net.wurstclient.glass.StainedGlassStairsBlock;
+import net.wimods.mo_glass.MoGlass;
+import net.wimods.mo_glass.MoGlassBlocks;
 
-@Mixin(StainedGlassBlock.class)
-public abstract class StainedGlassBlockMixin extends TransparentBlock
+@Mixin(TintedGlassBlock.class)
+public abstract class TintedGlassBlockMixin extends TransparentBlock
 {
-	@Shadow
-	@Final
-	private DyeColor color;
-	
-	private StainedGlassBlockMixin(MoGlass moGlass, Settings settings)
+	private TintedGlassBlockMixin(MoGlass moGlass, Settings settings)
 	{
 		super(settings);
 	}
@@ -42,15 +33,11 @@ public abstract class StainedGlassBlockMixin extends TransparentBlock
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		Block blockFrom = stateFrom.getBlock();
-		
-		if(blockFrom instanceof StainedGlassSlabBlock
-			&& ((StainedGlassSlabBlock)blockFrom).getColor() == color)
+		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(blockFrom instanceof StainedGlassStairsBlock
-			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
+		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			

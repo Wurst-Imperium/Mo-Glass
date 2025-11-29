@@ -5,7 +5,7 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.mixin;
+package net.wimods.mo_glass.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -19,8 +19,8 @@ import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.math.Direction;
-import net.wurstclient.glass.MoGlass;
-import net.wurstclient.glass.MoGlassBlocks;
+import net.wimods.mo_glass.MoGlass;
+import net.wimods.mo_glass.MoGlassBlocks;
 
 @Mixin(TransparentBlock.class)
 public abstract class GlassBlockMixin extends TranslucentBlock

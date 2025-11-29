@@ -5,13 +5,13 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass;
+package net.wimods.mo_glass;
 
 import net.minecraft.block.Block;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.wurstclient.glass.mixin.ChunkLightProviderMixin;
+import net.wimods.mo_glass.mixin.ChunkLightProviderMixin;
 
 public enum MoGlassTags
 {

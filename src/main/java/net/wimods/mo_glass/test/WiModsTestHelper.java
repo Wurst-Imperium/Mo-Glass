@@ -5,7 +5,7 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass.test;
+package net.wimods.mo_glass.test;
 
 import java.io.File;
 import java.time.Duration;
