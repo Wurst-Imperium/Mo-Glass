@@ -24,9 +24,9 @@
     ]
   },
   "mixins": [
-    "mo-glass.mixins.json"
+    "mo_glass.mixins.json"
   ],
-  "accessWidener": "mo-glass.accesswidener",
+  "accessWidener": "mo_glass.accesswidener",
   "depends": {
     "fabricloader": ">=0.17.0",
     "fabric-api": ">=0.133.1",

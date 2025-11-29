@@ -46,7 +46,7 @@ fabricApi.configureTests {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/mo-glass.accesswidener")
+	accessWidenerPath = file("src/main/resources/mo_glass.accesswidener")
 }
 
 processResources {
