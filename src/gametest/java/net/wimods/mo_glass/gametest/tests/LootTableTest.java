@@ -19,20 +19,20 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
 
@@ -49,8 +49,8 @@ public enum LootTableTest
 		MoGlassTest.LOGGER
 			.info("Testing if glass pieces drop the correct items...");
 		BlockPos playerPos =
-			context.computeOnClient(mc -> mc.player.getBlockPos());
-		BlockPos startPos = playerPos.add(-4, 0, 7);
+			context.computeOnClient(mc -> mc.player.blockPosition());
+		BlockPos startPos = playerPos.offset(-4, 0, 7);
 		
 		// Build the test rig
 		LinkedHashMap<BlockPos, BlockState> blocks = createTestRig(startPos);
@@ -86,15 +86,15 @@ public enum LootTableTest
 		for(DyeColor color : DyeColor.values())
 		{
 			int i = color.ordinal();
-			BlockPos pos = startPos.add(i % 3 * 3, i / 3, 0);
+			BlockPos pos = startPos.offset(i % 3 * 3, i / 3, 0);
 			addGroup(blocks, pos, MoGlassBlocks.STAINED_GLASS_SLABS.get(i),
 				MoGlassBlocks.STAINED_GLASS_STAIRS.get(i));
 		}
 		
-		addGroup(blocks, startPos.add(3, 5, 0), MoGlassBlocks.GLASS_SLAB,
+		addGroup(blocks, startPos.offset(3, 5, 0), MoGlassBlocks.GLASS_SLAB,
 			MoGlassBlocks.GLASS_STAIRS);
-		addGroup(blocks, startPos.add(6, 5, 0), MoGlassBlocks.TINTED_GLASS_SLAB,
-			MoGlassBlocks.TINTED_GLASS_STAIRS);
+		addGroup(blocks, startPos.offset(6, 5, 0),
+			MoGlassBlocks.TINTED_GLASS_SLAB, MoGlassBlocks.TINTED_GLASS_STAIRS);
 		
 		return blocks;
 	}
@@ -102,11 +102,11 @@ public enum LootTableTest
 	private static void addGroup(LinkedHashMap<BlockPos, BlockState> blocks,
 		BlockPos pos, Block slab, Block stairs)
 	{
-		blocks.put(pos, slab.getDefaultState());
-		blocks.put(pos.east(1),
-			stairs.getDefaultState().with(StairsBlock.FACING, Direction.EAST));
+		blocks.put(pos, slab.defaultBlockState());
+		blocks.put(pos.east(1), stairs.defaultBlockState()
+			.setValue(StairBlock.FACING, Direction.EAST));
 		blocks.put(pos.east(2),
-			slab.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE));
+			slab.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE));
 	}
 	
 	private static void testWithTool(ClientGameTestContext context,
@@ -124,7 +124,7 @@ public enum LootTableTest
 		for(int row = 0; row < 6; row++)
 			for(int col = 0; col < 9; col++)
 			{
-				BlockPos pos = startPos.add(col, row, 0);
+				BlockPos pos = startPos.offset(col, row, 0);
 				testBlockDrops(context, spContext, pos, blocks.get(pos),
 					silkTouch);
 			}
@@ -141,22 +141,21 @@ public enum LootTableTest
 		
 		// Check what the block would drop if mined by the player
 		// (requires server-side player and world)
-		UUID playerUuid = context.computeOnClient(mc -> mc.player.getUuid());
+		UUID playerUuid = context.computeOnClient(mc -> mc.player.getUUID());
 		List<ItemStack> drops = server.computeOnServer(mc -> {
 			
-			ServerPlayerEntity player =
-				mc.getPlayerManager().getPlayer(playerUuid);
-			ServerWorld world = mc.getWorld(World.OVERWORLD);
+			ServerPlayer player = mc.getPlayerList().getPlayer(playerUuid);
+			ServerLevel world = mc.getLevel(Level.OVERWORLD);
 			
-			return Block.getDroppedStacks(state, world, pos, null, player,
-				player.getMainHandStack());
+			return Block.getDrops(state, world, pos, null, player,
+				player.getMainHandItem());
 		});
 		
 		// Check if the drops are as expected
 		ItemStack expectedStack = getExpectedDrops(state, silkTouch);
 		ItemStack firstDrop =
 			drops.stream().findFirst().orElse(ItemStack.EMPTY);
-		if(drops.size() <= 1 && ItemStack.areEqual(expectedStack, firstDrop))
+		if(drops.size() <= 1 && ItemStack.matches(expectedStack, firstDrop))
 			return;
 		
 		String dropsString = drops.stream().map(ItemStack::toString)
@@ -168,8 +167,8 @@ public enum LootTableTest
 	private static ItemStack getExpectedDrops(BlockState state,
 		boolean silkTouch)
 	{
-		boolean doubleSlab =
-			state.getOrEmpty(SlabBlock.TYPE).orElse(null) == SlabType.DOUBLE;
+		boolean doubleSlab = state.getOptionalValue(SlabBlock.TYPE)
+			.orElse(null) == SlabType.DOUBLE;
 		boolean tinted = state.getBlock() == MoGlassBlocks.TINTED_GLASS_SLAB
 			|| state.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS;
 		
@@ -195,9 +194,9 @@ public enum LootTableTest
 		
 		private static String getBlockName(BlockState state)
 		{
-			boolean doubleSlab = state.getOrEmpty(SlabBlock.TYPE)
+			boolean doubleSlab = state.getOptionalValue(SlabBlock.TYPE)
 				.orElse(null) == SlabType.DOUBLE;
-			Identifier id = Registries.BLOCK.getId(state.getBlock());
+			Identifier id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 			return (doubleSlab ? "double_" : "")
 				+ id.toString().replace("mo_glass:", "");
 		}

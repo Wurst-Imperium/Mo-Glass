@@ -9,30 +9,30 @@ package net.wimods.mo_glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.block.enums.StairShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public final class GlassStairsBlock extends StairsBlock
+public final class GlassStairsBlock extends StairBlock
 {
-	protected GlassStairsBlock(Settings settings)
+	protected GlassStairsBlock(Properties settings)
 	{
-		super(Blocks.GLASS.getDefaultState(), settings);
+		super(Blocks.GLASS.defaultBlockState(), settings);
 	}
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
+	public boolean skipRendering(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
 		if(stateFrom.getBlock() == Blocks.GLASS)
@@ -46,16 +46,16 @@ public final class GlassStairsBlock extends StairsBlock
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
-		return super.isSideInvisible(state, stateFrom, direction);
+		return super.skipRendering(state, stateFrom, direction);
 	}
 	
 	private boolean isInvisibleToGlassSlab(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
-		BlockHalf half = state.get(StairsBlock.HALF);
-		Direction facing = state.get(StairsBlock.FACING);
-		StairShape shape = state.get(StairsBlock.SHAPE);
-		SlabType typeFrom = stateFrom.get(SlabBlock.TYPE);
+		Half half = state.getValue(StairBlock.HALF);
+		Direction facing = state.getValue(StairBlock.FACING);
+		StairsShape shape = state.getValue(StairBlock.SHAPE);
+		SlabType typeFrom = stateFrom.getValue(SlabBlock.TYPE);
 		
 		if(direction == Direction.UP)
 			if(typeFrom != SlabType.TOP)
@@ -69,35 +69,35 @@ public final class GlassStairsBlock extends StairsBlock
 			return true;
 		
 		// front
-		if(direction == facing.getOpposite() && shape != StairShape.INNER_LEFT
-			&& shape != StairShape.INNER_RIGHT)
+		if(direction == facing.getOpposite() && shape != StairsShape.INNER_LEFT
+			&& shape != StairsShape.INNER_RIGHT)
 		{
-			if(typeFrom == SlabType.BOTTOM && half == BlockHalf.BOTTOM)
+			if(typeFrom == SlabType.BOTTOM && half == Half.BOTTOM)
 				return true;
 			
-			if(typeFrom == SlabType.TOP && half == BlockHalf.TOP)
+			if(typeFrom == SlabType.TOP && half == Half.TOP)
 				return true;
 		}
 		
 		// right
-		if(direction == facing.rotateYClockwise()
-			&& shape == StairShape.OUTER_LEFT)
+		if(direction == facing.getClockWise()
+			&& shape == StairsShape.OUTER_LEFT)
 		{
-			if(typeFrom == SlabType.BOTTOM && half == BlockHalf.BOTTOM)
+			if(typeFrom == SlabType.BOTTOM && half == Half.BOTTOM)
 				return true;
 			
-			if(typeFrom == SlabType.TOP && half == BlockHalf.TOP)
+			if(typeFrom == SlabType.TOP && half == Half.TOP)
 				return true;
 		}
 		
 		// left
-		if(direction == facing.rotateYCounterclockwise()
-			&& shape == StairShape.OUTER_RIGHT)
+		if(direction == facing.getCounterClockWise()
+			&& shape == StairsShape.OUTER_RIGHT)
 		{
-			if(typeFrom == SlabType.BOTTOM && half == BlockHalf.BOTTOM)
+			if(typeFrom == SlabType.BOTTOM && half == Half.BOTTOM)
 				return true;
 			
-			if(typeFrom == SlabType.TOP && half == BlockHalf.TOP)
+			if(typeFrom == SlabType.TOP && half == Half.TOP)
 				return true;
 		}
 		
@@ -107,17 +107,17 @@ public final class GlassStairsBlock extends StairsBlock
 	private boolean isInvisibleToGlassStairs(BlockState state,
 		BlockState stateFrom, Direction direction)
 	{
-		BlockHalf half = state.get(StairsBlock.HALF);
-		BlockHalf halfFrom = stateFrom.get(StairsBlock.HALF);
-		Direction facing = state.get(StairsBlock.FACING);
-		Direction facingFrom = stateFrom.get(StairsBlock.FACING);
-		StairShape shape = state.get(StairsBlock.SHAPE);
-		StairShape shapeFrom = stateFrom.get(StairsBlock.SHAPE);
+		Half half = state.getValue(StairBlock.HALF);
+		Half halfFrom = stateFrom.getValue(StairBlock.HALF);
+		Direction facing = state.getValue(StairBlock.FACING);
+		Direction facingFrom = stateFrom.getValue(StairBlock.FACING);
+		StairsShape shape = state.getValue(StairBlock.SHAPE);
+		StairsShape shapeFrom = stateFrom.getValue(StairBlock.SHAPE);
 		
 		// up
 		if(direction == Direction.UP)
 		{
-			if(halfFrom == BlockHalf.BOTTOM)
+			if(halfFrom == Half.BOTTOM)
 				return true;
 			
 			if(half != halfFrom)
@@ -128,43 +128,45 @@ public final class GlassStairsBlock extends StairsBlock
 				switch(shape)
 				{
 					case STRAIGHT:
-					if(shapeFrom == StairShape.INNER_LEFT
+					if(shapeFrom == StairsShape.INNER_LEFT
 						&& (facingFrom == facing
-							|| facingFrom == facing.rotateYClockwise()))
+							|| facingFrom == facing.getClockWise()))
 						return true;
-					if(shapeFrom == StairShape.INNER_RIGHT
+					if(shapeFrom == StairsShape.INNER_RIGHT
 						&& (facingFrom == facing
-							|| facingFrom == facing.rotateYCounterclockwise()))
+							|| facingFrom == facing.getCounterClockWise()))
 						return true;
 					break;
 					
 					case INNER_LEFT:
-					if(shapeFrom == StairShape.INNER_RIGHT
-						&& facingFrom == facing.rotateYCounterclockwise())
+					if(shapeFrom == StairsShape.INNER_RIGHT
+						&& facingFrom == facing.getCounterClockWise())
 						return true;
 					break;
 					
 					case INNER_RIGHT:
-					if(shapeFrom == StairShape.INNER_LEFT
-						&& facingFrom == facing.rotateYClockwise())
+					if(shapeFrom == StairsShape.INNER_LEFT
+						&& facingFrom == facing.getClockWise())
 						return true;
 					break;
 					
 					case OUTER_LEFT:
-					if(shapeFrom == StairShape.OUTER_RIGHT
-						&& facingFrom == facing.rotateYCounterclockwise())
+					if(shapeFrom == StairsShape.OUTER_RIGHT
+						&& facingFrom == facing.getCounterClockWise())
 						return true;
-					if(shapeFrom == StairShape.STRAIGHT && (facingFrom == facing
-						|| facingFrom == facing.rotateYCounterclockwise()))
+					if(shapeFrom == StairsShape.STRAIGHT
+						&& (facingFrom == facing
+							|| facingFrom == facing.getCounterClockWise()))
 						return true;
 					break;
 					
 					case OUTER_RIGHT:
-					if(shapeFrom == StairShape.OUTER_LEFT
-						&& facingFrom == facing.rotateYClockwise())
+					if(shapeFrom == StairsShape.OUTER_LEFT
+						&& facingFrom == facing.getClockWise())
 						return true;
-					if(shapeFrom == StairShape.STRAIGHT && (facingFrom == facing
-						|| facingFrom == facing.rotateYClockwise()))
+					if(shapeFrom == StairsShape.STRAIGHT
+						&& (facingFrom == facing
+							|| facingFrom == facing.getClockWise()))
 						return true;
 					break;
 				}
@@ -174,47 +176,47 @@ public final class GlassStairsBlock extends StairsBlock
 		// down
 		if(direction == Direction.DOWN)
 		{
-			if(halfFrom == BlockHalf.TOP)
+			if(halfFrom == Half.TOP)
 				return true;
 			
 			switch(shape)
 			{
 				case STRAIGHT:
-				if(shapeFrom == StairShape.INNER_LEFT && (facingFrom == facing
-					|| facingFrom == facing.rotateYClockwise()))
+				if(shapeFrom == StairsShape.INNER_LEFT && (facingFrom == facing
+					|| facingFrom == facing.getClockWise()))
 					return true;
-				if(shapeFrom == StairShape.INNER_RIGHT && (facingFrom == facing
-					|| facingFrom == facing.rotateYCounterclockwise()))
+				if(shapeFrom == StairsShape.INNER_RIGHT && (facingFrom == facing
+					|| facingFrom == facing.getCounterClockWise()))
 					return true;
 				break;
 				
 				case INNER_LEFT:
-				if(shapeFrom == StairShape.INNER_RIGHT
-					&& facingFrom == facing.rotateYCounterclockwise())
+				if(shapeFrom == StairsShape.INNER_RIGHT
+					&& facingFrom == facing.getCounterClockWise())
 					return true;
 				break;
 				
 				case INNER_RIGHT:
-				if(shapeFrom == StairShape.INNER_LEFT
-					&& facingFrom == facing.rotateYClockwise())
+				if(shapeFrom == StairsShape.INNER_LEFT
+					&& facingFrom == facing.getClockWise())
 					return true;
 				break;
 				
 				case OUTER_LEFT:
-				if(shapeFrom == StairShape.OUTER_RIGHT
-					&& facingFrom == facing.rotateYCounterclockwise())
+				if(shapeFrom == StairsShape.OUTER_RIGHT
+					&& facingFrom == facing.getCounterClockWise())
 					return true;
-				if(shapeFrom == StairShape.STRAIGHT && (facingFrom == facing
-					|| facingFrom == facing.rotateYCounterclockwise()))
+				if(shapeFrom == StairsShape.STRAIGHT && (facingFrom == facing
+					|| facingFrom == facing.getCounterClockWise()))
 					return true;
 				break;
 				
 				case OUTER_RIGHT:
-				if(shapeFrom == StairShape.OUTER_LEFT
-					&& facingFrom == facing.rotateYClockwise())
+				if(shapeFrom == StairsShape.OUTER_LEFT
+					&& facingFrom == facing.getClockWise())
 					return true;
-				if(shapeFrom == StairShape.STRAIGHT && (facingFrom == facing
-					|| facingFrom == facing.rotateYClockwise()))
+				if(shapeFrom == StairsShape.STRAIGHT && (facingFrom == facing
+					|| facingFrom == facing.getClockWise()))
 					return true;
 				break;
 			}
@@ -222,113 +224,113 @@ public final class GlassStairsBlock extends StairsBlock
 		
 		// other stairs rear
 		if(facingFrom == direction.getOpposite()
-			&& shapeFrom != StairShape.OUTER_LEFT
-			&& shapeFrom != StairShape.OUTER_RIGHT)
+			&& shapeFrom != StairsShape.OUTER_LEFT
+			&& shapeFrom != StairsShape.OUTER_RIGHT)
 			return true;
 		
 		// other curved stairs fully covered side
-		if(facingFrom.rotateYCounterclockwise() == direction
-			&& shapeFrom == StairShape.INNER_RIGHT)
+		if(facingFrom.getCounterClockWise() == direction
+			&& shapeFrom == StairsShape.INNER_RIGHT)
 			return true;
-		if(facingFrom.rotateYClockwise() == direction
-			&& shapeFrom == StairShape.INNER_LEFT)
+		if(facingFrom.getClockWise() == direction
+			&& shapeFrom == StairsShape.INNER_LEFT)
 			return true;
 		
 		// rear
 		if(direction == facing && half == halfFrom)
 		{
-			if(facingFrom == facing.rotateYCounterclockwise()
-				&& shape == StairShape.OUTER_LEFT
-				&& shapeFrom != StairShape.OUTER_RIGHT)
+			if(facingFrom == facing.getCounterClockWise()
+				&& shape == StairsShape.OUTER_LEFT
+				&& shapeFrom != StairsShape.OUTER_RIGHT)
 				return true;
 			
-			if(facingFrom == facing.rotateYClockwise()
-				&& shape == StairShape.OUTER_RIGHT
-				&& shapeFrom != StairShape.OUTER_LEFT)
+			if(facingFrom == facing.getClockWise()
+				&& shape == StairsShape.OUTER_RIGHT
+				&& shapeFrom != StairsShape.OUTER_LEFT)
 				return true;
 		}
 		
 		// front
 		if(direction == facing.getOpposite() && half == halfFrom)
 		{
-			if(shape != StairShape.INNER_LEFT
-				&& shape != StairShape.INNER_RIGHT)
+			if(shape != StairsShape.INNER_LEFT
+				&& shape != StairsShape.INNER_RIGHT)
 				return true;
 			
-			if(facingFrom == facing.rotateYCounterclockwise()
-				&& shapeFrom != StairShape.OUTER_LEFT)
+			if(facingFrom == facing.getCounterClockWise()
+				&& shapeFrom != StairsShape.OUTER_LEFT)
 				return true;
 			
-			if(facingFrom == facing.rotateYClockwise()
-				&& shapeFrom != StairShape.OUTER_RIGHT)
+			if(facingFrom == facing.getClockWise()
+				&& shapeFrom != StairsShape.OUTER_RIGHT)
 				return true;
 			
 			if(facingFrom == facing.getOpposite())
-				if(shape == StairShape.INNER_LEFT
-					&& shapeFrom == StairShape.INNER_RIGHT)
+				if(shape == StairsShape.INNER_LEFT
+					&& shapeFrom == StairsShape.INNER_RIGHT)
 					return true;
-				else if(shape == StairShape.INNER_RIGHT
-					&& shapeFrom == StairShape.INNER_LEFT)
+				else if(shape == StairsShape.INNER_RIGHT
+					&& shapeFrom == StairsShape.INNER_LEFT)
 					return true;
 		}
 		
 		// left
-		if(direction == facing.rotateYCounterclockwise() && half == halfFrom)
+		if(direction == facing.getCounterClockWise() && half == halfFrom)
 		{
 			if(facingFrom == direction)
-				if(shape != StairShape.INNER_LEFT
-					&& shapeFrom == StairShape.INNER_RIGHT)
+				if(shape != StairsShape.INNER_LEFT
+					&& shapeFrom == StairsShape.INNER_RIGHT)
 					return true;
-				else if(shape == StairShape.OUTER_RIGHT)
-					return true;
-				
-			if(facingFrom == facing && shape != StairShape.INNER_LEFT)
-				if(shapeFrom != StairShape.OUTER_LEFT)
-					return true;
-				else if(shape == StairShape.OUTER_RIGHT
-					&& shapeFrom == StairShape.OUTER_LEFT)
+				else if(shape == StairsShape.OUTER_RIGHT)
 					return true;
 				
-			if(facingFrom == facing.rotateYClockwise())
-				if(shapeFrom == StairShape.OUTER_RIGHT
-					&& shape == StairShape.OUTER_RIGHT)
+			if(facingFrom == facing && shape != StairsShape.INNER_LEFT)
+				if(shapeFrom != StairsShape.OUTER_LEFT)
 					return true;
-				else if(shapeFrom == StairShape.OUTER_LEFT
-					&& shape != StairShape.INNER_LEFT)
+				else if(shape == StairsShape.OUTER_RIGHT
+					&& shapeFrom == StairsShape.OUTER_LEFT)
+					return true;
+				
+			if(facingFrom == facing.getClockWise())
+				if(shapeFrom == StairsShape.OUTER_RIGHT
+					&& shape == StairsShape.OUTER_RIGHT)
+					return true;
+				else if(shapeFrom == StairsShape.OUTER_LEFT
+					&& shape != StairsShape.INNER_LEFT)
 					return true;
 				
 			if(facingFrom == facing.getOpposite()
-				&& shape == StairShape.OUTER_RIGHT)
+				&& shape == StairsShape.OUTER_RIGHT)
 				return true;
 		}
 		
 		// right
-		if(direction == facing.rotateYClockwise() && half == halfFrom)
+		if(direction == facing.getClockWise() && half == halfFrom)
 		{
 			if(facingFrom == direction)
-				if(shape != StairShape.INNER_RIGHT
-					&& shapeFrom == StairShape.INNER_LEFT)
+				if(shape != StairsShape.INNER_RIGHT
+					&& shapeFrom == StairsShape.INNER_LEFT)
 					return true;
-				else if(shape == StairShape.OUTER_LEFT)
-					return true;
-				
-			if(facingFrom == facing && shape != StairShape.INNER_RIGHT)
-				if(shapeFrom != StairShape.OUTER_RIGHT)
-					return true;
-				else if(shape == StairShape.OUTER_LEFT
-					&& shapeFrom == StairShape.OUTER_RIGHT)
+				else if(shape == StairsShape.OUTER_LEFT)
 					return true;
 				
-			if(facingFrom == facing.rotateYCounterclockwise())
-				if(shapeFrom == StairShape.OUTER_LEFT
-					&& shape == StairShape.OUTER_LEFT)
+			if(facingFrom == facing && shape != StairsShape.INNER_RIGHT)
+				if(shapeFrom != StairsShape.OUTER_RIGHT)
 					return true;
-				else if(shapeFrom == StairShape.OUTER_RIGHT
-					&& shape != StairShape.INNER_RIGHT)
+				else if(shape == StairsShape.OUTER_LEFT
+					&& shapeFrom == StairsShape.OUTER_RIGHT)
+					return true;
+				
+			if(facingFrom == facing.getCounterClockWise())
+				if(shapeFrom == StairsShape.OUTER_LEFT
+					&& shape == StairsShape.OUTER_LEFT)
+					return true;
+				else if(shapeFrom == StairsShape.OUTER_RIGHT
+					&& shape != StairsShape.INNER_RIGHT)
 					return true;
 				
 			if(facingFrom == facing.getOpposite()
-				&& shape == StairShape.OUTER_LEFT)
+				&& shape == StairsShape.OUTER_LEFT)
 				return true;
 		}
 		
@@ -336,22 +338,22 @@ public final class GlassStairsBlock extends StairsBlock
 	}
 	
 	@Override
-	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world,
-		BlockPos pos, ShapeContext context)
+	public VoxelShape getVisualShape(BlockState state, BlockGetter world,
+		BlockPos pos, CollisionContext context)
 	{
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState state,
-		BlockView world, BlockPos pos)
+	public float getShadeBrightness(BlockState state, BlockGetter world,
+		BlockPos pos)
 	{
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean isTransparent(BlockState state)
+	public boolean propagatesSkylightDown(BlockState state)
 	{
 		return true;
 	}

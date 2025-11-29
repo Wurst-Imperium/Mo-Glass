@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Optional;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.StonecuttingRecipe;
-import net.minecraft.recipe.display.CuttingRecipeDisplay;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.recipe.input.SingleStackRecipeInput;
-import net.minecraft.util.DyeColor;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SelectableRecipe;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
 
@@ -57,8 +57,7 @@ public enum RecipesTest
 	}
 	
 	private static void testRecipesForGlassType(ClientGameTestContext context,
-		ItemConvertible input, ItemConvertible slabOutput,
-		ItemConvertible stairsOutput)
+		ItemLike input, ItemLike slabOutput, ItemLike stairsOutput)
 	{
 		// slab crafting
 		assertCraftingRecipe(
@@ -93,22 +92,22 @@ public enum RecipesTest
 			for(ItemStack item : row)
 				stacks.add(item != null ? item : ItemStack.EMPTY);
 			
-		CraftingRecipeInput input =
-			CraftingRecipeInput.createPositioned(width, height, stacks).input();
-		Optional<RecipeEntry<CraftingRecipe>> optional =
-			context.computeOnClient(mc -> mc.getServer().getRecipeManager()
-				.getFirstMatch(RecipeType.CRAFTING, input, mc.world));
+		CraftingInput input =
+			CraftingInput.ofPositioned(width, height, stacks).input();
+		Optional<RecipeHolder<CraftingRecipe>> optional = context
+			.computeOnClient(mc -> mc.getSingleplayerServer().getRecipeManager()
+				.getRecipeFor(RecipeType.CRAFTING, input, mc.level));
 		
 		if(!optional.isPresent())
 			fail("The following recipe for " + expectedResult + " is missing:\n"
 				+ formatCraftingRecipe(inputGrid));
 		
-		RecipeEntry<CraftingRecipe> entry = optional.get();
+		RecipeHolder<CraftingRecipe> entry = optional.get();
 		CraftingRecipe recipe = entry.value();
 		ItemStack result = context.computeOnClient(
-			mc -> recipe.craft(input, mc.world.getRegistryManager()));
+			mc -> recipe.assemble(input, mc.level.registryAccess()));
 		
-		if(!ItemStack.areEqual(expectedResult, result))
+		if(!ItemStack.matches(expectedResult, result))
 			fail("Wrong crafting result: Expected " + expectedResult
 				+ " but got " + result + " for recipe:\n"
 				+ formatCraftingRecipe(inputGrid));
@@ -132,24 +131,24 @@ public enum RecipesTest
 	private static void assertStonecuttingRecipe(ClientGameTestContext context,
 		ItemStack input, ItemStack expectedResult)
 	{
-		CuttingRecipeDisplay.Grouping<StonecuttingRecipe> recipeGroups =
-			context.computeOnClient(mc -> mc.getServer().getRecipeManager()
-				.getStonecutterRecipes().filter(input));
+		SelectableRecipe.SingleInputSet<StonecutterRecipe> recipeGroups =
+			context.computeOnClient(mc -> mc.getSingleplayerServer()
+				.getRecipeManager().stonecutterRecipes().selectByInput(input));
 		
-		List<StonecuttingRecipe> recipes = recipeGroups.entries().stream()
+		List<StonecutterRecipe> recipes = recipeGroups.entries().stream()
 			.map(group -> group.recipe().recipe()).filter(Optional::isPresent)
-			.map(Optional::get).map(RecipeEntry::value).toList();
+			.map(Optional::get).map(RecipeHolder::value).toList();
 		
 		if(recipes.isEmpty())
 			fail("No stonecutting recipes found for " + input);
 		
 		List<ItemStack> results = context.computeOnClient(mc -> recipes.stream()
-			.map(recipe -> recipe.craft(new SingleStackRecipeInput(input),
-				mc.world.getRegistryManager()))
+			.map(recipe -> recipe.assemble(new SingleRecipeInput(input),
+				mc.level.registryAccess()))
 			.toList());
 		
 		if(!results.stream()
-			.anyMatch(stack -> ItemStack.areEqual(stack, expectedResult)))
+			.anyMatch(stack -> ItemStack.matches(stack, expectedResult)))
 			fail("No stonecutting recipe found for " + input + " -> "
 				+ expectedResult + ", only found recipes that result in "
 				+ String.join(", ",
