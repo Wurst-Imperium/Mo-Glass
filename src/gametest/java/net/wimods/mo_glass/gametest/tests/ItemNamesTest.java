@@ -11,8 +11,8 @@ import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
-import net.wurstclient.glass.MoGlassBlocks;
 
 public enum ItemNamesTest
 {
