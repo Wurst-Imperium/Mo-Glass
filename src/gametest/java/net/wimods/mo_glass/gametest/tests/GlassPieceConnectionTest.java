@@ -28,8 +28,8 @@ import net.minecraft.block.enums.StairShape;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
-import net.wurstclient.glass.MoGlassBlocks;
 
 public enum GlassPieceConnectionTest
 {
