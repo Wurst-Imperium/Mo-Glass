@@ -130,7 +130,7 @@ public enum LootTableTest
 			}
 		
 		clearInventory(context);
-		context.waitTicks(7);
+		context.waitTicks(8);
 	}
 	
 	private static void testBlockDrops(ClientGameTestContext context,
