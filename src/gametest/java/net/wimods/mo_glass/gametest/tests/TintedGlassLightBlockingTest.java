@@ -15,15 +15,15 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.block.enums.StairShape;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
 
@@ -39,9 +39,9 @@ public enum TintedGlassLightBlockingTest
 		
 		MoGlassTest.LOGGER.info("Testing tinted glass light blocking...");
 		BlockPos playerPos =
-			context.computeOnClient(mc -> mc.player.getBlockPos());
-		BlockPos top = playerPos.add(0, 1, 4);
-		BlockPos front = playerPos.add(0, 0, 3);
+			context.computeOnClient(mc -> mc.player.blockPosition());
+		BlockPos top = playerPos.offset(0, 1, 4);
+		BlockPos front = playerPos.offset(0, 0, 3);
 		
 		// Build test rig
 		runCommand(server, "fill ~-1 ~-1 ~3 ~1 ~-1 ~5 smooth_stone");
@@ -58,32 +58,32 @@ public enum TintedGlassLightBlockingTest
 		testSlab(context, spContext, front, SlabType.DOUBLE, 0);
 		
 		// Stairs on top - should always block light
-		for(Direction dir : Direction.Type.HORIZONTAL)
-			for(BlockHalf half : BlockHalf.values())
-				for(StairShape shape : StairShape.values())
+		for(Direction dir : Direction.Plane.HORIZONTAL)
+			for(Half half : Half.values())
+				for(StairsShape shape : StairsShape.values())
 					testStairs(context, spContext, top, dir, half, shape, 0);
 				
 		// Straight stairs in front - depends on direction
-		for(Direction dir : Direction.Type.HORIZONTAL)
+		for(Direction dir : Direction.Plane.HORIZONTAL)
 		{
 			int light = dir.getAxis() == Direction.Axis.X ? 13 : 0;
-			for(BlockHalf half : BlockHalf.values())
+			for(Half half : Half.values())
 				testStairs(context, spContext, front, dir, half,
-					StairShape.STRAIGHT, light);
+					StairsShape.STRAIGHT, light);
 		}
 		
 		// Curved stairs in front - depends on curve type
-		for(Direction dir : Direction.Type.HORIZONTAL)
-			for(BlockHalf half : BlockHalf.values())
+		for(Direction dir : Direction.Plane.HORIZONTAL)
+			for(Half half : Half.values())
 			{
 				testStairs(context, spContext, front, dir, half,
-					StairShape.INNER_LEFT, 0);
+					StairsShape.INNER_LEFT, 0);
 				testStairs(context, spContext, front, dir, half,
-					StairShape.INNER_RIGHT, 0);
+					StairsShape.INNER_RIGHT, 0);
 				testStairs(context, spContext, front, dir, half,
-					StairShape.OUTER_LEFT, 13);
+					StairsShape.OUTER_LEFT, 13);
 				testStairs(context, spContext, front, dir, half,
-					StairShape.OUTER_RIGHT, 13);
+					StairsShape.OUTER_RIGHT, 13);
 			}
 		
 		// Clean up
@@ -97,19 +97,20 @@ public enum TintedGlassLightBlockingTest
 		int light)
 	{
 		testConfiguration(context, spContext, pos,
-			MoGlassBlocks.TINTED_GLASS_SLAB.getDefaultState()
-				.with(SlabBlock.TYPE, type),
+			MoGlassBlocks.TINTED_GLASS_SLAB.defaultBlockState()
+				.setValue(SlabBlock.TYPE, type),
 			light);
 	}
 	
 	private static void testStairs(ClientGameTestContext context,
 		TestSingleplayerContext spContext, BlockPos pos, Direction facing,
-		BlockHalf half, StairShape shape, int light)
+		Half half, StairsShape shape, int light)
 	{
 		testConfiguration(context, spContext, pos,
-			MoGlassBlocks.TINTED_GLASS_STAIRS.getDefaultState()
-				.with(StairsBlock.FACING, facing).with(StairsBlock.HALF, half)
-				.with(StairsBlock.SHAPE, shape),
+			MoGlassBlocks.TINTED_GLASS_STAIRS.defaultBlockState()
+				.setValue(StairBlock.FACING, facing)
+				.setValue(StairBlock.HALF, half)
+				.setValue(StairBlock.SHAPE, shape),
 			light);
 	}
 	
@@ -120,19 +121,20 @@ public enum TintedGlassLightBlockingTest
 		TestServerContext server = spContext.getServer();
 		
 		setBlock(server, pos, state);
-		context.waitFor(mc -> (mc.world.getBlockState(pos) == state
-			&& !mc.world.getLightingProvider().hasUpdates()));
+		context.waitFor(mc -> (mc.level.getBlockState(pos) == state
+			&& !mc.level.getLightEngine().hasLightWork()));
 		assertLightLevel(context, spContext, 0, 0, 4, expectedLightLevel,
 			state);
-		setBlock(server, pos, Blocks.TINTED_GLASS.getDefaultState());
+		setBlock(server, pos, Blocks.TINTED_GLASS.defaultBlockState());
 	}
 	
 	private static void assertLightLevel(ClientGameTestContext context,
 		TestSingleplayerContext spContext, int x, int y, int z, int expected,
 		BlockState state)
 	{
-		int lightLevel = context.computeOnClient(
-			mc -> mc.world.getLightLevel(mc.player.getBlockPos().add(x, y, z)));
+		int lightLevel =
+			context.computeOnClient(mc -> mc.level.getMaxLocalRawBrightness(
+				mc.player.blockPosition().offset(x, y, z)));
 		
 		if(lightLevel == expected)
 			return;

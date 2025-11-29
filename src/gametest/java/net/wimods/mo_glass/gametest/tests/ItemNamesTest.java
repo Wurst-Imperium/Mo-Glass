@@ -9,8 +9,8 @@ package net.wimods.mo_glass.gametest.tests;
 
 import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
 
@@ -45,7 +45,7 @@ public enum ItemNamesTest
 	
 	private static void assertItemName(String expected, ItemStack stack)
 	{
-		Text actual = stack.getName();
+		Component actual = stack.getHoverName();
 		String actualString = actual.getString();
 		if(expected.equals(actualString))
 			return;
