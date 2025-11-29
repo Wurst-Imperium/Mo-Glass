@@ -19,24 +19,24 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.tutorial.TutorialStep;
-import net.minecraft.client.util.ScreenshotRecorder;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Screenshot;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.client.tutorial.TutorialSteps;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public enum WiModsTestHelper
 {
@@ -48,9 +48,9 @@ public enum WiModsTestHelper
 	 * Runs the given consumer on Minecraft's main thread and waits for it to
 	 * complete.
 	 */
-	public static void submitAndWait(Consumer<MinecraftClient> consumer)
+	public static void submitAndWait(Consumer<Minecraft> consumer)
 	{
-		MinecraftClient mc = MinecraftClient.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 		mc.submit(() -> consumer.accept(mc)).join();
 	}
 	
@@ -58,9 +58,9 @@ public enum WiModsTestHelper
 	 * Runs the given function on Minecraft's main thread, waits for it to
 	 * complete, and returns the result.
 	 */
-	public static <T> T submitAndGet(Function<MinecraftClient, T> function)
+	public static <T> T submitAndGet(Function<Minecraft, T> function)
 	{
-		MinecraftClient mc = MinecraftClient.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 		return mc.submit(() -> function.apply(mc)).join();
 	}
 	
@@ -83,8 +83,8 @@ public enum WiModsTestHelper
 	 * Waits until the given condition is true, or fails if the timeout is
 	 * reached.
 	 */
-	public static void waitUntil(String event,
-		Predicate<MinecraftClient> condition, Duration maxDuration)
+	public static void waitUntil(String event, Predicate<Minecraft> condition,
+		Duration maxDuration)
 	{
 		LocalDateTime startTime = LocalDateTime.now();
 		LocalDateTime timeout = startTime.plus(maxDuration);
@@ -113,8 +113,7 @@ public enum WiModsTestHelper
 	/**
 	 * Waits until the given condition is true, or fails after 10 seconds.
 	 */
-	public static void waitUntil(String event,
-		Predicate<MinecraftClient> condition)
+	public static void waitUntil(String event, Predicate<Minecraft> condition)
 	{
 		waitUntil(event, condition, Duration.ofSeconds(10));
 	}
@@ -125,7 +124,7 @@ public enum WiModsTestHelper
 	public static void waitForScreen(Class<? extends Screen> screenClass)
 	{
 		waitUntil("screen " + screenClass.getName() + " is open",
-			mc -> screenClass.isInstance(mc.currentScreen));
+			mc -> screenClass.isInstance(mc.screen));
 	}
 	
 	/**
@@ -135,10 +134,10 @@ public enum WiModsTestHelper
 	public static void waitForTitleScreenFade()
 	{
 		waitUntil("title screen fade is complete", mc -> {
-			if(!(mc.currentScreen instanceof TitleScreen titleScreen))
+			if(!(mc.screen instanceof TitleScreen titleScreen))
 				return false;
 			
-			return !titleScreen.doBackgroundFade;
+			return !titleScreen.fading;
 		});
 	}
 	
@@ -155,16 +154,16 @@ public enum WiModsTestHelper
 	public static void waitForWorldLoad()
 	{
 		waitUntil("world is loaded",
-			mc -> mc.world != null
-				&& !(mc.currentScreen instanceof LevelLoadingScreen),
+			mc -> mc.level != null
+				&& !(mc.screen instanceof LevelLoadingScreen),
 			Duration.ofMinutes(30));
 	}
 	
 	public static void waitForWorldTicks(int ticks)
 	{
-		long startTicks = submitAndGet(mc -> mc.world.getTime());
+		long startTicks = submitAndGet(mc -> mc.level.getGameTime());
 		waitUntil(ticks + " world ticks have passed",
-			mc -> mc.world.getTime() >= startTicks + ticks,
+			mc -> mc.level.getGameTime() >= startTicks + ticks,
 			Duration.ofMillis(ticks * 100).plusMinutes(5));
 	}
 	
@@ -189,8 +188,8 @@ public enum WiModsTestHelper
 		String filename = count + "_" + name + ".png";
 		File gameDir = FabricLoader.getInstance().getGameDir().toFile();
 		
-		submitAndWait(mc -> ScreenshotRecorder.saveScreenshot(gameDir, filename,
-			mc.getFramebuffer(), message -> {}));
+		submitAndWait(mc -> Screenshot.grab(gameDir, filename,
+			mc.getMainRenderTarget(), message -> {}));
 	}
 	
 	/**
@@ -201,13 +200,12 @@ public enum WiModsTestHelper
 	 * For non-translated buttons, the translationKey parameter should be the
 	 * raw button text instead.
 	 */
-	public static ButtonWidget findButton(MinecraftClient mc,
-		String translationKey)
+	public static Button findButton(Minecraft mc, String translationKey)
 	{
-		String message = I18n.translate(translationKey);
+		String message = I18n.get(translationKey);
 		
-		for(Drawable drawable : mc.currentScreen.drawables)
-			if(drawable instanceof ButtonWidget button
+		for(Renderable drawable : mc.screen.renderables)
+			if(drawable instanceof Button button
 				&& button.getMessage().getString().equals(message))
 				return button;
 			
@@ -218,7 +216,7 @@ public enum WiModsTestHelper
 	 * Looks for the given button at the given coordinates and fails if it is
 	 * not there.
 	 */
-	public static void checkButtonPosition(ButtonWidget button, int expectedX,
+	public static void checkButtonPosition(Button button, int expectedX,
 		int expectedY)
 	{
 		String buttonName = button.getMessage().getString();
@@ -244,27 +242,27 @@ public enum WiModsTestHelper
 	 */
 	public static void clickButton(String translationKey)
 	{
-		String buttonText = I18n.translate(translationKey);
+		String buttonText = I18n.get(translationKey);
 		
 		waitUntil("button saying " + buttonText + " is visible", mc -> {
-			Screen screen = mc.currentScreen;
+			Screen screen = mc.screen;
 			if(screen == null)
 				return false;
 			
-			for(Drawable drawable : screen.drawables)
+			for(Renderable drawable : screen.renderables)
 			{
-				if(!(drawable instanceof ClickableWidget widget))
+				if(!(drawable instanceof AbstractWidget widget))
 					continue;
 				
-				if(widget instanceof ButtonWidget button
+				if(widget instanceof Button button
 					&& buttonText.equals(button.getMessage().getString()))
 				{
 					button.onPress();
 					return true;
 				}
 				
-				if(widget instanceof CyclingButtonWidget<?> button
-					&& buttonText.equals(button.optionText.getString()))
+				if(widget instanceof CycleButton<?> button
+					&& buttonText.equals(button.name.getString()))
 				{
 					button.onPress();
 					return true;
@@ -282,19 +280,19 @@ public enum WiModsTestHelper
 	public static void setTextFieldText(int index, String text)
 	{
 		waitUntil("text field #" + index + " is visible", mc -> {
-			Screen screen = mc.currentScreen;
+			Screen screen = mc.screen;
 			if(screen == null)
 				return false;
 			
 			int i = 0;
-			for(Drawable drawable : screen.drawables)
+			for(Renderable drawable : screen.renderables)
 			{
-				if(!(drawable instanceof TextFieldWidget textField))
+				if(!(drawable instanceof EditBox textField))
 					continue;
 				
 				if(i == index)
 				{
-					textField.setText(text);
+					textField.setValue(text);
 					return true;
 				}
 				
@@ -312,7 +310,7 @@ public enum WiModsTestHelper
 	
 	public static void openGameMenu()
 	{
-		submitAndWait(mc -> mc.setScreen(new GameMenuScreen(true)));
+		submitAndWait(mc -> mc.setScreen(new PauseScreen(true)));
 	}
 	
 	public static void openInventory()
@@ -322,22 +320,22 @@ public enum WiModsTestHelper
 	
 	public static void toggleDebugHud()
 	{
-		submitAndWait(mc -> mc.inGameHud.getDebugHud().toggleDebugHud());
+		submitAndWait(mc -> mc.gui.getDebugOverlay().toggleOverlay());
 	}
 	
-	public static void setPerspective(Perspective perspective)
+	public static void setPerspective(CameraType perspective)
 	{
-		submitAndWait(mc -> mc.options.setPerspective(perspective));
+		submitAndWait(mc -> mc.options.setCameraType(perspective));
 	}
 	
 	public static void dismissTutorialToasts()
 	{
-		submitAndWait(mc -> mc.getTutorialManager().setStep(TutorialStep.NONE));
+		submitAndWait(mc -> mc.getTutorial().setStep(TutorialSteps.NONE));
 	}
 	
 	public static void clearChat()
 	{
-		submitAndWait(mc -> mc.inGameHud.getChatHud().clear(true));
+		submitAndWait(mc -> mc.gui.getChat().clearMessages(true));
 	}
 	
 	/**
@@ -351,11 +349,11 @@ public enum WiModsTestHelper
 	{
 		System.out.println("Running command: /" + command);
 		submitAndWait(mc -> {
-			ClientPlayNetworkHandler netHandler = mc.getNetworkHandler();
+			ClientPacketListener netHandler = mc.getConnection();
 			
 			// Validate command using client-side command dispatcher
-			ParseResults<?> results = netHandler.getCommandDispatcher()
-				.parse(command, netHandler.getCommandSource());
+			ParseResults<?> results = netHandler.getCommands().parse(command,
+				netHandler.getSuggestionsProvider());
 			
 			// Command is invalid, fail the test
 			if(!results.getExceptions().isEmpty())
@@ -369,7 +367,7 @@ public enum WiModsTestHelper
 			}
 			
 			// Command is valid, send it
-			netHandler.sendChatCommand(command);
+			netHandler.sendCommand(command);
 		});
 		waitForWorldTicks(1);
 	}
@@ -377,23 +375,25 @@ public enum WiModsTestHelper
 	public static void assertOneItemInSlot(int slot, Item item)
 	{
 		submitAndWait(mc -> {
-			ItemStack stack = mc.player.getInventory().getStack(slot);
-			if(!stack.isOf(item) || stack.getCount() != 1)
+			ItemStack stack = mc.player.getInventory().getItem(slot);
+			if(!stack.is(item) || stack.getCount() != 1)
 				throw new RuntimeException(
-					"Expected 1 " + item.getName().getString() + " at slot "
-						+ slot + ", found " + stack.getCount() + " "
-						+ stack.getItem().getName().getString() + " instead");
+					"Expected 1 " + item.getDescription().getString()
+						+ " at slot " + slot + ", found " + stack.getCount()
+						+ " " + stack.getItem().getDescription().getString()
+						+ " instead");
 		});
 	}
 	
 	public static void assertNoItemInSlot(int slot)
 	{
 		submitAndWait(mc -> {
-			ItemStack stack = mc.player.getInventory().getStack(slot);
+			ItemStack stack = mc.player.getInventory().getItem(slot);
 			if(!stack.isEmpty())
 				throw new RuntimeException("Expected no item in slot " + slot
 					+ ", found " + stack.getCount() + " "
-					+ stack.getItem().getName().getString() + " instead");
+					+ stack.getItem().getDescription().getString()
+					+ " instead");
 		});
 	}
 }

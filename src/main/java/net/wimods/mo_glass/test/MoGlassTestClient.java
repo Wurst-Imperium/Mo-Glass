@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.screen.AccessibilityOnboardingScreen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.world.CreateWorldScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.gui.screens.AccessibilityOnboardingScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 
 public final class MoGlassTestClient implements ClientModInitializer
 {
@@ -56,7 +56,8 @@ public final class MoGlassTestClient implements ClientModInitializer
 		System.out.println("Clicking singleplayer button");
 		clickButton("menu.singleplayer");
 		
-		if(submitAndGet(mc -> !mc.getLevelStorage().getLevelList().isEmpty()))
+		if(submitAndGet(
+			mc -> !mc.getLevelSource().findLevelCandidates().isEmpty()))
 		{
 			System.out.println("World list is not empty. Waiting for it");
 			waitForScreen(SelectWorldScreen.class);
@@ -70,7 +71,7 @@ public final class MoGlassTestClient implements ClientModInitializer
 		
 		// Set MC version as world name
 		setTextFieldText(0,
-			"E2E Test " + SharedConstants.getGameVersion().getName());
+			"E2E Test " + SharedConstants.getCurrentVersion().getName());
 		// Select creative mode
 		clickButton("selectWorld.gameMode");
 		clickButton("selectWorld.gameMode");

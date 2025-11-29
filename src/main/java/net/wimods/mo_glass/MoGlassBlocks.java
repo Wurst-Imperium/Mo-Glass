@@ -10,47 +10,49 @@ package net.wimods.mo_glass;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.Settings;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 public enum MoGlassBlocks
 {
 	;
 	
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	
 	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+		BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS)
+			.mapColor(MapColor.COLOR_GRAY).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	
 	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
-		AbstractBlock.Settings.copy(Blocks.GLASS).mapColor(MapColor.GRAY)
-			.nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never));
+		BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS)
+			.mapColor(MapColor.COLOR_GRAY).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	
 	public static final StainedGlassSlabBlock WHITE_STAINED_GLASS_SLAB =
 		createStainedGlassSlab(DyeColor.WHITE);
@@ -166,7 +168,7 @@ public enum MoGlassBlocks
 			registerBlockTranslucent(STAINED_GLASS_STAIRS[i],
 				colors[i] + "_stained_glass_stairs");
 		
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COLORED_BLOCKS)
 			.register(content -> {
 				
 				// stairs
@@ -187,7 +189,7 @@ public enum MoGlassBlocks
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getTranslucent());
+				RenderType.translucent());
 	}
 	
 	private static void registerBlockCutoutMipped(Block block, String idPath)
@@ -196,37 +198,38 @@ public enum MoGlassBlocks
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getCutoutMipped());
+				RenderType.cutoutMipped());
 	}
 	
 	private static void registerBlock(Block block, String idPath)
 	{
-		Identifier identifier = Identifier.of("mo_glass", idPath);
-		Registry.register(Registries.BLOCK, identifier, block);
+		ResourceLocation identifier =
+			ResourceLocation.fromNamespaceAndPath("mo_glass", idPath);
+		Registry.register(BuiltInRegistries.BLOCK, identifier, block);
 		
-		Settings itemSettings = new Item.Settings();
+		Properties itemSettings = new Item.Properties();
 		BlockItem blockItem = new BlockItem(block, itemSettings);
-		Registry.register(Registries.ITEM, identifier, blockItem);
+		Registry.register(BuiltInRegistries.ITEM, identifier, blockItem);
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color)
 	{
 		return new StainedGlassSlabBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
+			BlockBehaviour.Properties.of().mapColor(color)
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never));
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+				.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color)
 	{
 		return new StainedGlassStairsBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
+			BlockBehaviour.Properties.of().mapColor(color)
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never));
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+				.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
 	}
 }

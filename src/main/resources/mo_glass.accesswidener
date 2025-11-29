@@ -1,6 +1,6 @@
 accessWidener	v1	named
-accessible	method	net/minecraft/client/Mouse	onMouseScroll	(JDD)V
-accessible	field	net/minecraft/client/gui/screen/Screen	drawables	Ljava/util/List;
-accessible	field	net/minecraft/client/gui/screen/TitleScreen	doBackgroundFade	Z
-accessible	field	net/minecraft/client/gui/widget/CyclingButtonWidget	optionText	Lnet/minecraft/text/Text;
-accessible	field	net/minecraft/client/texture/NativeImage	pointer	J
+accessible	method	net/minecraft/client/MouseHandler	onScroll	(JDD)V
+accessible	field	net/minecraft/client/gui/screens/Screen	renderables	Ljava/util/List;
+accessible	field	net/minecraft/client/gui/screens/TitleScreen	fading	Z
+accessible	field	net/minecraft/client/gui/components/CycleButton	name	Lnet/minecraft/network/chat/Component;
+accessible	field	com/mojang/blaze3d/platform/NativeImage	pixels	J
