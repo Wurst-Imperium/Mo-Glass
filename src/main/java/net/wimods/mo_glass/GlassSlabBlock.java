@@ -5,7 +5,7 @@
  * License, version 3. If a copy of the GPL was not distributed with this
  * file, You can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
-package net.wurstclient.glass;
+package net.wimods.mo_glass;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,9 +23,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
-public final class TintedGlassSlabBlock extends SlabBlock
+public final class GlassSlabBlock extends SlabBlock
 {
-	public TintedGlassSlabBlock(Settings settings)
+	public GlassSlabBlock(Settings settings)
 	{
 		super(settings);
 	}
@@ -35,14 +35,14 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom,
 		Direction direction)
 	{
-		if(stateFrom.getBlock() == Blocks.TINTED_GLASS)
+		if(stateFrom.getBlock() == Blocks.GLASS)
 			return true;
 		
 		if(stateFrom.getBlock() == this)
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
-		if(stateFrom.getBlock() == MoGlassBlocks.TINTED_GLASS_STAIRS)
+		if(stateFrom.getBlock() == MoGlassBlocks.GLASS_STAIRS)
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
@@ -142,12 +142,6 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	@Override
 	public boolean isTransparent(BlockState state)
 	{
-		return false;
-	}
-	
-	@Override
-	public int getOpacity(BlockState state)
-	{
-		return state.get(TYPE) == SlabType.DOUBLE ? 15 : 0;
+		return true;
 	}
 }
