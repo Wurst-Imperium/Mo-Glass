@@ -14,19 +14,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.fabricmc.fabric.api.block.v1.FabricBlock;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.wimods.mo_glass.MoGlass;
 import net.wimods.mo_glass.MoGlassTags;
 
 @Mixin(Block.class)
-public abstract class BlockMixin extends AbstractBlock
-	implements ItemConvertible, FabricBlock
+public abstract class BlockMixin extends BlockBehaviour
+	implements ItemLike, FabricBlock
 {
-	private BlockMixin(MoGlass moGlass, Settings settings)
+	private BlockMixin(MoGlass moGlass, Properties settings)
 	{
 		super(settings);
 	}
@@ -35,15 +35,15 @@ public abstract class BlockMixin extends AbstractBlock
 	 * See {@link MoGlassTags#NON_OPAQUE_FOR_CULLING} for why this exists.
 	 */
 	@Inject(at = @At("HEAD"),
-		method = "shouldDrawSide(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Direction;)Z",
+		method = "shouldRenderFace(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z",
 		cancellable = true)
 	private static void onShouldDrawSide(BlockState state,
 		BlockState otherState, Direction direction,
 		CallbackInfoReturnable<Boolean> cir)
 	{
-		if(!state.isIn(ConventionalBlockTags.GLASS_BLOCKS_TINTED)
-			&& !state.isIn(MoGlassTags.NON_OPAQUE_FOR_CULLING)
-			&& otherState.isIn(MoGlassTags.NON_OPAQUE_FOR_CULLING))
+		if(!state.is(ConventionalBlockTags.GLASS_BLOCKS_TINTED)
+			&& !state.is(MoGlassTags.NON_OPAQUE_FOR_CULLING)
+			&& otherState.is(MoGlassTags.NON_OPAQUE_FOR_CULLING))
 			cir.setReturnValue(true);
 	}
 }
