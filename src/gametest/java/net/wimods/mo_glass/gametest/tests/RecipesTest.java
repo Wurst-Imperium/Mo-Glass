@@ -26,8 +26,8 @@ import net.minecraft.recipe.display.CuttingRecipeDisplay;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.util.DyeColor;
+import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
-import net.wurstclient.glass.MoGlassBlocks;
 
 public enum RecipesTest
 {

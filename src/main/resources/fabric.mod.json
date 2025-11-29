@@ -8,27 +8,25 @@
     "Alexander01998"
   ],
   "contact": {
-    "homepage": "https://www.wimods.net/mo-glass/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+website+link",
-    "sources": "https://github.com/Wurst-Imperium/Mo-Glass",
-    "issues": "https://github.com/Wurst-Imperium/Mo-Glass/issues",
-    "email": "contact.wurstimperium@gmail.com",
-    "twitter": "https://twitter.com/Wurst_Imperium"
+    "homepage": "https://www.wimods.net/mo-glass/modmenu-homepage/",
+    "sources": "https://www.wimods.net/mo-glass/modmenu-sources/",
+    "issues": "https://www.wimods.net/mo-glass/modmenu-issues/"
   },
   "license": "GPL-3.0-or-later",
   "icon": "assets/mo_glass/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.wurstclient.glass.MoGlassInitializer"
+      "net.wimods.mo_glass.MoGlassInitializer"
     ],
     "server": [
-      "net.wurstclient.glass.MoGlassInitializer"
+      "net.wimods.mo_glass.MoGlassInitializer"
     ]
   },
   "mixins": [
-    "mo-glass.mixins.json"
+    "mo_glass.mixins.json"
   ],
-  "accessWidener": "mo-glass.accesswidener",
+  "accessWidener": "mo_glass.accesswidener",
   "depends": {
     "fabricloader": ">=0.16.13",
     "fabric-api": ">=0.125.2",
@@ -42,7 +40,9 @@
   "custom": {
     "modmenu": {
       "links": {
-        "Donate": "https://www.wurstclient.net/donate/?utm_source=Mo+Glass&utm_medium=ModMenu&utm_content=Mo+Glass+ModMenu+donate+link"
+        "modmenu.donate": "https://www.wimods.net/mo-glass/modmenu-donate/",
+        "modmenu.twitter": "https://www.wimods.net/mo-glass/modmenu-twitter/",
+        "Forum": "https://www.wimods.net/mo-glass/modmenu-forum/"
       }
     }
   }
