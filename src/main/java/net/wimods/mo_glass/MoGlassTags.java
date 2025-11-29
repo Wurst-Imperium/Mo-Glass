@@ -7,10 +7,10 @@
  */
 package net.wimods.mo_glass;
 
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.wimods.mo_glass.mixin.BlockMixin;
 
 public enum MoGlassTags
@@ -31,6 +31,7 @@ public enum MoGlassTags
 	
 	private static TagKey<Block> createTag(String idPath)
 	{
-		return TagKey.of(RegistryKeys.BLOCK, Identifier.of("mo_glass", idPath));
+		return TagKey.create(Registries.BLOCK,
+			ResourceLocation.fromNamespaceAndPath("mo_glass", idPath));
 	}
 }

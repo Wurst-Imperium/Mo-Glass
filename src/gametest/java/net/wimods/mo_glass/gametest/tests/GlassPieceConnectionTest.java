@@ -17,17 +17,17 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.block.enums.StairShape;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.wimods.mo_glass.MoGlassBlocks;
 import net.wimods.mo_glass.gametest.MoGlassTest;
 
@@ -42,20 +42,20 @@ public enum GlassPieceConnectionTest
 		TestServerContext server = spContext.getServer();
 		
 		MoGlassTest.LOGGER.info("Testing if glass pieces connect correctly...");
-		BlockPos pos = context.computeOnClient(mc -> mc.player.getBlockPos());
+		BlockPos pos = context.computeOnClient(mc -> mc.player.blockPosition());
 		
-		BlockState[][] blocksWithFullyCoveredNorthSide = {blocks(),
-			slabs(SlabType.DOUBLE),
-			stairs(Direction.NORTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
-			stairs(Direction.NORTH, BlockHalf.TOP, StairShape.STRAIGHT),
-			stairs(Direction.NORTH, BlockHalf.BOTTOM, StairShape.INNER_LEFT),
-			stairs(Direction.EAST, BlockHalf.BOTTOM, StairShape.INNER_LEFT),
-			stairs(Direction.EAST, BlockHalf.TOP, StairShape.INNER_LEFT),
-			stairs(Direction.NORTH, BlockHalf.TOP, StairShape.INNER_RIGHT),
-			stairs(Direction.NORTH, BlockHalf.BOTTOM, StairShape.INNER_RIGHT),
-			stairs(Direction.WEST, BlockHalf.BOTTOM, StairShape.INNER_RIGHT),
-			stairs(Direction.NORTH, BlockHalf.TOP, StairShape.INNER_LEFT),
-			stairs(Direction.WEST, BlockHalf.TOP, StairShape.INNER_RIGHT)};
+		BlockState[][] blocksWithFullyCoveredNorthSide =
+			{blocks(), slabs(SlabType.DOUBLE),
+				stairs(Direction.NORTH, Half.BOTTOM, StairsShape.STRAIGHT),
+				stairs(Direction.NORTH, Half.TOP, StairsShape.STRAIGHT),
+				stairs(Direction.NORTH, Half.BOTTOM, StairsShape.INNER_LEFT),
+				stairs(Direction.EAST, Half.BOTTOM, StairsShape.INNER_LEFT),
+				stairs(Direction.EAST, Half.TOP, StairsShape.INNER_LEFT),
+				stairs(Direction.NORTH, Half.TOP, StairsShape.INNER_RIGHT),
+				stairs(Direction.NORTH, Half.BOTTOM, StairsShape.INNER_RIGHT),
+				stairs(Direction.WEST, Half.BOTTOM, StairsShape.INNER_RIGHT),
+				stairs(Direction.NORTH, Half.TOP, StairsShape.INNER_LEFT),
+				stairs(Direction.WEST, Half.TOP, StairsShape.INNER_RIGHT)};
 		
 		for(BlockState[] back : blocksWithFullyCoveredNorthSide)
 		{
@@ -66,32 +66,33 @@ public enum GlassPieceConnectionTest
 				false);
 			test(context, spContext, pos, back, slabs(SlabType.DOUBLE), false,
 				false);
-			for(Direction dir : Direction.Type.HORIZONTAL)
-				for(BlockHalf half : BlockHalf.values())
+			for(Direction dir : Direction.Plane.HORIZONTAL)
+				for(Half half : Half.values())
 				{
 					test(context, spContext, pos, back,
-						stairs(dir, half, StairShape.STRAIGHT),
+						stairs(dir, half, StairsShape.STRAIGHT),
 						dir != Direction.SOUTH, false);
 					test(context, spContext, pos, back,
-						stairs(dir, half, StairShape.INNER_LEFT),
+						stairs(dir, half, StairsShape.INNER_LEFT),
 						dir != Direction.SOUTH && dir != Direction.WEST, false);
 					test(context, spContext, pos, back,
-						stairs(dir, half, StairShape.INNER_RIGHT),
+						stairs(dir, half, StairsShape.INNER_RIGHT),
 						dir != Direction.SOUTH && dir != Direction.EAST, false);
 					test(context, spContext, pos, back,
-						stairs(dir, half, StairShape.OUTER_LEFT), true, false);
+						stairs(dir, half, StairsShape.OUTER_LEFT), true, false);
 					test(context, spContext, pos, back,
-						stairs(dir, half, StairShape.OUTER_RIGHT), true, false);
+						stairs(dir, half, StairsShape.OUTER_RIGHT), true,
+						false);
 				}
 		}
 		
-		BlockState[][] blocksWithBottomHalfCoveredNorthSide = {
-			slabs(SlabType.BOTTOM),
-			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.STRAIGHT),
-			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
-			stairs(Direction.WEST, BlockHalf.BOTTOM, StairShape.OUTER_LEFT),
-			stairs(Direction.EAST, BlockHalf.BOTTOM, StairShape.OUTER_RIGHT),
-			stairs(Direction.SOUTH, BlockHalf.BOTTOM, StairShape.OUTER_RIGHT)};
+		BlockState[][] blocksWithBottomHalfCoveredNorthSide =
+			{slabs(SlabType.BOTTOM),
+				stairs(Direction.SOUTH, Half.BOTTOM, StairsShape.STRAIGHT),
+				stairs(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_LEFT),
+				stairs(Direction.WEST, Half.BOTTOM, StairsShape.OUTER_LEFT),
+				stairs(Direction.EAST, Half.BOTTOM, StairsShape.OUTER_RIGHT),
+				stairs(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_RIGHT)};
 		
 		for(BlockState[] back : blocksWithBottomHalfCoveredNorthSide)
 		{
@@ -99,56 +100,56 @@ public enum GlassPieceConnectionTest
 				false);
 			test(context, spContext, pos, back, slabs(SlabType.TOP), true,
 				true);
-			for(BlockHalf half : BlockHalf.values())
+			for(Half half : Half.values())
 			{
 				test(context, spContext, pos, back,
-					stairs(Direction.NORTH, half, StairShape.STRAIGHT),
-					half == BlockHalf.TOP, half == BlockHalf.TOP);
+					stairs(Direction.NORTH, half, StairsShape.STRAIGHT),
+					half == Half.TOP, half == Half.TOP);
 				test(context, spContext, pos, back,
-					stairs(Direction.EAST, half, StairShape.STRAIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.EAST, half, StairsShape.STRAIGHT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.WEST, half, StairShape.STRAIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.WEST, half, StairsShape.STRAIGHT),
+					half == Half.TOP, true);
 				
 				test(context, spContext, pos, back,
-					stairs(Direction.NORTH, half, StairShape.INNER_LEFT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.NORTH, half, StairsShape.INNER_LEFT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.EAST, half, StairShape.INNER_LEFT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.EAST, half, StairsShape.INNER_LEFT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.NORTH, half, StairShape.INNER_RIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.NORTH, half, StairsShape.INNER_RIGHT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.WEST, half, StairShape.INNER_RIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.WEST, half, StairsShape.INNER_RIGHT),
+					half == Half.TOP, true);
 				
 				test(context, spContext, pos, back,
-					stairs(Direction.NORTH, half, StairShape.OUTER_LEFT),
-					half == BlockHalf.TOP, half == BlockHalf.TOP);
+					stairs(Direction.NORTH, half, StairsShape.OUTER_LEFT),
+					half == Half.TOP, half == Half.TOP);
 				test(context, spContext, pos, back,
-					stairs(Direction.EAST, half, StairShape.OUTER_LEFT),
-					half == BlockHalf.TOP, half == BlockHalf.TOP);
+					stairs(Direction.EAST, half, StairsShape.OUTER_LEFT),
+					half == Half.TOP, half == Half.TOP);
 				test(context, spContext, pos, back,
-					stairs(Direction.SOUTH, half, StairShape.OUTER_LEFT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.SOUTH, half, StairsShape.OUTER_LEFT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.WEST, half, StairShape.OUTER_LEFT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.WEST, half, StairsShape.OUTER_LEFT),
+					half == Half.TOP, true);
 				
 				test(context, spContext, pos, back,
-					stairs(Direction.NORTH, half, StairShape.OUTER_RIGHT),
-					half == BlockHalf.TOP, half == BlockHalf.TOP);
+					stairs(Direction.NORTH, half, StairsShape.OUTER_RIGHT),
+					half == Half.TOP, half == Half.TOP);
 				test(context, spContext, pos, back,
-					stairs(Direction.EAST, half, StairShape.OUTER_RIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.EAST, half, StairsShape.OUTER_RIGHT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.SOUTH, half, StairShape.OUTER_RIGHT),
-					half == BlockHalf.TOP, true);
+					stairs(Direction.SOUTH, half, StairsShape.OUTER_RIGHT),
+					half == Half.TOP, true);
 				test(context, spContext, pos, back,
-					stairs(Direction.WEST, half, StairShape.OUTER_RIGHT),
-					half == BlockHalf.TOP, half == BlockHalf.TOP);
+					stairs(Direction.WEST, half, StairsShape.OUTER_RIGHT),
+					half == Half.TOP, half == Half.TOP);
 			}
 		}
 		
@@ -170,8 +171,8 @@ public enum GlassPieceConnectionTest
 		{
 			boolean test(LinkedHashMap<BlockPos, BlockState> blocks)
 			{
-				return Block.shouldDrawSide(blocks.get(pos),
-					blocks.get(pos.offset(dir)), dir) == shouldDraw;
+				return Block.shouldRenderFace(blocks.get(pos),
+					blocks.get(pos.relative(dir)), dir) == shouldDraw;
 			}
 		}
 		
@@ -181,11 +182,11 @@ public enum GlassPieceConnectionTest
 		int[] xOffsets = {2, 0, -2};
 		for(int i = 0; i < 3; i++)
 		{
-			BlockPos backPos = startPos.add(xOffsets[i], 0, 5);
+			BlockPos backPos = startPos.offset(xOffsets[i], 0, 5);
 			blocks.put(backPos, backBlocks[i]);
 			// testCases.add(new TestCase(backPos, Direction.NORTH, drawFront));
 			
-			BlockPos frontPos = startPos.add(xOffsets[i], 0, 4);
+			BlockPos frontPos = startPos.offset(xOffsets[i], 0, 4);
 			blocks.put(frontPos, frontBlocks[i]);
 			testCases.add(new TestCase(frontPos, Direction.SOUTH, drawBack));
 		}
@@ -198,12 +199,13 @@ public enum GlassPieceConnectionTest
 			return;
 		
 		// Build the test case and mark where it failed
-		blocks.put(failed.pos().up(2), Blocks.RED_CONCRETE.getDefaultState());
+		blocks.put(failed.pos().above(2),
+			Blocks.RED_CONCRETE.defaultBlockState());
 		setBlocks(server, blocks);
 		if(failed.dir() == Direction.SOUTH)
 			runCommand(server, "tp @s ~ ~ ~9 180 0");
 		context
-			.waitFor(mc -> blocks.entrySet().stream().allMatch(entry -> mc.world
+			.waitFor(mc -> blocks.entrySet().stream().allMatch(entry -> mc.level
 				.getBlockState(entry.getKey()) == entry.getValue()));
 		world.waitForChunksRender();
 		
@@ -212,7 +214,7 @@ public enum GlassPieceConnectionTest
 		Path screenshotPath = context.takeScreenshot(fileName);
 		
 		BlockState state1 = blocks.get(failed.pos());
-		BlockState state2 = blocks.get(failed.pos().offset(failed.dir()));
+		BlockState state2 = blocks.get(failed.pos().relative(failed.dir()));
 		String errorMessage = "Block `" + state1 + "`"
 			+ (failed.shouldDraw() ? " connected to " : " did not connect to ")
 			+ "`" + state2 + "`";
@@ -231,34 +233,35 @@ public enum GlassPieceConnectionTest
 	
 	private static BlockState[] blocks()
 	{
-		return new BlockState[]{Blocks.GLASS.getDefaultState(),
-			Blocks.WHITE_STAINED_GLASS.getDefaultState(),
-			Blocks.TINTED_GLASS.getDefaultState()};
+		return new BlockState[]{Blocks.GLASS.defaultBlockState(),
+			Blocks.WHITE_STAINED_GLASS.defaultBlockState(),
+			Blocks.TINTED_GLASS.defaultBlockState()};
 	}
 	
 	private static BlockState[] slabs(SlabType type)
 	{
 		return new BlockState[]{
-			MoGlassBlocks.GLASS_SLAB.getDefaultState().with(SlabBlock.TYPE,
-				type),
+			MoGlassBlocks.GLASS_SLAB.defaultBlockState()
+				.setValue(SlabBlock.TYPE, type),
 			MoGlassBlocks.STAINED_GLASS_SLABS.get(DyeColor.WHITE.ordinal())
-				.getDefaultState().with(SlabBlock.TYPE, type),
-			MoGlassBlocks.TINTED_GLASS_SLAB.getDefaultState()
-				.with(SlabBlock.TYPE, type)};
+				.defaultBlockState().setValue(SlabBlock.TYPE, type),
+			MoGlassBlocks.TINTED_GLASS_SLAB.defaultBlockState()
+				.setValue(SlabBlock.TYPE, type)};
 	}
 	
-	private static BlockState[] stairs(Direction facing, BlockHalf half,
-		StairShape shape)
+	private static BlockState[] stairs(Direction facing, Half half,
+		StairsShape shape)
 	{
-		return new BlockState[]{
-			MoGlassBlocks.GLASS_STAIRS.getDefaultState()
-				.with(StairsBlock.FACING, facing).with(StairsBlock.HALF, half)
-				.with(StairsBlock.SHAPE, shape),
+		return new BlockState[]{MoGlassBlocks.GLASS_STAIRS.defaultBlockState()
+			.setValue(StairBlock.FACING, facing).setValue(StairBlock.HALF, half)
+			.setValue(StairBlock.SHAPE, shape),
 			MoGlassBlocks.STAINED_GLASS_STAIRS.get(DyeColor.WHITE.ordinal())
-				.getDefaultState().with(StairsBlock.FACING, facing)
-				.with(StairsBlock.HALF, half).with(StairsBlock.SHAPE, shape),
-			MoGlassBlocks.TINTED_GLASS_STAIRS.getDefaultState()
-				.with(StairsBlock.FACING, facing).with(StairsBlock.HALF, half)
-				.with(StairsBlock.SHAPE, shape)};
+				.defaultBlockState().setValue(StairBlock.FACING, facing)
+				.setValue(StairBlock.HALF, half)
+				.setValue(StairBlock.SHAPE, shape),
+			MoGlassBlocks.TINTED_GLASS_STAIRS.defaultBlockState()
+				.setValue(StairBlock.FACING, facing)
+				.setValue(StairBlock.HALF, half)
+				.setValue(StairBlock.SHAPE, shape)};
 	}
 }

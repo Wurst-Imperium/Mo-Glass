@@ -13,70 +13,70 @@ import java.util.List;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.Settings;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 public enum MoGlassBlocks
 {
 	;
 	
-	public static final RegistryKey<Block> GLASS_SLAB_KEY =
+	public static final ResourceKey<Block> GLASS_SLAB_KEY =
 		blockKey("glass_slab");
 	
-	public static final Block GLASS_SLAB = new GlassSlabBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never)
-			.registryKey(GLASS_SLAB_KEY));
+	public static final Block GLASS_SLAB =
+		new GlassSlabBlock(BlockBehaviour.Properties.of()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
+			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
+			.isViewBlocking(Blocks::never).setId(GLASS_SLAB_KEY));
 	
-	public static final RegistryKey<Block> GLASS_STAIRS_KEY =
+	public static final ResourceKey<Block> GLASS_STAIRS_KEY =
 		blockKey("glass_stairs");
 	
-	public static final Block GLASS_STAIRS = new GlassStairsBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS).nonOpaque()
-			.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-			.suffocates(Blocks::never).blockVision(Blocks::never)
-			.registryKey(GLASS_STAIRS_KEY));
+	public static final Block GLASS_STAIRS =
+		new GlassStairsBlock(BlockBehaviour.Properties.of()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
+			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
+			.isViewBlocking(Blocks::never).setId(GLASS_STAIRS_KEY));
 	
-	public static final RegistryKey<Block> TINTED_GLASS_SLAB_KEY =
+	public static final ResourceKey<Block> TINTED_GLASS_SLAB_KEY =
 		blockKey("tinted_glass_slab");
 	
 	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS)
-			.mapColor(MapColor.GRAY).allowsSpawning(Blocks::never)
-			.solidBlock(Blocks::never).suffocates(Blocks::never)
-			.blockVision(Blocks::never).registryKey(TINTED_GLASS_SLAB_KEY));
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never)
+			.setId(TINTED_GLASS_SLAB_KEY));
 	
-	public static final RegistryKey<Block> TINTED_GLASS_STAIRS_KEY =
+	public static final ResourceKey<Block> TINTED_GLASS_STAIRS_KEY =
 		blockKey("tinted_glass_stairs");
 	
 	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
-		AbstractBlock.Settings.create().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sounds(BlockSoundGroup.GLASS)
-			.mapColor(MapColor.GRAY).allowsSpawning(Blocks::never)
-			.solidBlock(Blocks::never).suffocates(Blocks::never)
-			.blockVision(Blocks::never).registryKey(TINTED_GLASS_STAIRS_KEY));
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never)
+			.setId(TINTED_GLASS_STAIRS_KEY));
 	
-	public static final List<RegistryKey<Block>> STAINED_GLASS_SLAB_KEYS =
+	public static final List<ResourceKey<Block>> STAINED_GLASS_SLAB_KEYS =
 		Arrays.stream(DyeColor.values())
 			.map(color -> color.getName() + "_stained_glass_slab")
 			.map(MoGlassBlocks::blockKey).toList();
@@ -86,7 +86,7 @@ public enum MoGlassBlocks
 			STAINED_GLASS_SLAB_KEYS.get(color.ordinal())))
 		.toList();
 	
-	public static final List<RegistryKey<Block>> STAINED_GLASS_STAIRS_KEYS =
+	public static final List<ResourceKey<Block>> STAINED_GLASS_STAIRS_KEYS =
 		Arrays.stream(DyeColor.values())
 			.map(color -> color.getName() + "_stained_glass_stairs")
 			.map(MoGlassBlocks::blockKey).toList();
@@ -121,82 +121,78 @@ public enum MoGlassBlocks
 				STAINED_GLASS_STAIRS_KEYS.get(i));
 		}
 		
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COLORED_BLOCKS)
 			.register(content -> {
 				
 				// stairs
 				content.addBefore(Blocks.GLASS_PANE, GLASS_STAIRS,
 					TINTED_GLASS_STAIRS);
 				content.addBefore(Blocks.GLASS_PANE,
-					STAINED_GLASS_STAIRS.toArray(new ItemConvertible[0]));
+					STAINED_GLASS_STAIRS.toArray(new ItemLike[0]));
 				
 				// slabs
 				content.addBefore(Blocks.GLASS_PANE, GLASS_SLAB,
 					TINTED_GLASS_SLAB);
 				content.addBefore(Blocks.GLASS_PANE,
-					STAINED_GLASS_SLABS.toArray(new ItemConvertible[0]));
+					STAINED_GLASS_SLABS.toArray(new ItemLike[0]));
 			});
 	}
 	
-	private static RegistryKey<Block> blockKey(String idPath)
+	private static ResourceKey<Block> blockKey(String idPath)
 	{
-		return RegistryKey.of(RegistryKeys.BLOCK,
-			Identifier.of("mo_glass", idPath));
+		return ResourceKey.create(Registries.BLOCK,
+			ResourceLocation.fromNamespaceAndPath("mo_glass", idPath));
 	}
 	
 	private static void registerBlockTranslucent(Block block,
-		RegistryKey<Block> key)
+		ResourceKey<Block> key)
 	{
 		registerBlock(block, key);
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getTranslucent());
+				RenderType.translucent());
 	}
 	
 	private static void registerBlockCutoutMipped(Block block,
-		RegistryKey<Block> key)
+		ResourceKey<Block> key)
 	{
 		registerBlock(block, key);
 		
 		if(MoGlass.INSTANCE.isClient())
 			BlockRenderLayerMap.INSTANCE.putBlock(block,
-				RenderLayer.getCutoutMipped());
+				RenderType.cutoutMipped());
 	}
 	
-	private static void registerBlock(Block block, RegistryKey<Block> blockKey)
+	private static void registerBlock(Block block, ResourceKey<Block> blockKey)
 	{
-		Identifier id = blockKey.getValue();
-		Registry.register(Registries.BLOCK, blockKey, block);
+		ResourceLocation id = blockKey.location();
+		Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
 		
-		RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
-		Settings settings = new Item.Settings().registryKey(itemKey)
-			.useBlockPrefixedTranslationKey();
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
+		Properties settings =
+			new Item.Properties().setId(itemKey).useBlockDescriptionPrefix();
 		BlockItem item = new BlockItem(block, settings);
-		Registry.register(Registries.ITEM, id, item);
+		Registry.register(BuiltInRegistries.ITEM, id, item);
 	}
 	
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color,
-		RegistryKey<Block> key)
+		ResourceKey<Block> key)
 	{
-		return new StainedGlassSlabBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never)
-				.registryKey(key));
+		return new StainedGlassSlabBlock(color, BlockBehaviour.Properties.of()
+			.mapColor(color).instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
+			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
+			.isViewBlocking(Blocks::never).setId(key));
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
-		DyeColor color, RegistryKey<Block> key)
+		DyeColor color, ResourceKey<Block> key)
 	{
-		return new StainedGlassStairsBlock(color,
-			AbstractBlock.Settings.create().mapColor(color)
-				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sounds(BlockSoundGroup.GLASS).nonOpaque()
-				.allowsSpawning(Blocks::never).solidBlock(Blocks::never)
-				.suffocates(Blocks::never).blockVision(Blocks::never)
-				.registryKey(key));
+		return new StainedGlassStairsBlock(color, BlockBehaviour.Properties.of()
+			.mapColor(color).instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
+			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
+			.isViewBlocking(Blocks::never).setId(key));
 	}
 }
