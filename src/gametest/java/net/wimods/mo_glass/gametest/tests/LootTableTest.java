@@ -22,7 +22,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContex
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.DyeColor;
@@ -196,8 +196,7 @@ public enum LootTableTest
 		{
 			boolean doubleSlab = state.getOptionalValue(SlabBlock.TYPE)
 				.orElse(null) == SlabType.DOUBLE;
-			ResourceLocation id =
-				BuiltInRegistries.BLOCK.getKey(state.getBlock());
+			Identifier id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 			return (doubleSlab ? "double_" : "")
 				+ id.toString().replace("mo_glass:", "");
 		}

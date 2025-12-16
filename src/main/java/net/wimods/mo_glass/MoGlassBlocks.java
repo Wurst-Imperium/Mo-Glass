@@ -12,13 +12,12 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
@@ -99,16 +98,8 @@ public enum MoGlassBlocks
 	
 	public static void initialize()
 	{
-		if(FabricLoader.getInstance().isModLoaded("translucent-glass"))
-		{
-			registerBlockTranslucent(GLASS_SLAB, GLASS_SLAB_KEY);
-			registerBlockTranslucent(GLASS_STAIRS, GLASS_STAIRS_KEY);
-			
-		}else
-		{
-			registerBlockCutoutMipped(GLASS_SLAB, GLASS_SLAB_KEY);
-			registerBlockCutoutMipped(GLASS_STAIRS, GLASS_STAIRS_KEY);
-		}
+		registerBlockTranslucent(GLASS_SLAB, GLASS_SLAB_KEY);
+		registerBlockTranslucent(GLASS_STAIRS, GLASS_STAIRS_KEY);
 		
 		registerBlockTranslucent(TINTED_GLASS_SLAB, TINTED_GLASS_SLAB_KEY);
 		registerBlockTranslucent(TINTED_GLASS_STAIRS, TINTED_GLASS_STAIRS_KEY);
@@ -141,7 +132,7 @@ public enum MoGlassBlocks
 	private static ResourceKey<Block> blockKey(String idPath)
 	{
 		return ResourceKey.create(Registries.BLOCK,
-			ResourceLocation.fromNamespaceAndPath("mo_glass", idPath));
+			Identifier.fromNamespaceAndPath("mo_glass", idPath));
 	}
 	
 	private static void registerBlockTranslucent(Block block,
@@ -153,19 +144,9 @@ public enum MoGlassBlocks
 			BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
 	}
 	
-	private static void registerBlockCutoutMipped(Block block,
-		ResourceKey<Block> key)
-	{
-		registerBlock(block, key);
-		
-		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.putBlock(block,
-				ChunkSectionLayer.CUTOUT_MIPPED);
-	}
-	
 	private static void registerBlock(Block block, ResourceKey<Block> blockKey)
 	{
-		ResourceLocation id = blockKey.location();
+		Identifier id = blockKey.identifier();
 		Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
 		
 		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);

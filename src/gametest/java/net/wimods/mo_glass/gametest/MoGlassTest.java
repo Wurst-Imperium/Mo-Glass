@@ -25,8 +25,8 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContex
 import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
@@ -58,8 +58,8 @@ public final class MoGlassTest implements FabricClientGameTest
 			String mcVersion = SharedConstants.getCurrentVersion().name();
 			creator.setName("E2E Test " + mcVersion);
 			creator.setGameMode(WorldCreationUiState.SelectedGameMode.CREATIVE);
-			creator.getGameRules().getRule(GameRules.RULE_SENDCOMMANDFEEDBACK)
-				.set(false, null);
+			creator.getGameRules().set(GameRules.SEND_COMMAND_FEEDBACK, false,
+				null);
 			applyFlatPresetWithSmoothStone(creator);
 		});
 		
@@ -78,6 +78,12 @@ public final class MoGlassTest implements FabricClientGameTest
 		TestInput input = context.getInput();
 		TestClientWorldContext world = spContext.getClientWorld();
 		TestServerContext server = spContext.getServer();
+		
+		// Disable anisotropic filtering
+		context.runOnClient(mc -> mc.options.maxAnisotropyBit().set(0));
+		
+		// Disable chunk fade
+		context.runOnClient(mc -> mc.options.chunkSectionFadeInTime().set(0.0));
 		
 		runCommand(server, "time set noon");
 		runCommand(server, "tp 0 -57 0");
