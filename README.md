@@ -141,7 +141,7 @@ This has changed and support for connected textures is currently being worked on
 ## Development Setup
 
 > [!IMPORTANT]
-> Make sure you have [Java Development Kit 21](https://go.wimods.net/from/github.com/Wurst-Imperium/Mo-Glass?to=https://adoptium.net/?variant=openjdk21&jvmVariant=hotspot) installed. It won't work with other versions.
+> Make sure you have [Java Development Kit 25](https://adoptium.net/temurin/releases?version=25&os=any&arch=any) installed. It won't work with other versions.
 
 ### Development using Eclipse
 
