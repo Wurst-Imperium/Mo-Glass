@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientLevelContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public enum LootTableTest
 	public static void testGlassPiecesDropCorrectItems(
 		ClientGameTestContext context, TestSingleplayerContext spContext)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		MoGlassTest.LOGGER
@@ -212,7 +212,7 @@ public enum LootTableTest
 		public void showFailure(ClientGameTestContext context,
 			TestSingleplayerContext spContext, BlockPos playerPos)
 		{
-			TestClientWorldContext world = spContext.getClientWorld();
+			TestClientLevelContext world = spContext.getClientLevel();
 			TestServerContext server = spContext.getServer();
 			
 			runCommand(server, "fill ~-7 ~ ~-4 ~7 ~30 ~9 air");

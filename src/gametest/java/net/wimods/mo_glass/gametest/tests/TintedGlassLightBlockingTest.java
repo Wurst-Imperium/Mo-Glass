@@ -12,7 +12,7 @@ import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 import java.nio.file.Path;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientLevelContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.core.BlockPos;
@@ -34,7 +34,7 @@ public enum TintedGlassLightBlockingTest
 	public static void testTintedGlassBlocksLightCorrectly(
 		ClientGameTestContext context, TestSingleplayerContext spContext)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		MoGlassTest.LOGGER.info("Testing tinted glass light blocking...");
@@ -139,7 +139,7 @@ public enum TintedGlassLightBlockingTest
 		if(lightLevel == expected)
 			return;
 		
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		world.waitForChunksRender();
 		String fileName = "wrong_light_level";
 		Path screenshotPath = context.takeScreenshot(fileName);

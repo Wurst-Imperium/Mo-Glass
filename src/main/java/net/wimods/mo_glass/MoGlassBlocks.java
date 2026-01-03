@@ -10,8 +10,8 @@ package net.wimods.mo_glass;
 import java.util.Arrays;
 import java.util.List;
 
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.ChunkSectionLayerMap;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -112,19 +112,19 @@ public enum MoGlassBlocks
 				STAINED_GLASS_STAIRS_KEYS.get(i));
 		}
 		
-		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COLORED_BLOCKS)
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COLORED_BLOCKS)
 			.register(content -> {
 				
 				// stairs
-				content.addBefore(Blocks.GLASS_PANE, GLASS_STAIRS,
+				content.insertBefore(Blocks.GLASS_PANE, GLASS_STAIRS,
 					TINTED_GLASS_STAIRS);
-				content.addBefore(Blocks.GLASS_PANE,
+				content.insertBefore(Blocks.GLASS_PANE,
 					STAINED_GLASS_STAIRS.toArray(new ItemLike[0]));
 				
 				// slabs
-				content.addBefore(Blocks.GLASS_PANE, GLASS_SLAB,
+				content.insertBefore(Blocks.GLASS_PANE, GLASS_SLAB,
 					TINTED_GLASS_SLAB);
-				content.addBefore(Blocks.GLASS_PANE,
+				content.insertBefore(Blocks.GLASS_PANE,
 					STAINED_GLASS_SLABS.toArray(new ItemLike[0]));
 			});
 	}
@@ -141,7 +141,7 @@ public enum MoGlassBlocks
 		registerBlock(block, key);
 		
 		if(MoGlass.INSTANCE.isClient())
-			BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
+			ChunkSectionLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
 	}
 	
 	private static void registerBlock(Block block, ResourceKey<Block> blockKey)

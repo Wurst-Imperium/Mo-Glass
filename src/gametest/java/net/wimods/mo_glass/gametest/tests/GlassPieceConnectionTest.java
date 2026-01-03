@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientLevelContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.core.BlockPos;
@@ -38,7 +38,7 @@ public enum GlassPieceConnectionTest
 	public static void testGlassPiecesConnectCorrectly(
 		ClientGameTestContext context, TestSingleplayerContext spContext)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		MoGlassTest.LOGGER.info("Testing if glass pieces connect correctly...");
@@ -164,7 +164,7 @@ public enum GlassPieceConnectionTest
 		BlockState[] backBlocks, BlockState[] frontBlocks, boolean drawFront,
 		boolean drawBack)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
+		TestClientLevelContext world = spContext.getClientLevel();
 		TestServerContext server = spContext.getServer();
 		
 		record TestCase(BlockPos pos, Direction dir, boolean shouldDraw)
