@@ -104,8 +104,7 @@ public enum RecipesTest
 		
 		RecipeHolder<CraftingRecipe> entry = optional.get();
 		CraftingRecipe recipe = entry.value();
-		ItemStack result = context.computeOnClient(
-			mc -> recipe.assemble(input, mc.level.registryAccess()));
+		ItemStack result = recipe.assemble(input);
 		
 		if(!ItemStack.matches(expectedResult, result))
 			fail("Wrong crafting result: Expected " + expectedResult
@@ -142,10 +141,9 @@ public enum RecipesTest
 		if(recipes.isEmpty())
 			fail("No stonecutting recipes found for " + input);
 		
-		List<ItemStack> results = context.computeOnClient(mc -> recipes.stream()
-			.map(recipe -> recipe.assemble(new SingleRecipeInput(input),
-				mc.level.registryAccess()))
-			.toList());
+		List<ItemStack> results = recipes.stream()
+			.map(recipe -> recipe.assemble(new SingleRecipeInput(input)))
+			.toList();
 		
 		if(!results.stream()
 			.anyMatch(stack -> ItemStack.matches(stack, expectedResult)))
