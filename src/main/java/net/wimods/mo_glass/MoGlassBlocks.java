@@ -10,9 +10,7 @@ package net.wimods.mo_glass;
 import java.util.Arrays;
 import java.util.List;
 
-import net.fabricmc.fabric.api.client.rendering.v1.ChunkSectionLayerMap;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -98,17 +96,17 @@ public enum MoGlassBlocks
 	
 	public static void initialize()
 	{
-		registerBlockTranslucent(GLASS_SLAB, GLASS_SLAB_KEY);
-		registerBlockTranslucent(GLASS_STAIRS, GLASS_STAIRS_KEY);
+		registerBlock(GLASS_SLAB, GLASS_SLAB_KEY);
+		registerBlock(GLASS_STAIRS, GLASS_STAIRS_KEY);
 		
-		registerBlockTranslucent(TINTED_GLASS_SLAB, TINTED_GLASS_SLAB_KEY);
-		registerBlockTranslucent(TINTED_GLASS_STAIRS, TINTED_GLASS_STAIRS_KEY);
+		registerBlock(TINTED_GLASS_SLAB, TINTED_GLASS_SLAB_KEY);
+		registerBlock(TINTED_GLASS_STAIRS, TINTED_GLASS_STAIRS_KEY);
 		
 		for(int i = 0; i < 16; i++)
 		{
-			registerBlockTranslucent(STAINED_GLASS_SLABS.get(i),
+			registerBlock(STAINED_GLASS_SLABS.get(i),
 				STAINED_GLASS_SLAB_KEYS.get(i));
-			registerBlockTranslucent(STAINED_GLASS_STAIRS.get(i),
+			registerBlock(STAINED_GLASS_STAIRS.get(i),
 				STAINED_GLASS_STAIRS_KEYS.get(i));
 		}
 		
@@ -133,15 +131,6 @@ public enum MoGlassBlocks
 	{
 		return ResourceKey.create(Registries.BLOCK,
 			Identifier.fromNamespaceAndPath("mo_glass", idPath));
-	}
-	
-	private static void registerBlockTranslucent(Block block,
-		ResourceKey<Block> key)
-	{
-		registerBlock(block, key);
-		
-		if(MoGlass.INSTANCE.isClient())
-			ChunkSectionLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
 	}
 	
 	private static void registerBlock(Block block, ResourceKey<Block> blockKey)
