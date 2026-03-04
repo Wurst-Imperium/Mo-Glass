@@ -146,7 +146,7 @@ public final class TintedGlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public int getLightBlock(BlockState state)
+	public int getLightDampening(BlockState state)
 	{
 		return state.getValue(TYPE) == SlabType.DOUBLE ? 15 : 0;
 	}
