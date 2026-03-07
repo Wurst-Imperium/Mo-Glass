@@ -184,7 +184,7 @@ public enum GlassPieceConnectionTest
 		{
 			BlockPos backPos = startPos.offset(xOffsets[i], 0, 5);
 			blocks.put(backPos, backBlocks[i]);
-			// testCases.add(new TestCase(backPos, Direction.NORTH, drawFront));
+			testCases.add(new TestCase(backPos, Direction.NORTH, drawFront));
 			
 			BlockPos frontPos = startPos.offset(xOffsets[i], 0, 4);
 			blocks.put(frontPos, frontBlocks[i]);
