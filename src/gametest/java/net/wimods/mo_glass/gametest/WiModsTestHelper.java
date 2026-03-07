@@ -18,18 +18,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.joml.Vector2i;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.fabricmc.fabric.api.client.gametest.v1.TestInput;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
@@ -39,10 +35,6 @@ import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.minecraft.client.InactivityFpsLimit;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 
 public enum WiModsTestHelper
 {
@@ -279,49 +271,10 @@ public enum WiModsTestHelper
 		}
 	}
 	
-	public static void clearChat(ClientGameTestContext context)
-	{
-		context.runOnClient(mc -> mc.gui.getChat().clearMessages(true));
-	}
-	
-	public static void clearInventory(ClientGameTestContext context)
-	{
-		TestInput input = context.getInput();
-		input.pressKey(GLFW.GLFW_KEY_T);
-		input.typeChars("/clear");
-		input.pressKey(GLFW.GLFW_KEY_ENTER);
-	}
-	
 	public static void disableInactivityFpsLimit(ClientGameTestContext context)
 	{
 		context.runOnClient(mc -> {
 			mc.options.inactivityFpsLimit().set(InactivityFpsLimit.MINIMIZED);
-		});
-	}
-	
-	/**
-	 * Places the given block at the given position without any delays or block
-	 * updates.
-	 */
-	public static void setBlock(TestServerContext server, BlockPos pos,
-		BlockState state)
-	{
-		server.runOnServer(mc -> mc.getLevel(Level.OVERWORLD).setBlock(pos,
-			state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS));
-	}
-	
-	/**
-	 * Places all of the given blocks at the given positions at once without any
-	 * delays or block updates.
-	 */
-	public static void setBlocks(TestServerContext server,
-		LinkedHashMap<BlockPos, BlockState> blocks)
-	{
-		server.runOnServer(mc -> {
-			for(Entry<BlockPos, BlockState> entry : blocks.entrySet())
-				mc.getLevel(Level.OVERWORLD).setBlock(entry.getKey(),
-					entry.getValue(),
-					Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 		});
 	}
 }

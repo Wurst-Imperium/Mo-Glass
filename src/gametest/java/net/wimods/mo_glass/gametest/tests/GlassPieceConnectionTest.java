@@ -7,15 +7,10 @@
  */
 package net.wimods.mo_glass.gametest.tests;
 
-import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
-
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,19 +24,20 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.wimods.mo_glass.MoGlassBlocks;
-import net.wimods.mo_glass.gametest.MoGlassTest;
+import net.wimods.mo_glass.gametest.SingleplayerTest;
 
-public enum GlassPieceConnectionTest
+public final class GlassPieceConnectionTest extends SingleplayerTest
 {
-	;
-	
-	public static void testGlassPiecesConnectCorrectly(
-		ClientGameTestContext context, TestSingleplayerContext spContext)
+	public GlassPieceConnectionTest(ClientGameTestContext context,
+		TestSingleplayerContext spContext)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
-		TestServerContext server = spContext.getServer();
-		
-		MoGlassTest.LOGGER.info("Testing if glass pieces connect correctly...");
+		super(context, spContext);
+	}
+	
+	@Override
+	protected void runImpl()
+	{
+		logger.info("Testing if glass pieces connect correctly...");
 		BlockPos pos = context.computeOnClient(mc -> mc.player.blockPosition());
 		
 		BlockState[][] blocksWithFullyCoveredNorthSide =
@@ -59,30 +55,23 @@ public enum GlassPieceConnectionTest
 		
 		for(BlockState[] back : blocksWithFullyCoveredNorthSide)
 		{
-			test(context, spContext, pos, back, blocks(), false, false);
-			test(context, spContext, pos, back, slabs(SlabType.BOTTOM), true,
-				false);
-			test(context, spContext, pos, back, slabs(SlabType.TOP), true,
-				false);
-			test(context, spContext, pos, back, slabs(SlabType.DOUBLE), false,
-				false);
+			test(pos, back, blocks(), false, false);
+			test(pos, back, slabs(SlabType.BOTTOM), true, false);
+			test(pos, back, slabs(SlabType.TOP), true, false);
+			test(pos, back, slabs(SlabType.DOUBLE), false, false);
 			for(Direction dir : Direction.Plane.HORIZONTAL)
 				for(Half half : Half.values())
 				{
-					test(context, spContext, pos, back,
-						stairs(dir, half, StairsShape.STRAIGHT),
+					test(pos, back, stairs(dir, half, StairsShape.STRAIGHT),
 						dir != Direction.SOUTH, false);
-					test(context, spContext, pos, back,
-						stairs(dir, half, StairsShape.INNER_LEFT),
+					test(pos, back, stairs(dir, half, StairsShape.INNER_LEFT),
 						dir != Direction.SOUTH && dir != Direction.WEST, false);
-					test(context, spContext, pos, back,
-						stairs(dir, half, StairsShape.INNER_RIGHT),
+					test(pos, back, stairs(dir, half, StairsShape.INNER_RIGHT),
 						dir != Direction.SOUTH && dir != Direction.EAST, false);
-					test(context, spContext, pos, back,
-						stairs(dir, half, StairsShape.OUTER_LEFT), true, false);
-					test(context, spContext, pos, back,
-						stairs(dir, half, StairsShape.OUTER_RIGHT), true,
-						false);
+					test(pos, back, stairs(dir, half, StairsShape.OUTER_LEFT),
+						true, false);
+					test(pos, back, stairs(dir, half, StairsShape.OUTER_RIGHT),
+						true, false);
 				}
 		}
 		
@@ -96,77 +85,70 @@ public enum GlassPieceConnectionTest
 		
 		for(BlockState[] back : blocksWithBottomHalfCoveredNorthSide)
 		{
-			test(context, spContext, pos, back, slabs(SlabType.BOTTOM), false,
-				false);
-			test(context, spContext, pos, back, slabs(SlabType.TOP), true,
-				true);
+			test(pos, back, slabs(SlabType.BOTTOM), false, false);
+			test(pos, back, slabs(SlabType.TOP), true, true);
 			for(Half half : Half.values())
 			{
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.NORTH, half, StairsShape.STRAIGHT),
 					half == Half.TOP, half == Half.TOP);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.EAST, half, StairsShape.STRAIGHT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.WEST, half, StairsShape.STRAIGHT),
 					half == Half.TOP, true);
 				
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.NORTH, half, StairsShape.INNER_LEFT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.EAST, half, StairsShape.INNER_LEFT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.NORTH, half, StairsShape.INNER_RIGHT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.WEST, half, StairsShape.INNER_RIGHT),
 					half == Half.TOP, true);
 				
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.NORTH, half, StairsShape.OUTER_LEFT),
 					half == Half.TOP, half == Half.TOP);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.EAST, half, StairsShape.OUTER_LEFT),
 					half == Half.TOP, half == Half.TOP);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.SOUTH, half, StairsShape.OUTER_LEFT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.WEST, half, StairsShape.OUTER_LEFT),
 					half == Half.TOP, true);
 				
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.NORTH, half, StairsShape.OUTER_RIGHT),
 					half == Half.TOP, half == Half.TOP);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.EAST, half, StairsShape.OUTER_RIGHT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.SOUTH, half, StairsShape.OUTER_RIGHT),
 					half == Half.TOP, true);
-				test(context, spContext, pos, back,
+				test(pos, back,
 					stairs(Direction.WEST, half, StairsShape.OUTER_RIGHT),
 					half == Half.TOP, half == Half.TOP);
 			}
 		}
 		
 		// Clean up
-		runCommand(server, "fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
+		runCommand("fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
 		context.waitTicks(2);
 		world.waitForChunksRender();
 	}
 	
-	private static void test(ClientGameTestContext context,
-		TestSingleplayerContext spContext, BlockPos startPos,
-		BlockState[] backBlocks, BlockState[] frontBlocks, boolean drawFront,
-		boolean drawBack)
+	private void test(BlockPos startPos, BlockState[] backBlocks,
+		BlockState[] frontBlocks, boolean drawFront, boolean drawBack)
 	{
-		TestClientWorldContext world = spContext.getClientWorld();
-		TestServerContext server = spContext.getServer();
-		
 		record TestCase(BlockPos pos, Direction dir, boolean shouldDraw)
 		{
 			boolean test(LinkedHashMap<BlockPos, BlockState> blocks)
@@ -201,34 +183,22 @@ public enum GlassPieceConnectionTest
 		// Build the test case and mark where it failed
 		blocks.put(failed.pos().above(2),
 			Blocks.RED_CONCRETE.defaultBlockState());
-		setBlocks(server, blocks);
+		setBlocks(blocks);
 		if(failed.dir() == Direction.SOUTH)
-			runCommand(server, "tp @s ~ ~ ~9 180 0");
+			runCommand("tp @s ~ ~ ~9 180 0");
 		context
 			.waitFor(mc -> blocks.entrySet().stream().allMatch(entry -> mc.level
 				.getBlockState(entry.getKey()) == entry.getValue()));
 		world.waitForChunksRender();
 		
-		// Take a screenshot
-		String fileName = "glass_connected_incorrectly";
-		Path screenshotPath = context.takeScreenshot(fileName);
-		
+		// Report failure
 		BlockState state1 = blocks.get(failed.pos());
 		BlockState state2 = blocks.get(failed.pos().relative(failed.dir()));
 		String errorMessage = "Block `" + state1 + "`"
 			+ (failed.shouldDraw() ? " connected to " : " did not connect to ")
 			+ "`" + state2 + "`";
-		ghSummary("### Some glass pieces are not connecting correctly");
-		ghSummary(errorMessage + ", see below:\n");
-		
-		String url = tryUploadToImgur(screenshotPath);
-		if(url != null)
-			ghSummary("![" + fileName + "](" + url + ")");
-		else
-			ghSummary("Couldn't upload " + fileName
-				+ ".png to Imgur. Check the Test Screenshots.zip artifact.");
-		
-		throw new RuntimeException(errorMessage);
+		failWithScreenshot("glass_connected_incorrectly",
+			"Some glass pieces are not connecting correctly", errorMessage);
 	}
 	
 	private static BlockState[] blocks()
