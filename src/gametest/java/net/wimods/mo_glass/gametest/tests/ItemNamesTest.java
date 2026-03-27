@@ -9,18 +9,25 @@ package net.wimods.mo_glass.gametest.tests;
 
 import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.wimods.mo_glass.MoGlassBlocks;
-import net.wimods.mo_glass.gametest.MoGlassTest;
+import net.wimods.mo_glass.gametest.SingleplayerTest;
 
-public enum ItemNamesTest
+public final class ItemNamesTest extends SingleplayerTest
 {
-	;
-	
-	public static void testItemNamesShowUpCorrectly()
+	public ItemNamesTest(ClientGameTestContext context,
+		TestSingleplayerContext spContext)
 	{
-		MoGlassTest.LOGGER.info("Testing item names...");
+		super(context, spContext);
+	}
+	
+	@Override
+	protected void runImpl()
+	{
+		logger.info("Testing item names...");
 		
 		assertItemName("Glass Slab", new ItemStack(MoGlassBlocks.GLASS_SLAB));
 		assertItemName("Glass Stairs",

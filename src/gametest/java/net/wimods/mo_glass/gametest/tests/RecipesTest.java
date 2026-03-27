@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -27,22 +28,27 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.wimods.mo_glass.MoGlassBlocks;
-import net.wimods.mo_glass.gametest.MoGlassTest;
+import net.wimods.mo_glass.gametest.SingleplayerTest;
 
-public enum RecipesTest
+public final class RecipesTest extends SingleplayerTest
 {
-	;
-	
-	public static void testRecipesWork(ClientGameTestContext context)
+	public RecipesTest(ClientGameTestContext context,
+		TestSingleplayerContext spContext)
 	{
-		MoGlassTest.LOGGER.info("Testing crafting/stonecutting recipes...");
+		super(context, spContext);
+	}
+	
+	@Override
+	protected void runImpl()
+	{
+		logger.info("Testing crafting/stonecutting recipes...");
 		
 		// normal glass
-		testRecipesForGlassType(context, Blocks.GLASS, MoGlassBlocks.GLASS_SLAB,
+		testRecipesForGlassType(Blocks.GLASS, MoGlassBlocks.GLASS_SLAB,
 			MoGlassBlocks.GLASS_STAIRS);
 		
 		// tinted glass
-		testRecipesForGlassType(context, Blocks.TINTED_GLASS,
+		testRecipesForGlassType(Blocks.TINTED_GLASS,
 			MoGlassBlocks.TINTED_GLASS_SLAB, MoGlassBlocks.TINTED_GLASS_STAIRS);
 		
 		// stained glass
@@ -52,37 +58,36 @@ public enum RecipesTest
 			Block slab = MoGlassBlocks.STAINED_GLASS_SLABS.get(color.ordinal());
 			Block stairs =
 				MoGlassBlocks.STAINED_GLASS_STAIRS.get(color.ordinal());
-			testRecipesForGlassType(context, block, slab, stairs);
+			testRecipesForGlassType(block, slab, stairs);
 		}
 	}
 	
-	private static void testRecipesForGlassType(ClientGameTestContext context,
-		ItemLike input, ItemLike slabOutput, ItemLike stairsOutput)
+	private void testRecipesForGlassType(ItemLike input, ItemLike slabOutput,
+		ItemLike stairsOutput)
 	{
 		// slab crafting
-		assertCraftingRecipe(
-			context, new ItemStack[][]{{new ItemStack(input),
-				new ItemStack(input), new ItemStack(input)}},
+		assertCraftingRecipe(new ItemStack[][]{
+			{new ItemStack(input), new ItemStack(input), new ItemStack(input)}},
 			new ItemStack(slabOutput, 6));
 		
 		// stairs crafting
-		assertCraftingRecipe(context, new ItemStack[][]{
+		assertCraftingRecipe(new ItemStack[][]{
 			{new ItemStack(input), null, null},
 			{new ItemStack(input), new ItemStack(input), null},
 			{new ItemStack(input), new ItemStack(input), new ItemStack(input)}},
 			new ItemStack(stairsOutput, 4));
 		
 		// slab stonecutting
-		assertStonecuttingRecipe(context, new ItemStack(input),
+		assertStonecuttingRecipe(new ItemStack(input),
 			new ItemStack(slabOutput, 2));
 		
 		// stairs stonecutting
-		assertStonecuttingRecipe(context, new ItemStack(input),
+		assertStonecuttingRecipe(new ItemStack(input),
 			new ItemStack(stairsOutput, 1));
 	}
 	
-	private static void assertCraftingRecipe(ClientGameTestContext context,
-		ItemStack[][] inputGrid, ItemStack expectedResult)
+	private void assertCraftingRecipe(ItemStack[][] inputGrid,
+		ItemStack expectedResult)
 	{
 		int width = inputGrid[0].length;
 		int height = inputGrid.length;
@@ -112,7 +117,7 @@ public enum RecipesTest
 				+ formatCraftingRecipe(inputGrid));
 	}
 	
-	private static String formatCraftingRecipe(ItemStack[][] inputGrid)
+	private String formatCraftingRecipe(ItemStack[][] inputGrid)
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("```\n");
@@ -127,8 +132,8 @@ public enum RecipesTest
 		return builder.toString();
 	}
 	
-	private static void assertStonecuttingRecipe(ClientGameTestContext context,
-		ItemStack input, ItemStack expectedResult)
+	private void assertStonecuttingRecipe(ItemStack input,
+		ItemStack expectedResult)
 	{
 		SelectableRecipe.SingleInputSet<StonecutterRecipe> recipeGroups =
 			context.computeOnClient(mc -> mc.getSingleplayerServer()
