@@ -163,22 +163,22 @@ public final class RecipesTest extends SingleplayerTest
 	{
 		return switch(color)
 		{
-			case WHITE -> Blocks.WHITE_STAINED_GLASS;
-			case ORANGE -> Blocks.ORANGE_STAINED_GLASS;
-			case MAGENTA -> Blocks.MAGENTA_STAINED_GLASS;
-			case LIGHT_BLUE -> Blocks.LIGHT_BLUE_STAINED_GLASS;
-			case YELLOW -> Blocks.YELLOW_STAINED_GLASS;
-			case LIME -> Blocks.LIME_STAINED_GLASS;
-			case PINK -> Blocks.PINK_STAINED_GLASS;
-			case GRAY -> Blocks.GRAY_STAINED_GLASS;
-			case LIGHT_GRAY -> Blocks.LIGHT_GRAY_STAINED_GLASS;
-			case CYAN -> Blocks.CYAN_STAINED_GLASS;
-			case PURPLE -> Blocks.PURPLE_STAINED_GLASS;
-			case BLUE -> Blocks.BLUE_STAINED_GLASS;
-			case BROWN -> Blocks.BROWN_STAINED_GLASS;
-			case GREEN -> Blocks.GREEN_STAINED_GLASS;
-			case RED -> Blocks.RED_STAINED_GLASS;
-			case BLACK -> Blocks.BLACK_STAINED_GLASS;
+			case WHITE -> Blocks.STAINED_GLASS.white();
+			case ORANGE -> Blocks.STAINED_GLASS.orange();
+			case MAGENTA -> Blocks.STAINED_GLASS.magenta();
+			case LIGHT_BLUE -> Blocks.STAINED_GLASS.lightBlue();
+			case YELLOW -> Blocks.STAINED_GLASS.yellow();
+			case LIME -> Blocks.STAINED_GLASS.lime();
+			case PINK -> Blocks.STAINED_GLASS.pink();
+			case GRAY -> Blocks.STAINED_GLASS.gray();
+			case LIGHT_GRAY -> Blocks.STAINED_GLASS.lightGray();
+			case CYAN -> Blocks.STAINED_GLASS.cyan();
+			case PURPLE -> Blocks.STAINED_GLASS.purple();
+			case BLUE -> Blocks.STAINED_GLASS.blue();
+			case BROWN -> Blocks.STAINED_GLASS.brown();
+			case GREEN -> Blocks.STAINED_GLASS.green();
+			case RED -> Blocks.STAINED_GLASS.red();
+			case BLACK -> Blocks.STAINED_GLASS.black();
 		};
 	}
 	
