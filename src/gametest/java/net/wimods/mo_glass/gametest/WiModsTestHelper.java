@@ -212,7 +212,7 @@ public enum WiModsTestHelper
 	public static void waitForTitleScreenFade(ClientGameTestContext context)
 	{
 		context.waitFor(mc -> {
-			if(!(mc.screen instanceof TitleScreen titleScreen))
+			if(!(mc.gui.screen() instanceof TitleScreen titleScreen))
 				return false;
 			
 			return !titleScreen.fading;

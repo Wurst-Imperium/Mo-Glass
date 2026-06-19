@@ -182,7 +182,7 @@ public final class GlassPieceConnectionTest extends SingleplayerTest
 		
 		// Build the test case and mark where it failed
 		blocks.put(failed.pos().above(2),
-			Blocks.RED_CONCRETE.defaultBlockState());
+			Blocks.CONCRETE.red().defaultBlockState());
 		setBlocks(blocks);
 		if(failed.dir() == Direction.SOUTH)
 			runCommand("tp @s ~ ~ ~9 180 0");
@@ -204,7 +204,7 @@ public final class GlassPieceConnectionTest extends SingleplayerTest
 	private static BlockState[] blocks()
 	{
 		return new BlockState[]{Blocks.GLASS.defaultBlockState(),
-			Blocks.WHITE_STAINED_GLASS.defaultBlockState(),
+			Blocks.STAINED_GLASS.white().defaultBlockState(),
 			Blocks.TINTED_GLASS.defaultBlockState()};
 	}
 	

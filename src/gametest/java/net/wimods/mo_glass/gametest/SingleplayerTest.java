@@ -70,7 +70,7 @@ public abstract class SingleplayerTest
 	
 	protected final void clearChat()
 	{
-		context.runOnClient(mc -> mc.gui.getChat().clearMessages(true));
+		context.runOnClient(mc -> mc.gui.hud.getChat().clearMessages(true));
 	}
 	
 	protected final void clearInventory()
