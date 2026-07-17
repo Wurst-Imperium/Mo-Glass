@@ -7,11 +7,12 @@
  */
 package net.wimods.mo_glass.gametest;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import static net.wimods.mo_glass.gametest.WiModsTestHelper.*;
 
 import java.util.List;
 
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -102,18 +103,18 @@ public final class MoGlassTest implements FabricClientGameTest
 			"https://i.imgur.com/i2Nr9is.png");
 		
 		LOGGER.info("Recording debug menu");
-		input.pressKey(GLFW.GLFW_KEY_F3);
+		input.pressKey(InputConstants.KEY_F3);
 		context.takeScreenshot("debug_menu");
-		input.pressKey(GLFW.GLFW_KEY_F3);
+		input.pressKey(InputConstants.KEY_F3);
 		
 		LOGGER.info("Checking for broken mixins");
 		MixinEnvironment.getCurrentEnvironment().audit();
 		
 		LOGGER.info("Opening inventory");
-		input.pressKey(GLFW.GLFW_KEY_E);
+		input.pressKey(InputConstants.KEY_E);
 		assertScreenshotEquals(context, "inventory",
 			"https://i.imgur.com/GP74ZNS.png");
-		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+		input.pressKey(InputConstants.KEY_ESCAPE);
 		
 		// Test Mo Glass features
 		new ItemNamesTest(context, spContext).run();
@@ -123,9 +124,9 @@ public final class MoGlassTest implements FabricClientGameTest
 		new TintedGlassLightBlockingTest(context, spContext).run();
 		
 		LOGGER.info("Opening game menu");
-		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+		input.pressKey(InputConstants.KEY_ESCAPE);
 		context.takeScreenshot("game_menu");
-		input.pressKey(GLFW.GLFW_KEY_ESCAPE);
+		input.pressKey(InputConstants.KEY_ESCAPE);
 	}
 	
 	// because the grass texture is randomized and smooth stone isn't
