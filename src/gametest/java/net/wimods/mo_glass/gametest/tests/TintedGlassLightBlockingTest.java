@@ -79,7 +79,7 @@ public final class TintedGlassLightBlockingTest extends SingleplayerTest
 		// Clean up
 		runCommand("fill ~-7 ~-1 ~3 ~7 ~10 ~9 air");
 		context.waitTicks(2);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 	}
 	
 	private void testSlab(BlockPos pos, SlabType type, int light)
@@ -117,7 +117,7 @@ public final class TintedGlassLightBlockingTest extends SingleplayerTest
 		if(lightLevel == expected)
 			return;
 		
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		failWithScreenshot("wrong_light_level",
 			"Some tinted glass pieces are not blocking light correctly",
 			"Wrong light level at ~" + x + " ~" + y + " ~" + z + ": Expected "

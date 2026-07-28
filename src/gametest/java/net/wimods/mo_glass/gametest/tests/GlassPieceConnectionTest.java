@@ -143,7 +143,7 @@ public final class GlassPieceConnectionTest extends SingleplayerTest
 		// Clean up
 		runCommand("fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
 		context.waitTicks(2);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 	}
 	
 	private void test(BlockPos startPos, BlockState[] backBlocks,
@@ -189,7 +189,7 @@ public final class GlassPieceConnectionTest extends SingleplayerTest
 		context
 			.waitFor(mc -> blocks.entrySet().stream().allMatch(entry -> mc.level
 				.getBlockState(entry.getKey()) == entry.getValue()));
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		// Report failure
 		BlockState state1 = blocks.get(failed.pos());
