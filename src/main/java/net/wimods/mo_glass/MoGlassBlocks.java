@@ -36,22 +36,20 @@ public enum MoGlassBlocks
 	public static final ResourceKey<Block> GLASS_SLAB_KEY =
 		blockKey("glass_slab");
 	
-	public static final Block GLASS_SLAB =
-		new GlassSlabBlock(BlockBehaviour.Properties.of()
-			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
-			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
-			.isViewBlocking(Blocks::never).setId(GLASS_SLAB_KEY));
+	public static final Block GLASS_SLAB = new GlassSlabBlock(
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).setId(GLASS_SLAB_KEY));
 	
 	public static final ResourceKey<Block> GLASS_STAIRS_KEY =
 		blockKey("glass_stairs");
 	
-	public static final Block GLASS_STAIRS =
-		new GlassStairsBlock(BlockBehaviour.Properties.of()
-			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
-			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
-			.isViewBlocking(Blocks::never).setId(GLASS_STAIRS_KEY));
+	public static final Block GLASS_STAIRS = new GlassStairsBlock(
+		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
+			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+			.isSuffocating(Blocks::never).setId(GLASS_STAIRS_KEY));
 	
 	public static final ResourceKey<Block> TINTED_GLASS_SLAB_KEY =
 		blockKey("tinted_glass_slab");
@@ -60,8 +58,7 @@ public enum MoGlassBlocks
 		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
 			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
-			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never)
-			.setId(TINTED_GLASS_SLAB_KEY));
+			.isSuffocating(Blocks::never).setId(TINTED_GLASS_SLAB_KEY));
 	
 	public static final ResourceKey<Block> TINTED_GLASS_STAIRS_KEY =
 		blockKey("tinted_glass_stairs");
@@ -70,8 +67,7 @@ public enum MoGlassBlocks
 		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
 			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
-			.isSuffocating(Blocks::never).isViewBlocking(Blocks::never)
-			.setId(TINTED_GLASS_STAIRS_KEY));
+			.isSuffocating(Blocks::never).setId(TINTED_GLASS_STAIRS_KEY));
 	
 	public static final List<ResourceKey<Block>> STAINED_GLASS_SLAB_KEYS =
 		Arrays.stream(DyeColor.values())
@@ -148,20 +144,22 @@ public enum MoGlassBlocks
 	private static StainedGlassSlabBlock createStainedGlassSlab(DyeColor color,
 		ResourceKey<Block> key)
 	{
-		return new StainedGlassSlabBlock(color, BlockBehaviour.Properties.of()
-			.mapColor(color).instrument(NoteBlockInstrument.HAT).strength(0.3F)
-			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
-			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
-			.isViewBlocking(Blocks::never).setId(key));
+		return new StainedGlassSlabBlock(color,
+			BlockBehaviour.Properties.of().mapColor(color)
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+				.isSuffocating(Blocks::never).setId(key));
 	}
 	
 	private static StainedGlassStairsBlock createStainedGlassStairs(
 		DyeColor color, ResourceKey<Block> key)
 	{
-		return new StainedGlassStairsBlock(color, BlockBehaviour.Properties.of()
-			.mapColor(color).instrument(NoteBlockInstrument.HAT).strength(0.3F)
-			.sound(SoundType.GLASS).noOcclusion().isValidSpawn(Blocks::never)
-			.isRedstoneConductor(Blocks::never).isSuffocating(Blocks::never)
-			.isViewBlocking(Blocks::never).setId(key));
+		return new StainedGlassStairsBlock(color,
+			BlockBehaviour.Properties.of().mapColor(color)
+				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+				.sound(SoundType.GLASS).noOcclusion()
+				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
+				.isSuffocating(Blocks::never).setId(key));
 	}
 }
