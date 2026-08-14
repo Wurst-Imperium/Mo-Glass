@@ -153,13 +153,6 @@ publishMods {
 		requires("fabric-api")
 		changelog = getChangelog("CurseForge", "curseforge.com/minecraft/mc-mods/${modSlug}/version/${version}")
 	}
-	modrinth {
-		projectId = project.mr_project_id
-		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-		minecraftVersions.add(project.minecraft_version)
-		requires("fabric-api")
-		changelog = getChangelog("Modrinth", "modrinth.com/mod/${modSlug}/version/${version}")
-	}
 }
 
 import groovy.json.JsonSlurper
@@ -174,7 +167,6 @@ tasks.register("getCurseforgeId") {
 
 tasks.named("publishMods").configure { dependsOn(tasks.named("build")) }
 tasks.named("publishCurseforge").configure { dependsOn(tasks.named("build")) }
-tasks.named("publishModrinth").configure { dependsOn(tasks.named("build")) }
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub
