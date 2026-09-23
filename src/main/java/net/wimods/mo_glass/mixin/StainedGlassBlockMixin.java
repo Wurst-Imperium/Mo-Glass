@@ -7,11 +7,9 @@
  */
 package net.wimods.mo_glass.mixin;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StainedGlassBlock;
@@ -29,8 +27,7 @@ import net.wimods.mo_glass.StainedGlassStairsBlock;
 public abstract class StainedGlassBlockMixin extends TransparentBlock
 {
 	@Shadow
-	@Final
-	private DyeColor color;
+	public abstract int getColor();
 	
 	private StainedGlassBlockMixin(MoGlass moGlass, Properties settings)
 	{
@@ -44,12 +41,12 @@ public abstract class StainedGlassBlockMixin extends TransparentBlock
 		Block blockFrom = stateFrom.getBlock();
 		
 		if(blockFrom instanceof StainedGlassSlabBlock
-			&& ((StainedGlassSlabBlock)blockFrom).getColor() == color)
+			&& ((StainedGlassSlabBlock)blockFrom).getColor() == getColor())
 			if(isInvisibleToGlassSlab(state, stateFrom, direction))
 				return true;
 			
 		if(blockFrom instanceof StainedGlassStairsBlock
-			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
+			&& ((StainedGlassStairsBlock)blockFrom).getColor() == getColor())
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			

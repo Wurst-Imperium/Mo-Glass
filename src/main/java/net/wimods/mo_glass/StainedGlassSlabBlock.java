@@ -11,6 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BeaconBeamBlock;
@@ -45,7 +46,7 @@ public final class StainedGlassSlabBlock extends SlabBlock
 		Block blockFrom = stateFrom.getBlock();
 		
 		if(blockFrom instanceof StainedGlassBlock
-			&& ((StainedGlassBlock)blockFrom).getColor() == color)
+			&& ((StainedGlassBlock)blockFrom).getColor() == getColor())
 			return true;
 		
 		if(blockFrom == this)
@@ -53,7 +54,7 @@ public final class StainedGlassSlabBlock extends SlabBlock
 				return true;
 			
 		if(blockFrom instanceof StainedGlassStairsBlock
-			&& ((StainedGlassStairsBlock)blockFrom).getColor() == color)
+			&& ((StainedGlassStairsBlock)blockFrom).getColor() == getColor())
 			if(isInvisibleToGlassStairs(state, stateFrom, direction))
 				return true;
 			
@@ -157,8 +158,8 @@ public final class StainedGlassSlabBlock extends SlabBlock
 	}
 	
 	@Override
-	public DyeColor getColor()
+	public int getColor()
 	{
-		return color;
+		return CommonColors.TEXTURE_TINT_COLORS.pick(color);
 	}
 }

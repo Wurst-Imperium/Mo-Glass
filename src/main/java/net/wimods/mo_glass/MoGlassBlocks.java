@@ -145,7 +145,8 @@ public enum MoGlassBlocks
 		ResourceKey<Block> key)
 	{
 		return new StainedGlassSlabBlock(color,
-			BlockBehaviour.Properties.of().mapColor(color)
+			BlockBehaviour.Properties.of()
+				.mapColor(MapColor.DYE_TO_DEFAULT_COLOR.pick(color))
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
 				.sound(SoundType.GLASS).noOcclusion()
 				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
@@ -156,7 +157,8 @@ public enum MoGlassBlocks
 		DyeColor color, ResourceKey<Block> key)
 	{
 		return new StainedGlassStairsBlock(color,
-			BlockBehaviour.Properties.of().mapColor(color)
+			BlockBehaviour.Properties.of()
+				.mapColor(MapColor.DYE_TO_DEFAULT_COLOR.pick(color))
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
 				.sound(SoundType.GLASS).noOcclusion()
 				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
