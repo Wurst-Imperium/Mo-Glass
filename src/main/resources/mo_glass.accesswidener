@@ -3,4 +3,3 @@ accessible	method	net/minecraft/client/KeyboardHandler	keyPress	(JILnet/minecraf
 accessible	method	net/minecraft/client/MouseHandler	onScroll	(JDD)V
 accessible	field	net/minecraft/client/gui/screens/Screen	renderables	Ljava/util/List;
 accessible	field	net/minecraft/client/gui/screens/TitleScreen	fading	Z
-accessible	field	net/minecraft/client/gui/components/CycleButton	name	Lnet/minecraft/network/chat/Component;

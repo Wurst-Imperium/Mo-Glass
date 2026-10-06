@@ -24,7 +24,7 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.sounds.BlockSoundSets;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -38,7 +38,7 @@ public enum MoGlassBlocks
 	
 	public static final Block GLASS_SLAB = new GlassSlabBlock(
 		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.strength(0.3F).sound(BlockSoundSets.GLASS).noOcclusion()
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 			.isSuffocating(Blocks::never).setId(GLASS_SLAB_KEY));
 	
@@ -47,25 +47,27 @@ public enum MoGlassBlocks
 	
 	public static final Block GLASS_STAIRS = new GlassStairsBlock(
 		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sound(SoundType.GLASS).noOcclusion()
+			.strength(0.3F).sound(BlockSoundSets.GLASS).noOcclusion()
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 			.isSuffocating(Blocks::never).setId(GLASS_STAIRS_KEY));
 	
 	public static final ResourceKey<Block> TINTED_GLASS_SLAB_KEY =
 		blockKey("tinted_glass_slab");
 	
-	public static final Block TINTED_GLASS_SLAB = new TintedGlassSlabBlock(
-		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
+	public static final Block TINTED_GLASS_SLAB =
+		new TintedGlassSlabBlock(BlockBehaviour.Properties.of()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(BlockSoundSets.GLASS).mapColor(MapColor.COLOR_GRAY)
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 			.isSuffocating(Blocks::never).setId(TINTED_GLASS_SLAB_KEY));
 	
 	public static final ResourceKey<Block> TINTED_GLASS_STAIRS_KEY =
 		blockKey("tinted_glass_stairs");
 	
-	public static final Block TINTED_GLASS_STAIRS = new TintedGlassStairsBlock(
-		BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT)
-			.strength(0.3F).sound(SoundType.GLASS).mapColor(MapColor.COLOR_GRAY)
+	public static final Block TINTED_GLASS_STAIRS =
+		new TintedGlassStairsBlock(BlockBehaviour.Properties.of()
+			.instrument(NoteBlockInstrument.HAT).strength(0.3F)
+			.sound(BlockSoundSets.GLASS).mapColor(MapColor.COLOR_GRAY)
 			.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 			.isSuffocating(Blocks::never).setId(TINTED_GLASS_STAIRS_KEY));
 	
@@ -148,7 +150,7 @@ public enum MoGlassBlocks
 			BlockBehaviour.Properties.of()
 				.mapColor(MapColor.DYE_TO_DEFAULT_COLOR.pick(color))
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sound(SoundType.GLASS).noOcclusion()
+				.sound(BlockSoundSets.GLASS).noOcclusion()
 				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 				.isSuffocating(Blocks::never).setId(key));
 	}
@@ -160,7 +162,7 @@ public enum MoGlassBlocks
 			BlockBehaviour.Properties.of()
 				.mapColor(MapColor.DYE_TO_DEFAULT_COLOR.pick(color))
 				.instrument(NoteBlockInstrument.HAT).strength(0.3F)
-				.sound(SoundType.GLASS).noOcclusion()
+				.sound(BlockSoundSets.GLASS).noOcclusion()
 				.isValidSpawn(Blocks::never).isRedstoneConductor(Blocks::never)
 				.isSuffocating(Blocks::never).setId(key));
 	}
