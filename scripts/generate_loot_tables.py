@@ -25,35 +25,22 @@ def create_slab_loot_table(slab, requires_silk_touch=True):
 		"pools": [
 			{
 				"bonus_rolls": 0.0,
-				"conditions": [
-					{
-						"condition": "minecraft:match_tool",
-						"predicate": {
-							"predicates": {
-								"minecraft:enchantments": [
-									{"enchantments": "minecraft:silk_touch", "levels": {"min": 1}}
-								]
-							}
-						},
-					}
-				],
+				"condition": "minecraft:tool/can_silk_touch",
 				"entries": [
 					{
 						"type": "minecraft:item",
-						"functions": [
+						"modifier": [
 							{
 								"add": False,
-								"conditions": [
-									{
-										"block": f"mo_glass:{slab}",
-										"condition": "minecraft:block_state_property",
-										"properties": {"type": "double"},
-									}
-								],
+								"condition": {
+									"type": "minecraft:match_block",
+									"blocks": f"mo_glass:{slab}",
+									"state": {"type": "double"},
+								},
 								"count": 2.0,
-								"function": "minecraft:set_count",
+								"type": "minecraft:set_count",
 							},
-							{"function": "minecraft:explosion_decay"},
+							{"type": "minecraft:explosion_decay"},
 						],
 						"name": f"mo_glass:{slab}",
 					}
@@ -64,7 +51,7 @@ def create_slab_loot_table(slab, requires_silk_touch=True):
 		"random_sequence": f"mo_glass:blocks/{slab}",
 	}
 	if not requires_silk_touch:
-		data["pools"][0]["conditions"] = [{"condition": "minecraft:survives_explosion"}]
+		data["pools"][0]["condition"] = {"type": "minecraft:survives_explosion"}
 	write_loot_table_file(f"{slab}.json", data)
 
 
@@ -74,18 +61,7 @@ def create_stairs_loot_table(stairs, requires_silk_touch=True):
 		"pools": [
 			{
 				"bonus_rolls": 0.0,
-				"conditions": [
-					{
-						"condition": "minecraft:match_tool",
-						"predicate": {
-							"predicates": {
-								"minecraft:enchantments": [
-									{"enchantments": "minecraft:silk_touch", "levels": {"min": 1}}
-								]
-							}
-						},
-					}
-				],
+				"condition": "minecraft:tool/can_silk_touch",
 				"entries": [{"type": "minecraft:item", "name": f"mo_glass:{stairs}"}],
 				"rolls": 1.0,
 			}
@@ -93,7 +69,7 @@ def create_stairs_loot_table(stairs, requires_silk_touch=True):
 		"random_sequence": f"mo_glass:blocks/{stairs}",
 	}
 	if not requires_silk_touch:
-		data["pools"][0]["conditions"] = [{"condition": "minecraft:survives_explosion"}]
+		data["pools"][0]["condition"] = {"type": "minecraft:survives_explosion"}
 	write_loot_table_file(f"{stairs}.json", data)
 
 

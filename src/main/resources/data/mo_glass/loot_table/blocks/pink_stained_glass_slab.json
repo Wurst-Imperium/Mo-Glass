@@ -3,43 +3,25 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantments": "minecraft:silk_touch",
-                  "levels": {
-                    "min": 1
-                  }
-                }
-              ]
-            }
-          }
-        }
-      ],
+      "condition": "minecraft:tool/can_silk_touch",
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
               "add": false,
-              "conditions": [
-                {
-                  "block": "mo_glass:pink_stained_glass_slab",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "type": "double"
-                  }
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "mo_glass:pink_stained_glass_slab",
+                "state": {
+                  "type": "double"
                 }
-              ],
+              },
               "count": 2.0,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count"
             },
             {
-              "function": "minecraft:explosion_decay"
+              "type": "minecraft:explosion_decay"
             }
           ],
           "name": "mo_glass:pink_stained_glass_slab"
