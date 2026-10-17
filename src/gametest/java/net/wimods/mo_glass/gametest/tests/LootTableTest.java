@@ -68,7 +68,7 @@ public final class LootTableTest extends SingleplayerTest
 		
 		// Clean up
 		runCommand("fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
-		context.waitTicks(2);
+		context.waitTicks(3);
 		world.waitForChunksRender();
 	}
 	
