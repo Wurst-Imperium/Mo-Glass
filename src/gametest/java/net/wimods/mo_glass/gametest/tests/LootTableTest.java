@@ -51,7 +51,7 @@ public final class LootTableTest extends SingleplayerTest
 		LinkedHashMap<BlockPos, BlockState> blocks = createTestRig(startPos);
 		setBlocks(blocks);
 		context.waitTicks(2);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		try
 		{
@@ -69,7 +69,7 @@ public final class LootTableTest extends SingleplayerTest
 		// Clean up
 		runCommand("fill ~-7 ~ ~-4 ~7 ~30 ~9 air");
 		context.waitTicks(3);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 	}
 	
 	private void showFailureAndThrow(TestFailureException e, BlockPos playerPos)
@@ -79,7 +79,7 @@ public final class LootTableTest extends SingleplayerTest
 		setBlock(pos, e.state);
 		
 		context.waitTicks(3);
-		world.waitForChunksRender();
+		connection.waitForChunksRender();
 		
 		runCommand("loot spawn " + pos.getX() + " " + (pos.getY() + 1) + " "
 			+ pos.getZ() + " mine " + pos.getX() + " " + pos.getY() + " "
