@@ -108,9 +108,10 @@ public final class MoGlassTest implements FabricClientGameTest
 		
 		LOGGER.info("Opening inventory");
 		input.pressKey(InputConstants.KEY_E);
-		input.setCursorPos(427, 240);
-		assertScreenshotEquals(context, "inventory",
-			"https://i.imgur.com/GP74ZNS.png");
+		input.setCursorPos(0, 0);
+		input.setCursorPos(410, 228);
+		waitForScreenshotMatch(context, "inventory",
+			"https://i.imgur.com/jcOGT2c.png");
 		input.pressKey(InputConstants.KEY_ESCAPE);
 		
 		// Test Mo Glass features
