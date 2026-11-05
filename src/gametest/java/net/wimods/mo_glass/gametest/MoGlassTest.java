@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContex
 import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
@@ -46,6 +47,8 @@ public final class MoGlassTest implements FabricClientGameTest
 	public void runTest(ClientGameTestContext context)
 	{
 		LOGGER.info("Starting Mo Glass Client GameTest");
+		context.runOnClient(mc -> mc.options
+			.getSoundSourceOptionInstance(SoundSource.MASTER).set(0.0));
 		hideSplashTexts(context);
 		waitForTitleScreenFade(context);
 		disableInactivityFpsLimit(context);
